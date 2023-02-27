@@ -1,16 +1,11 @@
+/* eslint-disable */
 import { type NextPage } from "next";
 import styles from "./transfer.module.css";
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import { Metaplex } from '@metaplex-foundation/js';
-import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js';
+import { clusterApiUrl, Connection, type PublicKey } from '@solana/web3.js';
 import { useWallet } from "@solana/wallet-adapter-react";
-
-interface FormData {
-    wallet: string;
-    certificate: string;
-    privateKey: string;
-}
 
 type Option = {
     key: string;
@@ -22,7 +17,7 @@ const mx = Metaplex.make(_connection);
 
 const Transfer: NextPage = () => {
 
-    const { wallet, publicKey } = useWallet();
+    const { publicKey } = useWallet();
     
     const [list, setList] = useState<any[]>([]);
 
@@ -34,6 +29,7 @@ const Transfer: NextPage = () => {
             aux.forEach((item) => {
                 if (item.model == "metadata") addElementsToList(item.name, item.mintAddress.toString());
             });
+            addElementsToList("", "");
             // return aux;
           } catch (e) {
             console.error(e);
@@ -62,7 +58,7 @@ const Transfer: NextPage = () => {
           alert("missing data");
         }
         console.log(formData.certificate);
-        const response = await fetch("/api/transact", {
+        const response = await fetch("https://kawi-cpg9.vercel.app/api/transact", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -73,7 +69,7 @@ const Transfer: NextPage = () => {
             tokenHash: formData.certificate,
           }),
         });
-
+        console.log(response);
         if (response.status === 200) {
             alert("transfer made");
           } else {
@@ -173,3 +169,4 @@ const Transfer: NextPage = () => {
 };
 
 export default Transfer;
+/* eslint-disable */
