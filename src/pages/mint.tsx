@@ -107,6 +107,22 @@ const Mint: NextPage = () => {
             />
           </div>
           <div className="flex justify-center items-center">
+            {/* <div className="mt-5 col-span-6 sm:col-span-3">
+              <label
+                htmlFor="wallet"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Auth
+              </label>
+              <input
+                type="text"
+                name="wallet"
+                id="wallet"
+                placeholder="Your wallet"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                required
+              />
+            </div> */}
             <button
               className="
               inline-flex
