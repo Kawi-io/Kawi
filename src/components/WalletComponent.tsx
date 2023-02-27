@@ -1,7 +1,4 @@
 import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from 'react';
-// import { ConnectionProvider, WalletProvider} from "@solana/wallet-adapter-react";
-
 
 const WalletComponent = () => {
     

@@ -19,13 +19,13 @@ const Mint: NextPage = () => {
 
     const metaplex = new Metaplex(connection);
 
-    const { publicKey, wallet } = useWallet();
+    const { wallet } = useWallet();
 
     const [walletAvailable, SetWalletAvailable] = useState(false);
 
     const [candyMachineState, SetCandyMachineState] = useState<any>()
 
-    const [candyMachineId, SetCandyMachineId] = useState(new PublicKey("3zip8cavR98FhUSpTPnF78uwC4s3C4MUXcvecbdduRAz"));
+    const candyMachineId=new PublicKey("3zip8cavR98FhUSpTPnF78uwC4s3C4MUXcvecbdduRAz");
 
     const [candyMachineAuthority, SetCandyMachineAuthority] = useState(new PublicKey("RwELDnxJQkH5VjnZXwHLoK3A44xsbGakyEs114cDqy9"));
 
