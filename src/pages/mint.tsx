@@ -1,3 +1,4 @@
+/* eslint-disable */
 import styles from "./mint.module.css";
 import { type NextPage } from "next";
 import Head from "next/head";
@@ -105,3 +106,4 @@ const Mint: NextPage = () => {
 };
 
 export default Mint;
+/* eslint-disable */
