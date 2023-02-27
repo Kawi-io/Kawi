@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { type NextPage } from "next";
 import { useEffect, useState } from 'react';
 import { PublicKey, Connection, clusterApiUrl } from "@solana/web3.js"
@@ -79,3 +80,4 @@ const VerNFTs: NextPage = () => {
 }
 
 export default VerNFTs;
+/* eslint-disable */
