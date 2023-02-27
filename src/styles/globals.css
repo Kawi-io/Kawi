@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@600&display=swap');
+
+@font-face {
+  font-family: 'Noto sans';
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@600&display=swap') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
 @layer base {
 
   html {
@@ -8,9 +17,7 @@
   h1,
   h2,
   h3 {
-    font-family: sans-serif;
-    font-weight: bold;
-    font-style: normal;
+    font-family: 'Noto sans', sans-serif;
   }
 
   h1 {
