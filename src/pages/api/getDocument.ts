@@ -6,7 +6,9 @@ export default async function getDocument(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
+    /* eslint-disable */
     const uri = `mongodb+srv://${process.env.USER}:${process.env.PW}@kawi.ibmqes0.mongodb.net/?retryWrites=true&w=majority`;
+    /* eslint-disable */
 
     const client = new MongoClient(uri);
 
