@@ -9,14 +9,6 @@ import Image from "next/image"
 const VerNFTs: NextPage = () => {
 
     const [nfts, SetNfts] = useState<any>([])
-    const [nfts_flag, SetNftsFlag] = useState<any>(false)
-    const [element, SetElement] = useState<any>({
-        name:"",
-        description:"",
-        image:"",
-    })
-
-    const { name , description , image } = element
 
     const mx = new Metaplex(new Connection(clusterApiUrl("devnet")))
     
@@ -32,35 +24,15 @@ const VerNFTs: NextPage = () => {
 
     },[publicKey])
 
-    useEffect(() => {
-
-        let aux:any = []
-        nfts.map((nft:any)=>{
-            console.log(nft)
-            fetch(nft.uri).then((res:any)=>res.json()).then((res:any)=>{
-                aux.push(res)
-            })
-        })
-
-        images_charged=true;
-        SetNfts(aux)
-        
-    },[nfts_flag])
-
     const fetchNFTs = async (owner:PublicKey) => {
         try {
             const list:any = await mx.nfts().findAllByOwner({ owner: owner});
-
-            list.map((element:any) => {
-                // SetElement((prev:any) => ({
-                //     ...prev,
-                //     image:"https://media4.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"
-                // }));
-                element.image = "https://media4.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"
+            let aux:any = []
+            list.map((e:any) => {
+                fetch(e.uri).then(r => r.json()).then((r:any) =>{aux.push(r); SetNfts(aux);})
             })
             
-            SetNfts(list)
-            SetNftsFlag(true)
+            
 
         } catch (e) {
             console.error(e);
@@ -69,12 +41,15 @@ const VerNFTs: NextPage = () => {
 
     return (
         <>
-        {nfts.map((element:any) => (
+        {(nfts.length > 0) ? nfts.map((element:any) => (
             <div key={nfts.indexOf(element)}>
                 <h1>{element.name}</h1>
                 <Image src={element.image} alt="" height={100} width={100}></Image>
             </div>
-        ))}
+        )) : <div>
+            <h1>cargando...</h1>
+            <Image src={"https://media4.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"} alt="" height={100} width={100}></Image>
+        </div>}
         </>
     )
 }
