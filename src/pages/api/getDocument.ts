@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { GetRequestBody } from '../../interfaces/GetRequestBody';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { GetRequestBody } from '../../interfaces/GetRequestBody';
 import { MongoClient } from 'mongodb';
 
 export default async function getDocument(
