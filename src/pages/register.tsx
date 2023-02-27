@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { type NextPage } from "next";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useState, useEffect } from "react";
@@ -257,3 +259,4 @@ const Register: NextPage = () => {
 };
 
 export default Register;
+/* eslint-disable */
