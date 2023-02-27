@@ -3,6 +3,7 @@
 import { type NextPage } from "next";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const user_fields = [
   {
@@ -75,6 +76,7 @@ const company_fields = [
 
 const Register: NextPage = () => {
   const [isCompany, setIsCompany] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     _id: "", // TODO: Wallet id here, aun no funcinal
     about: "",
@@ -120,7 +122,7 @@ const Register: NextPage = () => {
           event.target.reset();
 
           data.acknowledged
-            ? alert("Te has registrado con éxito")
+            ? router.push(`/profile/${publicKey}`)
             : alert("El usuario ya fue registrado");
         })
         .catch((error) => alert("El usuario ya fue registrado"));
