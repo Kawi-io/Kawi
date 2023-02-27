@@ -18,8 +18,10 @@ export default async function getDocument(
         const database = client.db('Kawi');
         const collection = database.collection(coll);
 
+        /* eslint-disable */
         const query: any = { _id: id };
         const result = await collection.findOne(query)
+        /* eslint-disable */
 
         res.status(200).json(result);
         console.log(result);
