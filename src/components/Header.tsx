@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Popover } from '@headlessui/react'
 import  Link from 'next/link';
 import  Image  from "next/image";
@@ -58,3 +59,4 @@ export const Header = () => {
     </header>
   )
 }
+/* eslint-disable */
