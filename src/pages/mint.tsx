@@ -1,8 +1,55 @@
-import styles from "./index.module.css";
+import styles from "./mint.module.css";
 import { type NextPage } from "next";
 import Head from "next/head";
 
+import Image from "next/image"
+
+import { useEffect, useState } from 'react';
+
+import { PublicKey, Connection, clusterApiUrl } from "@solana/web3.js";
+
+import { Metaplex } from "@metaplex-foundation/js";
+
+import { getCandyMachineState, getNftPrice, mint } from "../components/CandyMachine";
+
+import { useWallet } from "@solana/wallet-adapter-react";
+
 const Mint: NextPage = () => {
+    const { publicKey, wallet } = useWallet();
+
+    const [candyMachineState, SetCandyMachineState] = useState();
+
+    const [candyMachineId, SetCandyMachineId] = useState(new PublicKey("3zip8cavR98FhUSpTPnF78uwC4s3C4MUXcvecbdduRAz"));
+
+    const [candyMachineAuthority, SetCandyMachineAuthority] = useState("RwELDnxJQkH5VjnZXwHLoK3A44xsbGakyEs114cDqy9");
+
+    const [nftDemo,SetNfteDemo] = useState(
+        {
+            "name":"",
+            "description":"",
+            "image":"https://media4.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif",
+            "symbol":""
+        }
+    );
+
+    const connection = new Connection(clusterApiUrl("devnet"));
+
+    const metaplex = new Metaplex(connection);
+
+    const checkCandyMachineState = async () => {
+        let aux:any = await getCandyMachineState(metaplex,candyMachineId);
+        let uri = aux.items[0].uri
+        fetch(uri)
+            .then(response => response.json())
+        .then(data => SetNfteDemo(data));
+        
+        // SetNfteDemo()
+    };
+
+    const doMint = () => {
+        metaplex
+    }
+
     return (
         <>
         <Head>
@@ -13,8 +60,17 @@ const Mint: NextPage = () => {
         <main className={styles.main}>
             <div className={styles.container}>
                 <h1 className={styles.title}>
-                    Create some <span className={styles.pinkSpan}>NFTS</span>
+                    Create some <span className={styles.pinkSpan}>NFTS:</span>
                 </h1>
+                <h3>{nftDemo.name}</h3>
+                <div>
+                    {/* este hijo de perra deberia ser blanco y no se por que no se pone blanco */}
+                    <p className="blanco">{nftDemo.description}</p>
+                </div>
+                <div>
+                    <Image src={nftDemo.image} alt={nftDemo.name} width={100} height={100}/>
+                </div>
+                {/* <button onClick={doMint()x}></button> */}
             </div>
         </main>
         </>
