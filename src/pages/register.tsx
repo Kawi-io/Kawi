@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
-import { useState, useEffect } from 'react';
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useState, useEffect } from "react";
 
 const user_fields = [
   {
@@ -73,7 +74,7 @@ const company_fields = [
 const Register: NextPage = () => {
   const [isCompany, setIsCompany] = useState(false);
   const [formData, setFormData] = useState({
-    _id: "compañia",    // TODO: Wallet id here, aun no funcinal
+    _id: "", // TODO: Wallet id here, aun no funcinal
     about: "",
     name: "",
     profession: "",
@@ -85,35 +86,51 @@ const Register: NextPage = () => {
     is_company: "",
   });
 
+  const { publicKey } = useWallet();
+
+  console.log(publicKey?.toBase58());
+
+  useEffect(() => {
+    setFormData((prevData: any) => ({
+      ...prevData,
+      _id: publicKey?.toBase58(),
+    }));
+  }, [publicKey]);
+
   useEffect(() => {
     setFormData((prevData: any) => ({
       ...prevData,
       is_company: isCompany,
     }));
-  
-  }, [isCompany])
-  
+  }, [isCompany]);
 
   const handleFormSubmit = async (event: any) => {
     event.preventDefault();
 
-    fetch("/api/postDocument", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // event.target.reset();
-        console.log(data);
-
-        data.acknowledged
-          ? alert("Te has registrado con éxito")
-          : alert("El usuario ya fue registrado");
+    if (formData._id) {
+      fetch("/api/postDocument", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       })
-      .catch((error) => alert("El usuario ya fue registrado"));
+        .then((response) => response.json())
+        .then((data) => {
+          // event.target.reset();
+          console.log(data);
+
+          data.acknowledged
+            ? alert("Te has registrado con éxito")
+            : alert("El usuario ya fue registrado");
+        })
+        .catch((error) => alert("El usuario ya fue registrado"));
+
+        return
+    }
+
+    alert("Please connect your wallet first")
+
   };
 
   // Manejo de cambios en los campos del form
@@ -163,7 +180,7 @@ const Register: NextPage = () => {
                         autoComplete={autoComplete}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         onChange={handleInputChange}
-                        // required
+                        required
                       />
                     </div>
                   )
@@ -185,7 +202,7 @@ const Register: NextPage = () => {
                         autoComplete={autoComplete}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         onChange={handleInputChange}
-                        // required
+                        required
                       />
                     </div>
                   )
