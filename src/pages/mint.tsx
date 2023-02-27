@@ -16,6 +16,7 @@ import { getCandyMachineState, mint } from "../components/CandyMachine";
 import { useWallet } from "@solana/wallet-adapter-react";
 
 const Mint: NextPage = () => {
+    
     const connection = new Connection(clusterApiUrl("devnet"));
 
     const metaplex = new Metaplex(connection);
