@@ -1,8 +1,11 @@
+
+/* eslint-disable */
 import type { Metaplex } from "@metaplex-foundation/js";
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor";
 
 export interface CandyMachineState {
+
     rawCandyMachine: any; //eslint-disable-line @typescript-eslint/no-explicit-any
 
     address: PublicKey;
@@ -165,4 +168,6 @@ export interface CandyMachineState {
         console.log(e);
         return null;
     }
+    
 }
+    /* eslint-disable */
