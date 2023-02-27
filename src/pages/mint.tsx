@@ -26,11 +26,11 @@ const Mint: NextPage = () => {
   const [candyMachineState, SetCandyMachineState] = useState<any>();
 
   const candyMachineId = new PublicKey(
-    "3zip8cavR98FhUSpTPnF78uwC4s3C4MUXcvecbdduRAz"
+    "F9Z379ypQZmQB9Mige7eBqYyNdNRVYW5hg6Nog56xE1S"
   );
 
   const candyMachineAuthority = new PublicKey(
-    "RwELDnxJQkH5VjnZXwHLoK3A44xsbGakyEs114cDqy9"
+    "F9Z379ypQZmQB9Mige7eBqYyNdNRVYW5hg6Nog56xE1S"
   );
 
   const [nftDemo, SetNfteDemo] = useState({
