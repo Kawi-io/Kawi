@@ -30,7 +30,7 @@ const Mint: NextPage = () => {
   );
 
   const candyMachineAuthority = new PublicKey(
-    "F9Z379ypQZmQB9Mige7eBqYyNdNRVYW5hg6Nog56xE1S"
+    "RwELDnxJQkH5VjnZXwHLoK3A44xsbGakyEs114cDqy9"
   );
 
   const [nftDemo, SetNfteDemo] = useState({
