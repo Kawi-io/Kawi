@@ -1,6 +1,6 @@
 import type { Metaplex } from "@metaplex-foundation/js";
-import type { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-import type * as anchor from "@project-serum/anchor";
+import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import * as anchor from "@project-serum/anchor";
 
 export interface CandyMachineState {
     rawCandyMachine: any;
