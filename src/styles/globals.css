@@ -1,4 +1,43 @@
-html,
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@600&display=swap');
+
+@font-face {
+  font-family: 'Noto sans';
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@600&display=swap') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@layer base {
+
+  html {
+    /* font-family: 'Ubuntu', sans-serif; */
+    background-color: #F1F3F4;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: 'Noto sans', sans-serif;
+  }
+
+  h1 {
+    font-size: 5rem;
+  }
+
+  h2 {
+    font-size: 4rem;
+  }
+
+  h3 {
+    font-size: 2rem;
+  }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* html,
 body {
   padding: 0;
   margin: 0;
@@ -13,4 +52,4 @@ a {
 
 * {
   box-sizing: border-box;
-}
+} */
