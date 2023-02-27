@@ -58,7 +58,7 @@ const Transfer: NextPage = () => {
           alert("missing data");
         }
         console.log(formData.certificate);
-        const response = await fetch("https://kawi-cpg9.vercel.app/api/transact", {
+        const response = await fetch("/api/transact", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
