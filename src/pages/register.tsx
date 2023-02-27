@@ -90,8 +90,6 @@ const Register: NextPage = () => {
 
   const { publicKey } = useWallet();
 
-  console.log(publicKey?.toBase58());
-
   useEffect(() => {
     setFormData((prevData: any) => ({
       ...prevData,
@@ -119,8 +117,7 @@ const Register: NextPage = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          // event.target.reset();
-          console.log(data);
+          event.target.reset();
 
           data.acknowledged
             ? alert("Te has registrado con éxito")
@@ -189,7 +186,7 @@ const Register: NextPage = () => {
                 )
               : user_fields.map(
                   ({ key, name, label, type, autoComplete, placeholder }) => (
-                    <div>
+                    <div key={key} className="mt-5 col-span-6 sm:col-span-3">
                       <label
                         htmlFor={name}
                         className="block text-sm font-medium text-gray-700"
