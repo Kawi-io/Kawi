@@ -2,6 +2,7 @@ import { type AppType } from "next/dist/shared/lib/utils";
 
 import "~/styles/globals.css";
 import { ContextProvider } from '../components/ContextProvider';
+import { Header } from '../components/Header';
 
 // Use require instead of import since order matters
 // require('antd/dist/antd.dark.less');
@@ -11,7 +12,9 @@ require('../styles/globals.css');
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (<>
+    
     <ContextProvider>
+    <Header />
         <Component {...pageProps} />
     </ContextProvider>
   </>)
