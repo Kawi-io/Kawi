@@ -6,17 +6,19 @@ export default async function getDocument(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const uri = `mongodb+srv://admin:xWAbf9y0JtWoF0hZ@kawi.ibmqes0.mongodb.net/?retryWrites=true&w=majority`;
+    /* eslint-disable */
+    const uri = `mongodb+srv://${process.env.USER}:${process.env.PW}@kawi.ibmqes0.mongodb.net/?retryWrites=true&w=majority`;
+    /* eslint-disable */
 
     const client = new MongoClient(uri);
 
     try {
         await client.connect();
 
-        const { coll, id } = req.body as GetRequestBody;
+        const { id } = req.body as GetRequestBody;
 
         const database = client.db('Kawi');
-        const collection = database.collection(coll);
+        const collection = database.collection('users');
 
         /* eslint-disable */
         const query: any = { _id: id };
