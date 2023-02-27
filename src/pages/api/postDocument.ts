@@ -26,16 +26,16 @@ export default async function getDocument(
         const collection = database.collection('users');
 
         const insertResult = await collection.insertOne({
-            _id                 : req.body.profile._id,
-            about               : req.body.profile.about,
-            name                : req.body.profile.name,
-            profession          : req.body.profile.profession,
-            nationality         : req.body.profile.nationality,
-            birthdate           : req.body.profile.birthdate,
-            country_residence   : req.body.profile.country_residence,
-            email               : req.body.profile.email,
-            business_field      : req.body.profile.business_field,
-            is_company          : req.body.profile.is_company
+            _id                 : req.body._id,
+            about               : req.body.about,
+            name                : req.body.name,
+            profession          : req.body.profession,
+            nationality         : req.body.nationality,
+            birthdate           : req.body.birthdate,
+            country_residence   : req.body.country_residence,
+            email               : req.body.email,
+            business_field      : req.body.business_field,
+            is_company          : req.body.is_company
         });
 
         res.status(200).json(insertResult);
