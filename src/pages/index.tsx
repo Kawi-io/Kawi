@@ -17,7 +17,7 @@ const Home: NextPage = () => {
             Create <span className={styles.pinkSpan}>T3</span> App
           </h1>
           <div className={styles.cardRow}>
-              <WalletComponent/>
+            <WalletComponent />
           </div>
         </div>
       </main>
