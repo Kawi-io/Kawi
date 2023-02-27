@@ -20,7 +20,6 @@ const logo = {
 
 export const Header = () => {
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <header className="bg-white">
@@ -34,17 +33,12 @@ export const Header = () => {
           </Link>
         </div>
 
-        {/* Mobile menu btn */}
-
-        
 
           <div className="flex lg:hidden">
           <WalletComponent />
           </div>
 
         
-
-
         {/* Header elements */}
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             {headerElements.map((item) => (
@@ -62,8 +56,6 @@ export const Header = () => {
           </div>
 
       </nav>
-
-      {/* Mobile menu */}
 
       <hr className="border-1 border-black" />
     </header>
