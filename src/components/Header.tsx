@@ -1,12 +1,8 @@
 import { useState } from 'react'
-import PropTypes from 'prop-types';
-import { Dialog, Popover } from '@headlessui/react'
-import {
-  Bars3Icon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
+
+import { Popover } from '@headlessui/react'
+
 import  Link from 'next/link';
-import { ArrowLeftCircleIcon } from '@heroicons/react/20/solid';
 import  Image  from "next/image";
 import WalletComponent from './WalletComponent';
 
