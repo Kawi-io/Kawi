@@ -134,12 +134,13 @@ export interface CandyMachineState {
     export const mint = async (
     metaplex: Metaplex,
     candyMachineState: CandyMachineState,
+    authority: PublicKey,
     group?: string,
     ) => {
     try {
         const result: any = await metaplex.candyMachines().mint({
         candyMachine: candyMachineState.rawCandyMachine,
-        collectionUpdateAuthority: new PublicKey("GccaeVfzrnfZzubd7gXLXNKTg1odnjKDqgqmx5UKmUfJ"),
+        collectionUpdateAuthority: new PublicKey(authority),
         ...group && { group },
         });
 
