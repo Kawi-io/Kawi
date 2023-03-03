@@ -152,7 +152,7 @@ const Register: NextPage = () => {
         </h2>
 
         <p className="text-center mt-2 text-center text-sm text-gray-600">
-          Want to register as a {isCompany ? "company" : "user"}?{" "}
+          Want to register as a {isCompany ? "user" : "company"}?{" "}
           <button
             onClick={() => setIsCompany(!isCompany)}
             className="font-medium text-gray-600 hover:text-gray-500"
@@ -214,13 +214,17 @@ const Register: NextPage = () => {
               htmlFor="about"
               className="block text-sm font-medium text-gray-700"
             >
-              About your company
+              About {isCompany ? "your company" : "you"}
             </label>
             <textarea
               name="about"
               id="about"
               rows={3}
-              placeholder="Brief description for your company's profile."
+              placeholder={isCompany ?
+                "Brief description for your company's profile"
+                :
+                "Brief description for your profile"
+              }
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
               onChange={handleInputChange}
             />
