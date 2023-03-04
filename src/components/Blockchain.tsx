@@ -42,8 +42,8 @@ export const Blockchain = () => {
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
             Blockchain is a digital system for keeping track of information or
-            data. It`&apos;`s different from traditional ledgers because
-            it`&apos;`s decentralized, which means it`&apos;`s not owned by any
+            data. It's different from traditional ledgers because
+            it's decentralized, which means it's not owned by any
             one person or organization.
           </p>
         </div>

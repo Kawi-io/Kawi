@@ -5,11 +5,11 @@ import  Image  from "next/image";
 import WalletComponent from './WalletComponent';
 
 const headerElements = [
-  { key: 1, name: 'What is Kawi', href: '/#what' },
-  { key: 2, name: 'Who are we', href: '/#who' },
-  { key: 3, name: 'What is Blockchain', href: '/#blockchain' },
-  { key: 4, name: 'Certificate your employees', href: '/transfer' },
-  { key: 5, name: 'Mint certificates', href: '/mint' },
+  { name: 'What is Kawi', href: '/#what' },
+  { name: 'Who are we', href: '/#who' },
+  { name: 'What is Blockchain', href: '/#blockchain' },
+  { name: 'Certificate your employees', href: '/transfer' },
+  { name: 'Mint certificates', href: '/mint' },
 ];
 
 const logo = {
@@ -42,7 +42,7 @@ export const Header = () => {
         {/* Header elements */}
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             {headerElements.map((item) => (
-              <Link key={item.key} scroll={false} href={item.href} className="text-sm font-semibold leading-6 hover:text-gray-700 text-gray-900">
+              <Link key={headerElements.indexOf(item)} scroll={false} href={item.href} className="text-sm font-semibold leading-6 hover:text-gray-700 text-gray-900">
                 {item.name}
               </Link>
             ))}

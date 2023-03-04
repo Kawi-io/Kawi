@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 const buttons = [
-  { key: 1, name: "Get Started", href: "/login", backgroundColor: true },
-  { key: 2, name: "Demo", href: "", backgroundColor: false },
+  { name: "Get Started", href: "/login", backgroundColor: true },
+  { name: "Demo", href: "", backgroundColor: false },
 ];
 
 export const Landing = () => {
