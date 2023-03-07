@@ -1,14 +1,14 @@
 import { Card, Col, Row, Text } from "@nextui-org/react";
 import Avatar from "boring-avatars";
 import { useRouter } from "next/router";
+import { redirect } from 'next/navigation';
 
 export const UserCard = ({ wallet, name, email }: any) => {
 
   const router = useRouter();
-  
 
   return (
-    <Card css={{ w: "100%", h: "200px" }} isPressable isHoverable onPress={() => router.push(`profile/${wallet}`)}>
+    <Card css={{ w: "100%", h: "180px" }} isPressable isHoverable onPress={() => router.push(`profile/${wallet}`)}>
       <Card.Body  css={{ backgroundColor: "$white" }}>
         <Row justify="center" align="center">
           <Col css={{ padding: "2%" }}>

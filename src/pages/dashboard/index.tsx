@@ -1,7 +1,8 @@
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { NextPage } from "next";
-import { Grid, Container, Button, Card, Row, Text } from '@nextui-org/react';
+import { Grid, Container, Button, Card, Row, Text } from "@nextui-org/react";
+import { useRouter } from "next/router";
 
 import { NftCard } from "~/components/dashboard/NftCard";
 import { UserCard } from "~/components/dashboard/UserCard";
@@ -33,21 +34,24 @@ const users = [
   {
     name: "John Smith",
     email: "john@smith.com",
-    wallet: "DqUXJ7vP3poUJ46MnfxwNetKQQ64S8GowTbKRVNnhPJV"
+    wallet: "DqUXJ7vP3poUJ46MnfxwNetKQQ64S8GowTbKRVNnhPJV",
   },
   {
     name: "John Smith",
     email: "john@smith.com",
-    wallet: "9U7ZTupH5jVP51F91d8gc79NNVbV9am29RtQTuuMxmow"
+    wallet: "9U7ZTupH5jVP51F91d8gc79NNVbV9am29RtQTuuMxmow",
   },
   {
     name: "John Smith",
     email: "john@smith.com",
-    wallet: "6vAAaogpRsZM3ZoLGFtJqLdPTsGVtT1h7S7qg9CMCvds"
+    wallet: "6vAAaogpRsZM3ZoLGFtJqLdPTsGVtT1h7S7qg9CMCvds",
   },
 ];
 
+// TODO: Optimizar NFTGrid y UserGrid
 const NftGrid = () => {
+  const router = useRouter();
+
   return (
     <Grid.Container gap={2} justify="center">
       {nfts.map((item) => (
@@ -64,6 +68,7 @@ const NftGrid = () => {
           isHoverable
           isPressable
           variant="shadow"
+          onPress={() => router.push("/mint")}
           css={{ w: "100%", h: "250px" }}
         >
           <Card.Body css={{ h: "100", w: "100%" }}>
@@ -77,34 +82,35 @@ const NftGrid = () => {
   );
 };
 
+// TODO: Redireccionar a pagina linkear usuario
 const UserGrid = () => {
-    return (
-      <Grid.Container gap={2} justify="center">
-        {users.map((item) => (
-          <Grid lg={3} sm={4} key={users.indexOf(item)}>
-            <UserCard name={item.name} email={item.email} wallet={item.wallet}/>
-          </Grid>
-        ))}
-        <Grid lg={3} sm={4}>
-          <Card
-            isHoverable
-            isPressable
-            variant="shadow"
-            css={{ w: "100%", h: "200px" }}
-          >
-            <Card.Body>
-              <Row
-                justify="center"
-                align="center"
-                css={{ h: "100%", w: "100%" }}
-              >
-                <PlusIcon className="h-16 w-16 text-teal" />
-              </Row>
-            </Card.Body>
-          </Card>
+
+  const router = useRouter();
+
+  return (
+    <Grid.Container gap={2} justify="center">
+      {users.map((item) => (
+        <Grid lg={3} sm={4} key={users.indexOf(item)}>
+          <UserCard name={item.name} email={item.email} wallet={item.wallet} />
         </Grid>
-      </Grid.Container>
-    );
+      ))}
+      <Grid lg={3} sm={4}>
+        <Card
+          isHoverable
+          isPressable
+          variant="shadow"
+          onPress={() => router.push("/")}
+          css={{ w: "100%", h: "200px" }}
+        >
+          <Card.Body>
+            <Row justify="center" align="center" css={{ h: "100%", w: "100%" }}>
+              <PlusIcon className="h-16 w-16 text-teal" />
+            </Row>
+          </Card.Body>
+        </Card>
+      </Grid>
+    </Grid.Container>
+  );
 };
 
 const Index: NextPage = () => {
