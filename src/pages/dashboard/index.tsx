@@ -124,7 +124,7 @@ const Index: NextPage = () => {
         </div>
 
         <div className="py-2">
-          <Button.Group color="secondary" light>
+          <Button.Group color="primary" bordered ghost>
             <Button
               disabled={isNftList}
               onPress={() => setIsNftList(!isNftList)}
