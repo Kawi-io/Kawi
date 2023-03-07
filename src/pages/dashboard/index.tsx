@@ -15,13 +15,15 @@ const Index: NextPage = () => {
         </div>
 
         <div className="py-2">
-          <Button.Group color="primary" bordered ghost>
+          <Button.Group color="primary">
             <Button
+              bordered={!isNftList}
               onPress={() => setIsNftList(true)}
             >
               Minted NFTs
             </Button>
             <Button
+              bordered={isNftList}
               onPress={() => setIsNftList(false)}
             >
               Employees

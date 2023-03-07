@@ -37,7 +37,7 @@ export const NftCard = ({ title, image, description }: any) => {
           </Col>
           <Col>
             <Row justify="flex-end">
-              <Button bordered auto rounded color="secondary">
+              <Button bordered ghost auto rounded color="secondary">
                 <Text
                   css={{ color: "inherit" }}
                   size={12}
