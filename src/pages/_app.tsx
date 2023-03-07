@@ -27,17 +27,50 @@ const theme = createTheme({
       foreground: "$black",
       backgroundContrast: "$white",
 
+      teal50: "#EAF6F8",
+      teal100: "#DAF0F3",
+      teal200: "#BBE3EA",
+      teal300: "#9CD6E0",
+      teal400: "#7DC9D6",
+      teal500: "#5EBCCD",
+      teal600: "#3FAFC3",
+      teal700: "#3494A5",
+      teal800: "#2A7886",
+      teal900: "#1D525B",
+
+      purple50: "#B47CBF",
+      purple100: "#AD6EB8",
+      purple200: "#9D53AA",
+      purple300: "#83468F",
+      purple400: "#6A3873",
+      purple500: "#512B58",
+      purple600: "#2E1932",
+      purple700: "#0C060D",
+      purple800: "#000000",
+      purple900: "#000000",
+
+      primaryLight: '$teal200',
+      primaryLightHover: '$teal300', // commonly used on hover state
+      primaryLightActive: '$teal400', // commonly used on pressed state
+      primaryLightContrast: '$teal600', // commonly used for text inside the component
+      primary: '$teal600',
+      primaryBorder: '$teal500',
+      primaryBorderHover: '$teal600',
+      primarySolidHover: '$teal700',
+      primarySolidContrast: '$white', // commonly used for text inside the component
+      primaryShadow: '$teal500',
+
       // brand colors
-      primaryLight: "#BBE3EA",
-      primaryLightHover: "#9CD6E0", // commonly used on hover state
-      primaryLightActive: "#7DC9D6", // commonly used on pressed state
-      primaryLightContrast: "#3FAFC3", // commonly used for text inside the component
-      primary: "#3FAFC3",
-      primaryBorder: "#5EBCCD",
-      primaryBorderHover: "#3FAFC3",
-      primarySolidHover: "#3494A5",
-      primarySolidContrast: "#F1F3F4", // commonly used for text inside the component
-      primaryShadow: "#5EBCCD",
+      secondaryLight: "$purple200",
+      secondaryLightHover: "$purple300", // commonly used on hover state
+      secondaryLightActive: "$purple400", // commonly used on pressed state
+      secondaryLightContrast: "$purple600", // commonly used for text inside the component
+      secondary: "$purple600",
+      secondaryBorder: "$purple500",
+      secondaryBorderHover: "$purple600",
+      secondarySolidHover: "$purple700",
+      secondarySolidContrast: "$white", // commonly used for text inside the component
+      secondaryShadow: "$purple500",
 
       // ... rest of colors (secondary, success, warning, error, etc)
     },

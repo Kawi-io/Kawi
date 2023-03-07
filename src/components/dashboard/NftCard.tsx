@@ -2,7 +2,7 @@ import { Card, Col, Row, Button, Text } from '@nextui-org/react';
 
 export const NftCard = ({ title, image, description }: any) => {
   return (
-    <Card css={{ w: "100%", h: "400px" }}>
+    <Card css={{ w: "100%", h: "250px" }}>
       <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
         <Col>
           <Text h3 color="black">
