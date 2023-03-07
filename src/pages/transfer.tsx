@@ -120,62 +120,63 @@ const Transfer: NextPage = () => {
             Mint one here !{" "}
           </Link>
         </p>
-      </div>
 
-      <form onSubmit={handleFormSubmit}>
-        <div className="col-span-6 sm:col-span-3">
-          <label
-            htmlFor="certificate"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Choose the certificate
-          </label>
-          <select
-            id="certificate"
-            name="certificate"
-            className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            onChange={handleSelectChange}
-            value={formData.certificate}
-          >
-            {list.map(({ key, value }) => (
-              <option key={value} value={value}>
-                {key}
-              </option>
-            ))}
-          </select>
-
-          <div className="mt-5 col-span-6 sm:col-span-3">
-            <label className="block text-sm font-medium text-gray-700">
-              Wallet ID
+        <form onSubmit={handleFormSubmit} className="mt-5">
+          <div className="col-span-6 sm:col-span-3">
+            <label
+              htmlFor="certificate"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Choose the certificate
             </label>
-            <input
-              name="wallet"
-              type="text"
-              placeholder="e.g. a6ffed9-4252-427e-af7d-3dcaaf2db2df"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-              onChange={handleInputChange}
-              value={formData.wallet}
-            />
-          </div>
-        </div>
-        <div className="mt-5 col-span-6 sm:col-span-3">
-          <label className="block text-sm font-medium text-gray-700">
-            Private Key
-          </label>
-          <input
-            name="privateKey"
-            type="text"
-            placeholder="e.g. a6ffed9-4252-427e-af7d-3dcaaf2db2df"
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-            onChange={handleInputChange}
-            value={formData.privateKey}
-          />
-        </div>
+            <select
+              id="certificate"
+              name="certificate"
+              className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              onChange={handleSelectChange}
+              value={formData.certificate}
+            >
+              {list.map(({ key, value }) => (
+                <option key={value} value={value}>
+                  {key}
+                </option>
+              ))}
+            </select>
 
-        <div className="px-4 py-3 text-center sm:px-6 mt-4">
-          <button
-            type="submit"
-            className="
+            <div className="mt-5 col-span-6 sm:col-span-3">
+              <label className="block text-sm font-medium text-gray-700">
+                Wallet ID
+              </label>
+              <input
+                name="wallet"
+                type="text"
+                placeholder="e.g. a6ffed9-4252-427e-af7d-3dcaaf2db2df"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                onChange={handleInputChange}
+                value={formData.wallet}
+              />
+            </div>
+          </div>
+          <div className="mt-5 col-span-6 sm:col-span-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Private Key
+              </label>
+              <input
+                name="privateKey"
+                type="text"
+                placeholder="e.g. a6ffed9-4252-427e-af7d-3dcaaf2db2df"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                onChange={handleInputChange}
+                value={formData.privateKey}
+              />
+            </div>
+          </div>
+
+          <div className="px-4 py-3 text-center sm:px-6 mt-4">
+            <button
+              type="submit"
+              className="
               inline-flex
               items-center
               rounded-full
@@ -195,11 +196,12 @@ const Transfer: NextPage = () => {
               w-60
               flex justify-center
           "
-          >
-            Register
-          </button>
-        </div>
-      </form>
+            >
+              Register
+            </button>
+          </div>
+        </form>
+      </div>
     </>
   );
 };
