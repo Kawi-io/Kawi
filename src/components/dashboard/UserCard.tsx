@@ -1,7 +1,6 @@
 import { Card, Col, Row, Text } from "@nextui-org/react";
 import Avatar from "boring-avatars";
 import { useRouter } from "next/router";
-import { redirect } from 'next/navigation';
 
 export const UserCard = ({ wallet, name, email }: any) => {
 
