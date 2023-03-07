@@ -56,7 +56,7 @@ export const Header = () => {
               src={logo.src}
               alt={`${logo.name} logo`}
             />
-            <span className="font-title text-2xl inlines">{logo.name}</span>
+            <span className="font-title text-2xl inlines text-black">{logo.name}</span>
           </Link>
         </div>
 
