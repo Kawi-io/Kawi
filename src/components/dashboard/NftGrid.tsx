@@ -29,6 +29,13 @@ const nfts = [
 export const NftGrid = () => {
   const router = useRouter();
 
+  // Esta accion se llama al hacer click en mint, solo hay que modificarla
+  // TODO: Pasar como query param el id del NFT
+  const transfer = () => {
+    // router.push(`/transfer/${nft}`)
+    router.push('/dashboard/transfer')
+  };
+
   return (
     <Grid.Container gap={2} justify="center">
       {nfts.map((item) => (
@@ -37,6 +44,8 @@ export const NftGrid = () => {
             title={item.title}
             image={item.image}
             description={item.description}
+            btnText="Transfer"
+            event={transfer}
           />
         </Grid>
       ))}

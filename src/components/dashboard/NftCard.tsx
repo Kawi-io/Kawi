@@ -1,6 +1,6 @@
 import { Card, Col, Row, Button, Text } from '@nextui-org/react';
 
-export const NftCard = ({ title, image, description, btnText }: any) => {
+export const NftCard = ({ title, image, description, btnText, event }: any) => {
   return (
     <Card css={{ w: "100%", h: "250px" }}>
       <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
@@ -37,7 +37,14 @@ export const NftCard = ({ title, image, description, btnText }: any) => {
           </Col>
           <Col>
             <Row justify="flex-end">
-              <Button bordered ghost auto rounded color="secondary">
+              <Button
+                bordered
+                ghost
+                auto
+                rounded
+                color="secondary"
+                onPress={event}
+              >
                 <Text
                   css={{ color: "inherit" }}
                   size={12}
