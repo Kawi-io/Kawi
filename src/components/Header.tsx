@@ -10,6 +10,7 @@ const headerElements = [
   { name: "What is Kawi", href: "/#what" },
   { name: "Who are we", href: "/#who" },
   { name: "What is Blockchain", href: "/#blockchain" },
+  { name: "How does it work?", href: "/#How" },
 ];
 
 const logo = {
