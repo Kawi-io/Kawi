@@ -1,6 +1,5 @@
 /* eslint-disable */
 import { type NextPage } from "next";
-import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import { Metaplex } from "@metaplex-foundation/js";
 import { clusterApiUrl, Connection, type PublicKey } from "@solana/web3.js";
@@ -107,7 +106,7 @@ const Transfer: NextPage = () => {
   return (
     <>
       <div className="py-10 px-8 sm:px-40">
-        <h2 className="text-center">Transfer a certificate</h2>
+        <h2 className="text-center">Transfer a <span className="text-purple">certificate</span> </h2>
         <p className="mt-4 text-center">
           Let's get started! Send a certification to your employees in the shape
           of an NFT.

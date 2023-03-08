@@ -1,30 +1,12 @@
-# Create T3 App
+# Welcome to Kawi
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
-
-## What's next? How do I make an app with this?
-
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
-
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
-
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
-
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
-
-hola esto es una prueba
+## What is Kawi ?
+Kawi is a platform that allows companies to certificate their employees for their experience or achievements through Blockchain.
+### Show your enterprise's value
+Show the world they want to work in your company. All given certificates will make up statistics that show how great your enterprise is.
+### Share your verifiable professional experience
+By receiving certificates from your employers, you'll have a digital resume which shows your professional experiece. 100% legitimate.
+### Find people for your team based on veracious information
+Find people on Kawi for your work team. With 100% legitimate certificates, you'll easily find someone with the adequate experience for the job.
+### No more false information on resumes
+By working with Blockchain, all certificates given and received will be 100% legitimate.

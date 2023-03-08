@@ -10,7 +10,7 @@ import { PublicKey, Connection, clusterApiUrl } from "@solana/web3.js";
 
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 
-import { getCandyMachineState, mint } from "../components/CandyMachine";
+import { getCandyMachineState, mint } from "../../components/CandyMachine";
 
 import { useWallet } from "@solana/wallet-adapter-react";
 
@@ -26,7 +26,7 @@ const Mint: NextPage = () => {
   const [candyMachineState, SetCandyMachineState] = useState<any>();
 
   const candyMachineId = new PublicKey(
-    "3zip8cavR98FhUSpTPnF78uwC4s3C4MUXcvecbdduRAz"
+    "F9Z379ypQZmQB9Mige7eBqYyNdNRVYW5hg6Nog56xE1S"
   );
 
   const candyMachineAuthority = new PublicKey(
