@@ -16,6 +16,7 @@ h1,
 h2,
 h3 {
   font-family: 'Noto sans', sans-serif;
+  color: #000;
 }
 
 h1 {
@@ -30,7 +31,7 @@ h3 {
   font-size: 2rem;
 }
 
-/* @tailwind base; */
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 

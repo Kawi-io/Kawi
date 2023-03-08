@@ -5,7 +5,7 @@ import { Container, Button, Card, Row, Text } from "@nextui-org/react";
 import { NftGrid, UserGrid } from "~/components/index";
 
 const Index: NextPage = () => {
-  const [isNftList, setIsNftList] = useState(false);
+  const [isNftList, setIsNftList] = useState(true);
 
   return (
     <>
