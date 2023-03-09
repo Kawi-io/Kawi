@@ -27,7 +27,7 @@ export const Footer = () => {
           {/* Logo */}
           <div className="mb-6 md:mb-0">
             <Link href="/" target="_blank" className="flex items-center">
-              <Image src="/images/kawiWhite.png" className="mr-4 h-10" alt="FlowBite Logo" width={50} height={50} />
+              <Image src="/images/kawiWhite.png" className="mr-4 h-12" alt="FlowBite Logo" width={50} height={50} />
               <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Kawi</span>
             </Link>
 

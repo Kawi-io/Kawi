@@ -7,6 +7,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { Container } from "@nextui-org/react";
 import {
   AtSymbolIcon,
   BriefcaseIcon,
@@ -70,49 +71,50 @@ const VerNFTs: NextPage = () => {
   return (
     <>
       {profileData ? (
-        <div className="p-6 lg:px-36">
-          <div className="lg:flex lg:items-center lg:justify-between">
+        <Container className="p-6">
+        <div className="flex flex-row">
+          <div className="lg:flex lg:items-center lg:justify-between w-1/3">
             <div className="min-w-0 flex-1">
-              <h1 className="font-bold text-center text-gray-900 text-5xl md:text-7xl sm:truncate sm:tracking-tight">
-                {profileData.name}
+              <h1 className="font-bold text-center text-gray-900 text-2xl md:text-3xl sm:truncate sm:tracking-tight">
+                Sofía Gonzalez
               </h1>
-
+              <div className="flew-row lg:basis-3/4 h-auto block mt-5 lg:mt-0 ">
+                  <div className="flex justify-center align-middle text-left">
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam maiores dolorem, consectetur quos corrupti, placeat nostrum enim inventore dicta aperiam quis sunt quaerat ratione culpa, vel repudiandae laudantium. Dolorem, corrupti?</p>
+                  </div>
+                </div>
               <div className="mt-8 lg:mt-14 lg:flex">
-                <div className="flew-row basis-1/4 lg:inline-grid lg:grid-cols-1 gap-3 grid-rows-3 h-auto">
+                <div className="lg:inline-grid lg:grid-cols-1 gap-3 grid-rows-3 h-auto">
                   <div className=" flex lg:justify-start justify-center align-middle">
                     <BriefcaseIcon
                       className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                       aria-hidden="true"
                     />
-                    {profileData.profession}
+                    Web Developer
                   </div>
                   <div className="flex lg:justify-start justify-center align-middle">
                     <MapPinIcon
                       className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                       aria-hidden="true"
                     />
-                    {profileData.country_residence}
+                    México
                   </div>
                   <div className="flex lg:justify-start justify-center align-middle">
                     <AtSymbolIcon
                       className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                       aria-hidden="true"
                     />
-                    {profileData.email}
+                    anasoft0308@outlook.com
                   </div>
                 </div>
-                <div className="flew-row lg:basis-3/4 h-auto block mt-5 lg:mt-0 ">
-                  <div className="flex justify-center align-middle text-left">
-                    <p>{profileData.about}</p>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>
           {nfts.length > 0 ? (
-            <div className=" mx-auto max-w-2xl py-4 sm:py-6 lg:max-w-7xl">
+            <div className=" mx-auto max-w-2xl py-4 sm:py-6 lg:max-w-7xl w-1/2">
               <h3 className="text-center">Experience</h3>
-              <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-6 xl:gap-x-8 ">
+              <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                 {nfts.map((item: any) => (
                   <div key={nfts.indexOf(item)} className="group relative">
                     <div className="min-h-30 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-30">
@@ -142,6 +144,7 @@ const VerNFTs: NextPage = () => {
                 ))}
               </div>
             </div>
+          
           ) : (
             <div className="text-center py-20">
               <p className="mt-6 text-base leading-7 text-gray-600">
@@ -157,6 +160,7 @@ const VerNFTs: NextPage = () => {
             </div>
           )}
         </div>
+        </Container>
       ) : (
         <div className="mt-3 text-center py-48">
           <div className="mt-10 flex items-center justify-center gap-x-6">
