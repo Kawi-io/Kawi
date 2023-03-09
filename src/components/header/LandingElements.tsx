@@ -1,11 +1,12 @@
 import Link from 'next/link';
 
 const headerElements = [
-    { name: "What is Kawi", href: "/#what" },
-    { name: "Who are we", href: "/#who" },
-    { name: "What is Blockchain", href: "/#blockchain" },
+    { name: "What is Kawi?", href: "/#what" },
+    { name: "How does it work?", href: "/#How" },
+    { name: "What is Blockchain?", href: "/#blockchain" },
+    { name: "Who are we?", href: "/#who" },
   ];
-
+  
 export const LandingElements = () => {
     return (
       <>
