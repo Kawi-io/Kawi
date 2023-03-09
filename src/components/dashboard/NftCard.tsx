@@ -1,4 +1,4 @@
-import { Card, Col, Row, Button, Text } from '@nextui-org/react';
+import { Card, Col, Row, Button, Text } from "@nextui-org/react";
 
 export const NftCard = ({ title, image, description, btnText, event }: any) => {
   return (
@@ -37,23 +37,27 @@ export const NftCard = ({ title, image, description, btnText, event }: any) => {
           </Col>
           <Col>
             <Row justify="flex-end">
-              <Button
-                bordered
-                ghost
-                auto
-                rounded
-                color="secondary"
-                onPress={event}
-              >
-                <Text
-                  css={{ color: "inherit" }}
-                  size={12}
-                  weight="bold"
-                  transform="uppercase"
+              {event ? (
+                <Button
+                  bordered
+                  ghost
+                  auto
+                  rounded
+                  color="secondary"
+                  onPress={event}
                 >
-                  {btnText}
-                </Text>
-              </Button>
+                  <Text
+                    css={{ color: "inherit" }}
+                    size={12}
+                    weight="bold"
+                    transform="uppercase"
+                  >
+                    {btnText}
+                  </Text>
+                </Button>
+              ) : (
+                ""
+              )}
             </Row>
           </Col>
         </Row>
