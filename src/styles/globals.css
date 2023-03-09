@@ -7,30 +7,28 @@
   font-style: normal;
 }
 
-@layer base {
+html {
+  scroll-behavior: smooth;
+  background-color: #F1F3F4;
+}
 
-  html {
-    /* font-family: 'Ubuntu', sans-serif; */
-    background-color: #F1F3F4;
-  }
+h1,
+h2,
+h3 {
+  font-family: 'Noto sans', sans-serif;
+  color: #000;
+}
 
-  h1,
-  h2,
-  h3 {
-    font-family: 'Noto sans', sans-serif;
-  }
+h1 {
+  font-size: 5rem;
+}
 
-  h1 {
-    font-size: 5rem;
-  }
+h2 {
+  font-size: 4rem;
+}
 
-  h2 {
-    font-size: 4rem;
-  }
-
-  h3 {
-    font-size: 2rem;
-  }
+h3 {
+  font-size: 2rem;
 }
 
 @tailwind base;

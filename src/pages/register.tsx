@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 
 const user_fields = [
   {
-    key: 1,
     label: "Name",
     type: "text",
     name: "name",
@@ -15,14 +14,12 @@ const user_fields = [
     placeholder: "Your full name",
   },
   {
-    key: 2,
     label: "Birthdate",
     type: "date",
     name: "birthdate",
     autoComplete: "",
   },
   {
-    key: 3,
     label: "Profession",
     type: "text",
     name: "profession",
@@ -30,7 +27,6 @@ const user_fields = [
     placeholder: "What do you do for a living?",
   },
   {
-    key: 4,
     label: "Country of residence",
     type: "text",
     name: "country_residence",
@@ -38,7 +34,6 @@ const user_fields = [
     placeholder: "Your country of residence",
   },
   {
-    key: 5,
     label: "Nationality",
     type: "text",
     name: "nationality",
@@ -46,7 +41,6 @@ const user_fields = [
     placeholder: "Your country of nationality",
   },
   {
-    key: 6,
     label: "Email",
     type: "email",
     name: "email",
@@ -57,7 +51,6 @@ const user_fields = [
 
 const company_fields = [
   {
-    key: 1,
     label: "Company's name",
     type: "text",
     name: "company_name",
@@ -65,7 +58,6 @@ const company_fields = [
     placeholder: "Your company's name",
   },
   {
-    key: 2,
     label: "Business Field",
     type: "text",
     name: "business_field",
@@ -157,7 +149,7 @@ const Register: NextPage = () => {
         </h2>
 
         <p className="text-center mt-2 text-center text-sm text-gray-600">
-          Want to register as a {isCompany ? "company" : "user"}?{" "}
+          Want to register as a {isCompany ? "user" : "company"}?{" "}
           <button
             onClick={() => setIsCompany(!isCompany)}
             className="font-medium text-gray-600 hover:text-gray-500"
@@ -170,20 +162,20 @@ const Register: NextPage = () => {
           <div>
             {isCompany
               ? company_fields.map(
-                  ({ key, name, label, type, autoComplete, placeholder }) => (
-                    <div key={key} className="mt-5 col-span-6 sm:col-span-3">
+                  (item) => (
+                    <div key={company_fields.indexOf(item)} className="mt-5 col-span-6 sm:col-span-3">
                       <label
-                        htmlFor={name}
+                        htmlFor={item.name}
                         className="block text-sm font-medium text-gray-700"
                       >
-                        {label}
+                        {item.label}
                       </label>
                       <input
-                        type={type}
-                        name={name}
-                        id={name}
-                        placeholder={placeholder}
-                        autoComplete={autoComplete}
+                        type={item.type}
+                        name={item.name}
+                        id={item.name}
+                        placeholder={item.placeholder}
+                        autoComplete={item.autoComplete}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         onChange={handleInputChange}
                         required
@@ -192,20 +184,20 @@ const Register: NextPage = () => {
                   )
                 )
               : user_fields.map(
-                  ({ key, name, label, type, autoComplete, placeholder }) => (
-                    <div key={key} className="mt-5 col-span-6 sm:col-span-3">
+                  (item) => (
+                    <div key={user_fields.indexOf(item)} className="mt-5 col-span-6 sm:col-span-3">
                       <label
-                        htmlFor={name}
+                        htmlFor={item.name}
                         className="block text-sm font-medium text-gray-700"
                       >
-                        {label}
+                        {item.label}
                       </label>
                       <input
-                        type={type}
-                        name={name}
-                        id={name}
-                        placeholder={placeholder}
-                        autoComplete={autoComplete}
+                        type={item.type}
+                        name={item.name}
+                        id={item.name}
+                        placeholder={item.placeholder}
+                        autoComplete={item.autoComplete}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         onChange={handleInputChange}
                         required
@@ -219,13 +211,17 @@ const Register: NextPage = () => {
               htmlFor="about"
               className="block text-sm font-medium text-gray-700"
             >
-              About your company
+              About {isCompany ? "your company" : "you"}
             </label>
             <textarea
               name="about"
               id="about"
               rows={3}
-              placeholder="Brief description for your company's profile."
+              placeholder={isCompany ?
+                "Brief description for your company's profile"
+                :
+                "Brief description for your profile"
+              }
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
               onChange={handleInputChange}
             />
