@@ -4,22 +4,28 @@ import Head from "next/head";
 
 import Image from "next/image";
 
+import {
+  Program, Provider,AnchorProvider, web3,  BN,
+} from "@project-serum/anchor";
+
+import { mint } from "../components/Anchor"
+
 import { useEffect, useState } from "react";
 
 import { PublicKey, Connection, clusterApiUrl } from "@solana/web3.js";
 
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 
-import { getCandyMachineState, mint } from "../components/CandyMachine";
+import { getCandyMachineState } from "../components/CandyMachine";
 
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
 
 const Mint: NextPage = () => {
   const connection = new Connection(clusterApiUrl("devnet"));
 
   const metaplex = new Metaplex(connection);
 
-  const { wallet } = useWallet();
+  const wallet = useAnchorWallet();
 
   const [walletAvailable, SetWalletAvailable] = useState(false);
 
@@ -61,17 +67,18 @@ const Mint: NextPage = () => {
       .then((data) => SetNfteDemo(data));
   };
 
+  const getProvider = () => {
+    if (!wallet) return null
+    
+    const _connection = new Connection(clusterApiUrl("devnet"),"processed")
+    const provider = new AnchorProvider(_connection, wallet, {"preflightCommitment":"processed"} ) as Provider
+    return provider;
+  }
+
   const doMint = async () => {
     console.log("minting...");
-    console.log(wallet);
-    metaplex.use(walletAdapterIdentity(wallet!.adapter));
-    const nft = await mint(metaplex, candyMachineState!, candyMachineAuthority);
-
-    if (nft) {
-      alert("nft minted");
-    } else {
-      alert("Wait a few seconds to se your nft reflected");
-    }
+    const provider = getProvider()
+    if(provider != null){mint(provider);}
   };
 
   // const captureKey = (e:any) => {
@@ -89,25 +96,9 @@ const Mint: NextPage = () => {
 
       <main className="bg-white">
         <div className="text-center max-w-7xl mx-auto py-6 sm:px-6 sm:px-6 lg:px-8">
-          <div>
-            <h3>
-              {nftDemo.name}: {candyMachineState?.itemsRemaining} remaining
-            </h3>
-          </div>
-          <div className="mt-4">
-            {/* este hijo de perra deberia ser blanco y no se por que no se pone blanco */}
-            <p className="blanco">{nftDemo.description}</p>
-          </div>
-          <div className="flex justify-center my-4">
-            <Image
-              src={nftDemo.image}
-              alt={nftDemo.name}
-              width={100}
-              height={100}
-            />
-          </div>
+
           <div className="flex justify-center items-center">
-            {/* <div className="mt-5 col-span-6 sm:col-span-3">
+            <div className="mt-5 col-span-6 sm:col-span-3">
               <label
                 htmlFor="wallet"
                 className="block text-sm font-medium text-gray-700"
@@ -122,7 +113,39 @@ const Mint: NextPage = () => {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                 required
               />
-            </div> */}
+            </div>
+            <div className="mt-5 col-span-6 sm:col-span-3">
+              <label
+                htmlFor="wallet"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Auth
+              </label>
+              <input
+                type="text"
+                name="wallet"
+                id="wallet"
+                placeholder="Your wallet"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                required
+              />
+            </div>
+            <div className="mt-5 col-span-6 sm:col-span-3">
+              <label
+                htmlFor="wallet"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Auth
+              </label>
+              <input
+                type="text"
+                name="wallet"
+                id="wallet"
+                placeholder="Your wallet"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                required
+              />
+            </div>
             <button
               className="
               inline-flex
