@@ -21,6 +21,11 @@
           "isSigner": true
         },
         {
+          "name": "to",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "tokenAccount",
           "isMut": true,
           "isSigner": false

@@ -1,89 +1,68 @@
 /* eslint-disable */
 import { type NextPage } from "next";
+
 import Head from "next/head";
 
 import Image from "next/image";
 
 import {
-  Program, Provider,AnchorProvider, web3,  BN,
+  Provider,AnchorProvider
 } from "@project-serum/anchor";
 
 import { mint } from "../components/Anchor"
 
 import { useEffect, useState } from "react";
 
-import { PublicKey, Connection, clusterApiUrl } from "@solana/web3.js";
+import {  Connection, clusterApiUrl } from "@solana/web3.js";
 
-import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 
-import { getCandyMachineState } from "../components/CandyMachine";
-
-import { useWallet, useAnchorWallet } from "@solana/wallet-adapter-react";
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
 
 const Mint: NextPage = () => {
   const connection = new Connection(clusterApiUrl("devnet"));
 
-  const metaplex = new Metaplex(connection);
-
   const wallet = useAnchorWallet();
 
-  const [walletAvailable, SetWalletAvailable] = useState(false);
 
-  const [candyMachineState, SetCandyMachineState] = useState<any>();
-
-  const candyMachineId = new PublicKey(
-    "F9Z379ypQZmQB9Mige7eBqYyNdNRVYW5hg6Nog56xE1S"
-  );
-
-  const candyMachineAuthority = new PublicKey(
-    "RwELDnxJQkH5VjnZXwHLoK3A44xsbGakyEs114cDqy9"
-  );
-
-  const [nftDemo, SetNfteDemo] = useState({
-    name: "",
-    description: "",
-    image: "https://media4.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif",
-    symbol: "",
-  });
-
-  useEffect(() => {
-    checkCandyMachineState();
-  }, []);
-
-  useEffect(() => {
-    SetWalletAvailable(wallet != null && candyMachineState != null);
-  }, [wallet]);
-
-  useEffect(() => {
-    SetWalletAvailable(wallet != null && candyMachineState != null);
-  }, [candyMachineState]);
-
-  const checkCandyMachineState = async () => {
-    let aux: any = await getCandyMachineState(metaplex, candyMachineId);
-    SetCandyMachineState(aux);
-    let uri = aux.items[0].uri;
-    fetch(uri)
-      .then((response) => response.json())
-      .then((data) => SetNfteDemo(data));
-  };
-
+  //esta funcion agarre el provider del front, es decir, conecta con phantom wallet para pedir confirmacion de transacciones
   const getProvider = () => {
+    //verificamos que la wallet este connectada, si no, no lo dejamos continuar
     if (!wallet) return null
-    
+    //creamos una connection con la red, en este caso la red de desarollo, devnet, pero podria ser testnet, o mainnet
     const _connection = new Connection(clusterApiUrl("devnet"),"processed")
+    // el provider es como una connecion con la wallet, es el que pide firmas y asi
     const provider = new AnchorProvider(_connection, wallet, {"preflightCommitment":"processed"} ) as Provider
+    //y devolvemos el provider
     return provider;
   }
 
   const doMint = async () => {
     console.log("minting...");
+
+    //nos traemos el provider del usuario
     const provider = getProvider()
-    if(provider != null){mint(provider);}
+    //le mandamos a hablar a la funcion mint, que se comunica con nuestro contrato y crea el nft.
+        
+    //El nombre del NFT, este será guardado ON-CHAIN, lo que significa que no podra ser cambiado facilmente
+    const testNftTitle = "Sofia";
+    //El simbolo de nuestro NFT, igualmente guardado ON-CHAIN
+    const testNftSymbol = "SOF";
+    //La URL del JSON con la metadata de nuestro NFT. Este debería estar en nuestros servidores, y de ser modificado modificaria
+    //la metadata de nuestro NFT, propiedades como la imagen, el fondo, u otras que quieran ser agregadas
+    //testNftUri tiene que ser un arhivo previamente generado para cada plantilla de NFT
+    const testNftUri = "https://kawi-testing.vercel.app/metadata/new.json";
+
+    //esta será la wallet a la cual será transferido el NFT una vez minteado. Si no se desea transferir se puede dejar en blanco
+    //o no mandarla directamente
+    const to = ""
+    
+    if(provider != null){
+      mint(provider, testNftTitle, testNftSymbol, testNftUri, to);
+    }else{
+      alert("wallet could not be connected.")
+    }
   };
 
-  // const captureKey = (e:any) => {
-  //     SetCandyMachineAuthority(new PublicKey(e))
-  // }
   return (
     <>
       <title>Mint a new certificate</title>
@@ -169,7 +148,7 @@ const Mint: NextPage = () => {
               "
               title="mint"
               onClick={() => doMint()}
-              disabled={!walletAvailable}
+              // disabled={!walletAvailable}
             >
               Mint !
             </button>

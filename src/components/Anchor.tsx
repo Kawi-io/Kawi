@@ -1,12 +1,9 @@
-import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor";
 import idl from "./idl.json"
 import { MintNft } from "./mint_nft";
-import {
-    Program, Provider, web3, BN,
-} from "@project-serum/anchor";
-import { createAssociatedTokenAccount, createAssociatedTokenAccountInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { associatedTokenProgram } from "@metaplex-foundation/js";
+import { Program, Provider } from "@project-serum/anchor";
+import { createAssociatedTokenAccountInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey(
     "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
 );
@@ -15,11 +12,7 @@ let mintKeypair:anchor.web3.Keypair
 
 let senderTokenAddress:PublicKey
 
-export async function mint(provider:Provider) {
-    
-    const testNftTitle = "Sofia";
-    const testNftSymbol = "SOF";
-    const testNftUri = "https://kawi-testing.vercel.app/metadata/new.json";
+export async function mint(provider:Provider, nftTitle:string, nftSymbol:string, nftUri:string, to:string = "") {
 
     mintKeypair = anchor.web3.Keypair.generate();
 
@@ -43,7 +36,6 @@ export async function mint(provider:Provider) {
         ],
         TOKEN_METADATA_PROGRAM_ID
     ))[0];
-    console.log("Metadata initialized");
     const masterEditionAddress = (await anchor.web3.PublicKey.findProgramAddress(
         [
             Buffer.from("metadata"),
@@ -53,17 +45,16 @@ export async function mint(provider:Provider) {
         ],
         TOKEN_METADATA_PROGRAM_ID
     ))[0];
-    console.log("Master edition metadata initialized");
-
     // Transact with the "mint" function in our on-chain program
     try{
         let mint = await program.methods.mint(
-            testNftTitle, testNftSymbol, testNftUri
+            nftTitle, nftSymbol, nftUri
         )
             .accounts({
                 masterEdition: masterEditionAddress,
                 metadata: metadataAddress,
                 mint: mintKeypair.publicKey,
+                to:senderTokenAddress,
                 tokenAccount:senderTokenAddress,
                 mintAuthority:provider.publicKey,
                 tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
@@ -71,33 +62,27 @@ export async function mint(provider:Provider) {
             .signers([mintKeypair])
             .rpc();
         if(mint){
-            transfer_Nft(provider);
+            console.log("mint: " + mintKeypair.publicKey + " successfull. Signature:  " +mint)
+            if(to!=""){
+                try{
+                    transfer_Nft(provider, new PublicKey(to));
+                }catch(e){
+                    console.log("error in transfering the NFT: "+e)
+                }
+            }
         }
     }catch(e){
         console.log(e)
     }
 }
 
-export async function transfer_Nft(provider:Provider){
+export async function transfer_Nft(provider:Provider, to:PublicKey){
     const a = JSON.stringify(idl);
     const b = JSON.parse(a);
     const program = new Program<MintNft>(b, idl.metadata.address, provider)
 
-    const toWallet = new anchor.web3.PublicKey("D95DZ1FuFRd56iqUwTFUcMz4tS6Aeqvf3T5YvsPibKms")
+    const toATA = await get_token_account(provider, to);
 
-    const toATA = await getAssociatedTokenAddress(
-        mintKeypair.publicKey,
-        toWallet
-    )
-    const mint_tx = new anchor.web3.Transaction().add(
-        createAssociatedTokenAccountInstruction(
-            provider.publicKey!, toATA, toWallet, mintKeypair.publicKey
-        )
-    )   
-
-    const res = await provider.sendAndConfirm!(mint_tx,[])
-
-    // console.log(res)
     try{
         const tx = await program.methods.sell().accounts({
             tokenProgram:TOKEN_PROGRAM_ID,
@@ -113,3 +98,20 @@ export async function transfer_Nft(provider:Provider){
         console.log("mal")
     }
 } 
+
+async function get_token_account(provider:Provider, to:PublicKey) {
+
+    const toATA = await getAssociatedTokenAddress(
+        mintKeypair.publicKey,
+        to
+    )
+    const mint_tx = new anchor.web3.Transaction().add(
+        createAssociatedTokenAccountInstruction(
+            provider.publicKey!, toATA, to, mintKeypair.publicKey
+        )
+    )
+    const res = await provider.sendAndConfirm!(mint_tx,[])
+
+    console.log(res)
+    return toATA;
+}
