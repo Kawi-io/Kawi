@@ -1,6 +1,32 @@
 import { Card, Col, Row, Button, Text } from "@nextui-org/react";
 
-export const NftCard = ({ title, symbol, image, description, btnText, event }: any) => {
+interface NftCardProps {
+  title: string;
+  symbol?: string;
+  image: string;
+  description: string;
+  btnText?: string;
+  event?: () => void;
+}
+
+/**
+ *
+ * @title Titulo del NFT
+ * @ysmbol Simbolo del NFT
+ * @image url de la imagen del NFT
+ * @description Descripcion del NFT
+ * @btnText Texto del boton
+ * @event opcional, evento que dispara el boton
+ *
+ */
+export const NftCard : React.FC<NftCardProps> = ({
+  title,
+  symbol,
+  image,
+  description,
+  btnText,
+  event,
+}: NftCardProps) => {
   return (
     <Card css={{ w: "100%", h: "250px" }}>
       <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
