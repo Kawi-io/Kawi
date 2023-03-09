@@ -1,10 +1,6 @@
 /* eslint-disable */
 import { type NextPage } from "next";
 
-import Head from "next/head";
-
-import Image from "next/image";
-
 import {
   Provider,AnchorProvider
 } from "@project-serum/anchor";
@@ -15,14 +11,10 @@ import { useEffect, useState } from "react";
 
 import {  Connection, clusterApiUrl } from "@solana/web3.js";
 
-
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 
 const Mint: NextPage = () => {
-  const connection = new Connection(clusterApiUrl("devnet"));
-
   const wallet = useAnchorWallet();
-
 
   //esta funcion agarre el provider del front, es decir, conecta con phantom wallet para pedir confirmacion de transacciones
   const getProvider = () => {
@@ -41,8 +33,7 @@ const Mint: NextPage = () => {
 
     //nos traemos el provider del usuario
     const provider = getProvider()
-    //le mandamos a hablar a la funcion mint, que se comunica con nuestro contrato y crea el nft.
-        
+    
     //El nombre del NFT, este será guardado ON-CHAIN, lo que significa que no podra ser cambiado facilmente
     const testNftTitle = "Sofia";
     //El simbolo de nuestro NFT, igualmente guardado ON-CHAIN
@@ -51,12 +42,13 @@ const Mint: NextPage = () => {
     //la metadata de nuestro NFT, propiedades como la imagen, el fondo, u otras que quieran ser agregadas
     //testNftUri tiene que ser un arhivo previamente generado para cada plantilla de NFT
     const testNftUri = "https://kawi-testing.vercel.app/metadata/new.json";
-
+    
     //esta será la wallet a la cual será transferido el NFT una vez minteado. Si no se desea transferir se puede dejar en blanco
     //o no mandarla directamente
     const to = ""
     
     if(provider != null){
+      //le mandamos a hablar a la funcion mint, que se comunica con nuestro contrato y crea el nft.
       mint(provider, testNftTitle, testNftSymbol, testNftUri, to);
     }else{
       alert("wallet could not be connected.")
