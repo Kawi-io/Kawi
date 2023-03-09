@@ -113,9 +113,14 @@ const Register: NextPage = () => {
         .then((data) => {
           event.target.reset();
 
-          data.acknowledged
-            ? router.push(`/profile/${publicKey}`)
-            : alert("El usuario ya fue registrado");
+          if(data.acknowledged && publicKey){
+            sessionStorage.setItem('publicKey', publicKey?.toBase58());
+            router.push(`/profile/${publicKey}`);
+          }
+          else alert("El usuario ya fue registrado");
+          // data.acknowledged
+          //   ? router.push(`/profile/${publicKey}`)
+          //   : alert("El usuario ya fue registrado");
         })
         .catch((error) => alert("El usuario ya fue registrado"));
 
