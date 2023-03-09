@@ -4,6 +4,7 @@ import { type NextPage } from "next";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { Container } from "@nextui-org/react";
 
 const user_fields = [
   {
@@ -71,6 +72,7 @@ const Register: NextPage = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
     _id: "", // TODO: Wallet id here, aun no funcinal
+    populationReg: "",
     about: "",
     name: "",
     profession: "",
@@ -113,22 +115,17 @@ const Register: NextPage = () => {
         .then((data) => {
           event.target.reset();
 
-          if(data.acknowledged && publicKey){
-            sessionStorage.setItem('publicKey', publicKey?.toBase58());
+          if (data.acknowledged && publicKey) {
+            sessionStorage.setItem("publicKey", publicKey?.toBase58());
             router.push(`/profile/${publicKey}`);
-          }
-          else alert("El usuario ya fue registrado");
-          // data.acknowledged
-          //   ? router.push(`/profile/${publicKey}`)
-          //   : alert("El usuario ya fue registrado");
+          } else alert("El usuario ya fue registrado");
         })
         .catch((error) => alert("El usuario ya fue registrado"));
 
-        return
+      return;
     }
 
-    alert("Please connect your wallet first")
-
+    alert("Please connect your wallet first");
   };
 
   // Manejo de cambios en los campos del form
@@ -143,11 +140,15 @@ const Register: NextPage = () => {
 
   return (
     <>
-      <div className="py-10 px-8 sm:px-40">
-        <h2 className="text-center">
-          Create your {isCompany ? "company" : "user"} account
-        </h2>
-
+      <Container className="p-3">
+        <div className="py-5 px-8 sm:px-40">
+          <h1 className="text-center px-4 sm:px-0 sm:text-5xl">
+            <span className="text-purple">
+              {isCompany ? "Company" : "Professional"}
+            </span>{" "}
+            acount
+          </h1>
+        </div>
         <p className="text-center mt-2 text-center text-sm text-gray-600">
           Want to register as a {isCompany ? "user" : "company"}?{" "}
           <button
@@ -157,13 +158,36 @@ const Register: NextPage = () => {
             Click here
           </button>
         </p>
+        <div className="my-3">
+          <hr className="border-1 h-0.5 bg-black" />
 
-        <form onSubmit={handleFormSubmit} className="mt-5">
-          <div>
-            {isCompany
-              ? company_fields.map(
-                  (item) => (
-                    <div key={company_fields.indexOf(item)} className="mt-5 col-span-6 sm:col-span-3">
+          <form onSubmit={handleFormSubmit} className="mt-5">
+            <div>
+              <div
+                className="mt-5 col-span-6 sm:col-span-3"
+              >
+                <label
+                  htmlFor="populationReg"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Population Registry
+                </label>
+                <input
+                  type="text"
+                  name="populationReg"
+                  id="populationReg"
+                  placeholder="Your country's population registry"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              {isCompany
+                ? company_fields.map((item) => (
+                    <div
+                      key={company_fields.indexOf(item)}
+                      className="mt-5 col-span-6 sm:col-span-3"
+                    >
                       <label
                         htmlFor={item.name}
                         className="block text-sm font-medium text-gray-700"
@@ -181,11 +205,12 @@ const Register: NextPage = () => {
                         required
                       />
                     </div>
-                  )
-                )
-              : user_fields.map(
-                  (item) => (
-                    <div key={user_fields.indexOf(item)} className="mt-5 col-span-6 sm:col-span-3">
+                  ))
+                : user_fields.map((item) => (
+                    <div
+                      key={user_fields.indexOf(item)}
+                      className="mt-5 col-span-6 sm:col-span-3"
+                    >
                       <label
                         htmlFor={item.name}
                         className="block text-sm font-medium text-gray-700"
@@ -203,32 +228,31 @@ const Register: NextPage = () => {
                         required
                       />
                     </div>
-                  )
-                )}
-          </div>
-          <div className="mt-5">
-            <label
-              htmlFor="about"
-              className="block text-sm font-medium text-gray-700"
-            >
-              About {isCompany ? "your company" : "you"}
-            </label>
-            <textarea
-              name="about"
-              id="about"
-              rows={3}
-              placeholder={isCompany ?
-                "Brief description for your company's profile"
-                :
-                "Brief description for your profile"
-              }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="px-4 py-3 text-center sm:px-6">
-            <button
-              className="
+                  ))}
+            </div>
+            <div className="mt-5">
+              <label
+                htmlFor="about"
+                className="block text-sm font-medium text-gray-700"
+              >
+                About {isCompany ? "your company" : "you"}
+              </label>
+              <textarea
+                name="about"
+                id="about"
+                rows={3}
+                placeholder={
+                  isCompany
+                    ? "Brief description for your company's profile"
+                    : "Brief description for your profile"
+                }
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="px-4 py-3 text-center sm:px-6">
+              <button
+                className="
               inline-flex
               items-center
               rounded-full
@@ -248,15 +272,16 @@ const Register: NextPage = () => {
               w-100
               flex justify-center
             "
-              type="submit"
-            >
-              <p>Register</p>
-            </button>{" "}
-          </div>
-        </form>
+                type="submit"
+              >
+                <p>Register</p>
+              </button>{" "}
+            </div>
+          </form>
 
-        {isCompany ? "" : ""}
-      </div>
+          {isCompany ? "" : ""}
+        </div>
+      </Container>
     </>
   );
 };

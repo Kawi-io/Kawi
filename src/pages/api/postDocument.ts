@@ -27,13 +27,13 @@ export default async function getDocument(
 
         const insertResult = await collection.insertOne({
             _id                 : req.body._id,
-            about               : req.body.about,
             name                : req.body.name,
-            profession          : req.body.profession,
-            nationality         : req.body.nationality,
             birthdate           : req.body.birthdate,
+            profession          : req.body.profession,
             country_residence   : req.body.country_residence,
+            nationality         : req.body.nationality,
             email               : req.body.email,
+            about               : req.body.about,
             business_field      : req.body.business_field,
             is_company          : req.body.is_company
         });
