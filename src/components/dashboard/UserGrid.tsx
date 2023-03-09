@@ -39,7 +39,7 @@ export const UserGrid = () => {
           ghost
           auto
           css={{ w: "100%", h: "180px" }}
-          onPress={() => router.push("/")}
+          onPress={() => router.push("/dashboard/new")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
