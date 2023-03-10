@@ -1,23 +1,32 @@
 import { useState, useEffect } from "react";
-import { NextPage } from "next";
-import { Container, Button, Card, Row, Text } from "@nextui-org/react";
+import { GetServerSideProps, NextPage } from "next";
+import { Container } from "@nextui-org/react";
+import { NftGrid } from "~/components/index";
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
-import ModalLoader from "../../components/ModalLoader"
-
-import { NftGrid, UserGrid } from "~/components/index";
+import ModalLoader from "./../../components/ModalLoader"
+type Props = { host: string | null };
+export const getServerSideProps: GetServerSideProps<any> =
+  async context => ({ props: { host: context.req.headers.host || null } });
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Index: NextPage = () => {
+const Index: NextPage<Props> =  ({ host }) => {
+  const [loading, setLoading] = useState(false);
   const [isNftList, setIsNftList] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
+  const wallet = useAnchorWallet();
+
   useEffect(() => {
+    setLoading(true)
     const publicKey = sessionStorage.getItem('publicKey');
+    console.log(publicKey);
     //si no hay pubkey, o si la que hay no esta registrada como empresa
+    // setIsLoggedIn(true);
     if (!publicKey) {
       router.push('/');
     }
@@ -26,9 +35,9 @@ const Index: NextPage = () => {
     }
   }, []);
 
+
   return (
     <>
-      {isLoggedIn ? (
         <Container className="p-3">
         {/* <div className="py-4">
           <h3 className="text-center">{isNftList ? "Your NFTs" : "Your employees"}</h3>
@@ -74,13 +83,9 @@ const Index: NextPage = () => {
             <hr className="border-1 h-0.5 bg-black" />
           </div>
         </div>
-
-        <div className="">{isNftList ? <NftGrid /> : <UserGrid />}</div>
+        <NftGrid/>
       </Container>
-      ) : (
-        <ModalLoader loading={true}/>
-      )}
-      
+      <ModalLoader loading={loading}/>
     </>
   );
 };

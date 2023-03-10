@@ -2,50 +2,72 @@ import { useRouter } from "next/router";
 import { Grid, Card, Row, Button } from "@nextui-org/react";
 import { NftCard } from "./NftCard";
 import { PlusIcon } from "@heroicons/react/20/solid";
-
-// TODO: Eliminar, for testing
-const nfts = [
-  {
-    title: "NFT Title",
-    image: "https://nextui.org/images/card-example-6.jpeg",
-    description:
-      "This is a very cool NFT which shows you have been working in the company for x amount of time, congrats!",
-  },
-  {
-    title: "NFT Title",
-    image: "https://nextui.org/images/card-example-6.jpeg",
-    description:
-      "This is a very cool NFT which shows you have been working in the company for x amount of time, congrats!",
-  },
-  {
-    title: "NFT Title",
-    image: "https://nextui.org/images/card-example-6.jpeg",
-    description:
-      "This is a very cool NFT which shows you have been working in the company for x amount of time, congrats!",
-  },
-];
+import { useState, useEffect } from "react";
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import ModalLoader from "./../../components/ModalLoader"
 
 // TODO: Optimizar NFTGrid y UserGrid
 export const NftGrid = () => {
+  const [loading, setLoading] = useState(false);
+  const wallet = useAnchorWallet();
   const router = useRouter();
+  const [nftList, setNftList] = useState<any>([]);
+  
+  const getTemplates:any = async () => {
+    if(wallet == null) return
+    console.log(wallet)
+    await fetch("api/getJsonMetadata", {
+      method: 'POST',
+      body: JSON.stringify({
+        id:wallet.publicKey.toBase58()
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json()).then(async (res) => {
+      for (const path of res) {
+        try {
+          const response = await fetch(path)
+          let data = await response.json()
+          data.uri = path
+          setNftList((prevList:any) => [...prevList, data])
+          console.log(nftList)
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    }).catch((e)=>{
+      console.log(e)
+    })
+  }
 
+  useEffect(() => {
+    getTemplates();
+  },[wallet])
+  useEffect(() => {
+    console.log(nftList)
+  }, [nftList])
   // Esta accion se llama al hacer click en mint, solo hay que modificarla
   // TODO: Pasar como query param el id del NFT
-  const transfer = () => {
-    // router.push(`/transfer/${nft}`)
-    router.push('/dashboard/transfer')
+  const transfer = (path:any) => {
+    setLoading(true)
+    router.push({pathname:'/dashboard/transfer',query:{
+      nft_uri:path
+    }
+  })
   };
 
   return (
     <Grid.Container gap={2} justify="center">
-      {nfts.map((item) => (
-        <Grid lg={3} sm={4} key={nfts.indexOf(item)}>
+      
+      {nftList.map((item:any) => (
+        <Grid lg={3} sm={4} key={nftList.indexOf(item)}>
           <NftCard
-            title={item.title}
+            title={item.name}
             image={item.image}
             description={item.description}
             btnText="Transfer"
-            event={transfer}
+            event={()=>transfer(item.uri)}
           />
         </Grid>
       ))}
@@ -55,7 +77,7 @@ export const NftGrid = () => {
           ghost
           auto
           css={{ w: "100%", h: "250px" }}
-          onPress={() => router.push("/dashboard/mint")}
+          onPress={() => {setLoading(true); router.push("/dashboard/mint")}}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -72,6 +94,8 @@ export const NftGrid = () => {
             />
           </svg>
         </Button>
+        
+      <ModalLoader loading={loading}/>
       </Grid>
     </Grid.Container>
   );
