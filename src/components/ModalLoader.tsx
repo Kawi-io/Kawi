@@ -2,10 +2,6 @@ import { useEffect } from 'react'
 
 interface Props {
   loading: boolean
-  backgroundColor: string
-  loaderColor: string
-  loaderSize: number
-  loaderBorderWidth: number
 }
 
 const ModalLoader: React.FC<Props> = ({
@@ -15,7 +11,7 @@ const ModalLoader: React.FC<Props> = ({
   const loaderColor = 'rgb(112, 163, 173)'
   const loaderSize = 48
   const loaderBorderWidth = 10
-  
+
   useEffect(() => {
     if (loading) {
       document.body.style.overflow = 'hidden'
