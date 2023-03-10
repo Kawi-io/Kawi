@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import ModalLoader from '../components/ModalLoader'
+import { ModalLoader } from "~/components/index";
 
 const MyPage: React.FC = () => {
     const [loading, setLoading] = useState(false)
