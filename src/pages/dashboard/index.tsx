@@ -22,12 +22,12 @@ const Index: NextPage = () => {
     const publicKey = sessionStorage.getItem('publicKey');
     //si no hay pubkey, o si la que hay no esta registrada como empresa
     setIsLoggedIn(true);
-    // if (!publicKey) {
-    //   router.push('/');
-    // }
-    // else{
-    //   setIsLoggedIn(true);
-    // }
+    if (!publicKey) {
+      router.push('/');
+    }
+    else{
+      setIsLoggedIn(true);
+    }
   }, []);
 
   return (
