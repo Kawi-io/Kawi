@@ -10,11 +10,12 @@ interface Props {
 
 const ModalLoader: React.FC<Props> = ({
   loading,
-  backgroundColor = 'rgba(0, 0, 0, 0.6)',
-  loaderColor = 'rgb(112, 163, 173)',
-  loaderSize = 48,
-  loaderBorderWidth = 10,
 }) => {
+  const backgroundColor = 'rgba(0, 0, 0, 0.6)'
+  const loaderColor = 'rgb(112, 163, 173)'
+  const loaderSize = 48
+  const loaderBorderWidth = 10
+  
   useEffect(() => {
     if (loading) {
       document.body.style.overflow = 'hidden'
