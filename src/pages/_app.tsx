@@ -77,6 +77,8 @@ const theme = createTheme({
   },
 });
 
+
+
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>

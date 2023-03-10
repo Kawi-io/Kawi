@@ -21,12 +21,13 @@ const Index: NextPage = () => {
   useEffect(() => {
     const publicKey = sessionStorage.getItem('publicKey');
     //si no hay pubkey, o si la que hay no esta registrada como empresa
-    if (!publicKey) {
-      router.push('/');
-    }
-    else{
-      setIsLoggedIn(true);
-    }
+    setIsLoggedIn(true);
+    // if (!publicKey) {
+    //   router.push('/');
+    // }
+    // else{
+    //   setIsLoggedIn(true);
+    // }
   }, []);
 
   return (
