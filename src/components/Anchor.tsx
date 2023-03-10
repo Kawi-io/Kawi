@@ -2,7 +2,7 @@ import { PublicKey } from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor";
 import idl from "./idl.json"
 import { MintNft } from "./mint_nft";
-import { Program, Provider } from "@project-serum/anchor";
+import { Program, Provider,AnchorProvider } from "@project-serum/anchor";
 import { createAssociatedTokenAccountInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey(
     "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
@@ -12,10 +12,12 @@ let mintKeypair:anchor.web3.Keypair
 
 let senderTokenAddress:PublicKey
 
+
 export async function mint(provider:Provider, nftTitle:string, nftSymbol:string, nftUri:string, to:string = "") {
 
     mintKeypair = anchor.web3.Keypair.generate();
-
+    
+    if(provider == null) return
     senderTokenAddress = await anchor.utils.token.associatedAddress({
         mint: mintKeypair.publicKey,
         owner: provider.publicKey!
