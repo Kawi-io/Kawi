@@ -160,14 +160,18 @@ export const DashboardElements = ({ mobile = false, isCompany }: any) => {
     );
   }
 
-  return tabs.map((tab) => (
-    <Link
-      key={tab.name}
-      scroll={false}
-      href={tab.href}
-      className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-    >
-      {tab.name}
-    </Link>
-  ));
+  return (
+    <>
+      {tabs.map((tab: any) => (
+        <Link
+          key={tab.name}
+          scroll={false}
+          href={tab.href}
+          className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+        >
+          {tab.name}
+        </Link>
+      ))}
+    </>
+  );
 };
