@@ -26,6 +26,11 @@ export type MintNft = {
           "isSigner": false
         },
         {
+          "name": "toTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "tokenAccount",
           "isMut": true,
           "isSigner": false
@@ -129,6 +134,11 @@ export const IDL: MintNft = {
         },
         {
           "name": "to",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "toTokenAccount",
           "isMut": true,
           "isSigner": false
         },

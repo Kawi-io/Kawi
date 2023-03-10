@@ -21,6 +21,11 @@ export async function mint(provider:Provider, nftTitle:string, nftSymbol:string,
         owner: provider.publicKey!
     });
 
+    let owner = await anchor.utils.token.associatedAddress({
+        mint: mintKeypair.publicKey,
+        owner: new PublicKey(to)
+    });
+
     const a = JSON.stringify(idl);
     const b = JSON.parse(a);
     const program = new Program<MintNft>(b, idl.metadata.address, provider)
@@ -36,6 +41,7 @@ export async function mint(provider:Provider, nftTitle:string, nftSymbol:string,
         ],
         TOKEN_METADATA_PROGRAM_ID
     ))[0];
+
     const masterEditionAddress = (await anchor.web3.PublicKey.findProgramAddress(
         [
             Buffer.from("metadata"),
@@ -54,7 +60,9 @@ export async function mint(provider:Provider, nftTitle:string, nftSymbol:string,
                 masterEdition: masterEditionAddress,
                 metadata: metadataAddress,
                 mint: mintKeypair.publicKey,
-                to:senderTokenAddress,
+                toTokenAccount:owner,
+                to:new PublicKey(to),
+
                 tokenAccount:senderTokenAddress,
                 mintAuthority:provider.publicKey,
                 tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
@@ -63,13 +71,13 @@ export async function mint(provider:Provider, nftTitle:string, nftSymbol:string,
             .rpc();
         if(mint){
             console.log("mint: " + mintKeypair.publicKey + " successfull. Signature:  " +mint)
-            if(to!=""){
-                try{
-                    transfer_Nft(provider, new PublicKey(to));
-                }catch(e){
-                    console.log("error in transfering the NFT: "+e)
-                }
-            }
+            // if(to!=""){
+            //     try{
+            //         transfer_Nft(provider, new PublicKey(to));
+            //     }catch(e){
+            //         console.log("error in transfering the NFT: "+e)
+            //     }
+            // }
         }
     }catch(e){
         console.log(e)
