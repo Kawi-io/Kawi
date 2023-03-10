@@ -54,7 +54,13 @@ const Home: NextPage = () => {
             }),
           });
           const data = await response.json();
-          data ? setProfileData(data) : setModal({...modal, title:"Error", text: "You are not registered, register to Kawi to continue"});
+          data
+            ? setProfileData(data)
+            : setModal({
+                ...modal,
+                title: "Error",
+                text: "You are not registered, register to Kawi to continue",
+              });
           console.log(data);
         } catch (error) {
           console.error(error);
@@ -78,6 +84,8 @@ const Home: NextPage = () => {
         visible={modal.visible}
         title={modal.title}
         text={modal.text}
+        close={() => setModal({ ...modal, visible: false })}
+      />
       <Head>
         <title>Login to your account</title>
       </Head>
@@ -92,9 +100,7 @@ const Home: NextPage = () => {
           <hr className="border-1 h-0.5 bg-black" />
         </div>
         <Row className="py-24" justify="center">
-          close={() => setModal({ ...modal, visible: false })}
-      />
-      <WalletComponent  />
+          <WalletComponent />
         </Row>
       </Container>
     </>
