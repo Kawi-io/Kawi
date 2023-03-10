@@ -2,7 +2,7 @@ import { useState } from 'react'
 import ModalLoader from '../components/ModalLoader'
 
 const MyPage: React.FC = () => {
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     const handleButtonClick = () => {
         setLoading(true)
@@ -14,11 +14,11 @@ const MyPage: React.FC = () => {
 
     return (
         <>
-            {/* <h1>My Page</h1>
+            <h1>My Page</h1>
             <button onClick={handleButtonClick}>Load Data</button>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 
-            <ModalLoader />
+            <ModalLoader loading={loading} />
         </>
     )
 }
