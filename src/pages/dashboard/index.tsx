@@ -4,6 +4,7 @@ import { Container, Button, Card, Row, Text } from "@nextui-org/react";
 import { useRouter } from "next/router";
 
 import { NftGrid, UserGrid } from "~/components/index";
+import ModalLoader from "~/components/ModalLoader";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -16,6 +17,7 @@ function classNames(...classes: any) {
 const Index: NextPage = () => {
   const [isNftList, setIsNftList] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loader, setLoader] = useState(true)
   const router = useRouter();
 
   useEffect(() => {
@@ -81,7 +83,7 @@ const Index: NextPage = () => {
         <div className="">{isNftList ? <NftGrid /> : <UserGrid />}</div>
       </Container>
       ) : (
-        <p>Loading</p>
+        <ModalLoader visible={true} />
       )}
       
     </>
