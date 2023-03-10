@@ -1,16 +1,16 @@
 /* eslint-disable */
 import { type NextPage } from "next";
 import Head from "next/head";
-import {  useState } from "react";
+import {  useState, useEffect } from "react";
 import { Container, Grid } from "@nextui-org/react";
 import ModalLoader from "./../../components/ModalLoader"
 import { useRouter } from "next/router";
-
 
 const Mint: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const companyID = sessionStorage.getItem("publicKey");
 
   useEffect(() => {
     const publicKey = sessionStorage.getItem('publicKey');
@@ -27,6 +27,7 @@ const Mint: NextPage = () => {
     nftDesc: "",
     nftSymbol: "",
     nftImage: "",
+    companyID: companyID
   });
 
   const handleInputChange = ({ target }: any) => {
