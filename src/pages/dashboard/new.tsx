@@ -1,16 +1,39 @@
-import { Container, Input, Text } from "@nextui-org/react";
+import { Container, Text } from "@nextui-org/react";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
+import { CustomModal } from "../../components/index";
+import { useRouter } from 'next/router';
 
 const Mint: NextPage = () => {
   const [wallet, setWallet] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleFormSubmit = async (event: any) => {
     event.preventDefault();
 
     console.log(wallet);
-    console.log("something is done here");
+    fetch("/api/linkEmployee", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        employeeID: wallet,
+        // TODO: Añadir de public
+        companyID: "",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if(data.Status === 'Failed'){
+          setModalVisible(true);
+          setErrorMessage(data.Message);
+        }
+        // TODO: Enviar a index para q vea su empleado nvo o mostrar un modal no c
+      })
+      .catch((error) => console.log(error));
   };
 
   const handleInputChange = ({ target }: any) => {
@@ -22,6 +45,13 @@ const Mint: NextPage = () => {
       <Head>
         <title>New employee</title>
       </Head>
+
+      <CustomModal
+        visible={modalVisible}
+        title="An error happened"
+        text={errorMessage}
+        close={() => setModalVisible(false)}
+      />
 
       <Container className="p-3">
         <div className="py-10 px-8 sm:px-40">
