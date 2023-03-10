@@ -6,7 +6,7 @@ import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { Container, Grid } from "@nextui-org/react";
 import {Provider,AnchorProvider} from "@project-serum/anchor";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
-import { NftCard, mint } from "~/components/index";
+import { NftCard, mint, ModalLoader } from "~/components/index";
 const nftsTest = [
   {
     name: "1 year with Kawi",
@@ -25,6 +25,8 @@ const nftsTest = [
 ];
 
 const Mint: NextPage = () => {
+  const [loading, setLoading] = useState(false)
+
   const wallet = useAnchorWallet();
   
   //esta funcion agarre el provider del front, es decir, conecta con phantom wallet para pedir confirmacion de transacciones
@@ -40,6 +42,7 @@ const Mint: NextPage = () => {
   }
 
   const doMint = async () => {
+    setLoading(true)
     console.log("minting...");
 
     //nos traemos el provider del usuario
@@ -60,9 +63,15 @@ const Mint: NextPage = () => {
     
     if(provider != null){
       //le mandamos a hablar a la funcion mint, que se comunica con nuestro contrato y crea el nft.
-      mint(provider, testNftTitle, testNftSymbol, testNftUri, to);
+      let _mint:any = mint(provider, testNftTitle, testNftSymbol, testNftUri, to);
+
+      if(_mint != null){
+        
+      }
+      setLoading(false)
     }else{
       alert("wallet could not be connected.")
+      setLoading(false)
     }
   }
 
@@ -96,6 +105,7 @@ const Mint: NextPage = () => {
           ))}
         </Grid.Container>
       </Container>
+      <ModalLoader loading={loading} />
     </>
   );
 };

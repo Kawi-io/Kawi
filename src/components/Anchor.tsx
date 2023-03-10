@@ -71,16 +71,12 @@ export async function mint(provider:Provider, nftTitle:string, nftSymbol:string,
             .rpc();
         if(mint){
             console.log("mint: " + mintKeypair.publicKey + " successfull. Signature:  " +mint)
-            // if(to!=""){
-            //     try{
-            //         transfer_Nft(provider, new PublicKey(to));
-            //     }catch(e){
-            //         console.log("error in transfering the NFT: "+e)
-            //     }
-            // }
+            return mint
         }
+        return null
     }catch(e){
         console.log(e)
+        return null
     }
 }
 
