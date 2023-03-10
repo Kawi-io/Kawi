@@ -8,6 +8,7 @@ import { Container } from "@nextui-org/react";
 
 import { CustomModal } from "../components/index";
 import Head from "next/head";
+import WalletComponent from "~/components/WalletComponent";
 
 const user_fields = [
   {
@@ -134,11 +135,18 @@ const Register: NextPage = () => {
             });
           }
         })
-        .catch((error) => setModal({ ...modal, visible: true, title: "Error", text: error }));
+        .catch((error) =>
+          setModal({ ...modal, visible: true, title: "Error", text: error })
+        );
 
       return;
     }
-    setModal({...modal, visible: true, title: "Error", text: "Please connect your wallet to proceed"})
+    setModal({
+      ...modal,
+      visible: true,
+      title: "Error",
+      text: "Please connect your wallet to proceed",
+    });
   };
 
   // Manejo de cambios en los campos del form
@@ -271,6 +279,9 @@ const Register: NextPage = () => {
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                 onChange={handleInputChange}
               />
+            </div>
+            <div className="mt-5 flex justify-center">
+              <WalletComponent />
             </div>
             <div className="px-4 py-3 text-center sm:px-6">
               <button
