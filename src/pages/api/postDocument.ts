@@ -25,18 +25,33 @@ export default async function getDocument(
         const database = client.db('Kawi');
         const collection = database.collection('users');
 
-        const insertResult = await collection.insertOne({
-            _id                 : req.body._id,
-            name                : req.body.name,
-            birthdate           : req.body.birthdate,
-            profession          : req.body.profession,
-            country_residence   : req.body.country_residence,
-            nationality         : req.body.nationality,
-            email               : req.body.email,
-            about               : req.body.about,
-            business_field      : req.body.business_field,
-            is_company          : req.body.is_company
-        });
+        let insertResult: any;
+
+        if(req.body.is_company == false){
+            insertResult = await collection.insertOne({
+                _id                 : req.body._id,
+                about               : req.body.about,
+                name                : req.body.name,
+                profession          : req.body.profession,
+                nationality         : req.body.nationality,
+                birthdate           : req.body.birthdate,
+                country_residence   : req.body.country_residence,
+                email               : req.body.email,
+                is_company          : req.body.is_company,
+                population_registry : req.body.population_registry,
+                official_id         : req.body.official_id
+            });
+        }
+        else{
+            insertResult = await collection.insertOne({
+                _id                 : req.body._id,
+                about               : req.body.about,
+                name                : req.body.name,
+                business_field      : req.body.business_field,
+                is_company          : req.body.is_company,
+                population_registry : req.body.population_registry,
+            });
+        }
 
         res.status(200).json(insertResult);
     } catch (err) {

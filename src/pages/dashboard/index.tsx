@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { NextPage } from "next";
+import { useState, useEffect } from "react";
+import { NextPage, GetServerSideProps, GetServerSidePropsResult, GetServerSidePropsContext } from "next";
 import { Container, Button, Card, Row, Text } from "@nextui-org/react";
+import { useRouter } from "next/router";
 
 import { NftGrid, UserGrid } from "~/components/index";
 
@@ -8,12 +9,30 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
+// interface Props {
+//   isLoggedIn: boolean;
+// }
+
 const Index: NextPage = () => {
   const [isNftList, setIsNftList] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const publicKey = sessionStorage.getItem('publicKey');
+    //si no hay pubkey, o si la que hay no esta registrada como empresa
+    if (!publicKey) {
+      router.push('/');
+    }
+    else{
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   return (
     <>
-      <Container className="p-3">
+      {isLoggedIn ? (
+        <Container className="p-3">
         {/* <div className="py-4">
           <h3 className="text-center">{isNftList ? "Your NFTs" : "Your employees"}</h3>
         </div> */}
@@ -61,8 +80,35 @@ const Index: NextPage = () => {
 
         <div className="">{isNftList ? <NftGrid /> : <UserGrid />}</div>
       </Container>
+      ) : (
+        <p>Loading</p>
+      )}
+      
     </>
   );
 };
+
+// export async function getServerSideProps(
+//   context: GetServerSidePropsContext
+// ): Promise<GetServerSidePropsResult<Props>>{
+
+//   const publicKey = sessionStorage.getItem('publicKey');
+
+//   let isLoggedIn = false;
+
+//   const router = useRouter();
+
+//   if(publicKey){
+//     isLoggedIn = true;
+//   }
+//   else{
+//     router.push('/');
+//   }
+
+//   // Pass the data to the page component as props
+//   return {
+//     props: { isLoggedIn },
+//   };
+// };
 
 export default Index;
