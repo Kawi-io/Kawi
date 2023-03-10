@@ -5,6 +5,8 @@ import { Metaplex } from "@metaplex-foundation/js";
 import { clusterApiUrl, Connection, type PublicKey } from "@solana/web3.js";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Container, Button, Row, Col, Text, Dropdown } from "@nextui-org/react";
+import ModalLoader from "./../../components/ModalLoader"
+import { useRouter } from 'next/router';
 
 import { NftCard } from "../../components/index";
 
@@ -34,6 +36,19 @@ const mx = Metaplex.make(_connection);
 
 const Transfer: NextPage = () => {
   const { publicKey } = useWallet();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const publicKey = sessionStorage.getItem('publicKey');
+    //si no hay pubkey, o si la que hay no esta registrada como empresa
+    if (!publicKey) {
+      router.push('/');
+    }
+    else{
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const [list, setList] = useState<any[]>([]);
 
@@ -123,6 +138,7 @@ const Transfer: NextPage = () => {
 
   return (
     <>
+    {isLoggedIn ? (
       <Container className="p-3">
         <div className="py-10 px-8 sm:px-40">
           <h1 className="text-center px-4 sm:px-0 text-3xl sm:text-5xl">
@@ -206,6 +222,9 @@ const Transfer: NextPage = () => {
           </Col>
         </Row>
       </Container>
+      ) : (
+        <ModalLoader loading={true}/>
+      )}
     </>
   );
 };
