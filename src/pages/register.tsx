@@ -4,10 +4,14 @@ import { type NextPage } from "next";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { Container } from "@nextui-org/react";
+
+import { CustomModal } from "~/components/index";
+import Head from "next/head";
+import WalletComponent from "~/components/WalletComponent";
 
 const user_fields = [
   {
-    key: 1,
     label: "Name",
     type: "text",
     name: "name",
@@ -15,14 +19,12 @@ const user_fields = [
     placeholder: "Your full name",
   },
   {
-    key: 2,
     label: "Birthdate",
     type: "date",
     name: "birthdate",
     autoComplete: "",
   },
   {
-    key: 3,
     label: "Profession",
     type: "text",
     name: "profession",
@@ -30,7 +32,6 @@ const user_fields = [
     placeholder: "What do you do for a living?",
   },
   {
-    key: 4,
     label: "Country of residence",
     type: "text",
     name: "country_residence",
@@ -38,7 +39,6 @@ const user_fields = [
     placeholder: "Your country of residence",
   },
   {
-    key: 5,
     label: "Nationality",
     type: "text",
     name: "nationality",
@@ -46,7 +46,6 @@ const user_fields = [
     placeholder: "Your country of nationality",
   },
   {
-    key: 6,
     label: "Email",
     type: "email",
     name: "email",
@@ -57,7 +56,6 @@ const user_fields = [
 
 const company_fields = [
   {
-    key: 1,
     label: "Company's name",
     type: "text",
     name: "company_name",
@@ -65,7 +63,6 @@ const company_fields = [
     placeholder: "Your company's name",
   },
   {
-    key: 2,
     label: "Business Field",
     type: "text",
     name: "business_field",
@@ -77,8 +74,14 @@ const company_fields = [
 const Register: NextPage = () => {
   const [isCompany, setIsCompany] = useState(false);
   const router = useRouter();
+  const [modal, setModal] = useState({
+    visible: false,
+    title: "",
+    text: "",
+  });
   const [formData, setFormData] = useState({
-    _id: "", // TODO: Wallet id here, aun no funcinal
+    _id: "",
+    population_registry: "",
     about: "",
     name: "",
     profession: "",
@@ -119,19 +122,31 @@ const Register: NextPage = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          event.target.reset();
-
-          data.acknowledged
-            ? router.push(`/profile/${publicKey}`)
-            : alert("El usuario ya fue registrado");
+          if (data.acknowledged && publicKey) {
+            event.target.reset();
+            sessionStorage.setItem("publicKey", publicKey?.toBase58());
+            router.push(`/profile/${publicKey}`);
+          } else {
+            setModal({
+              ...modal,
+              visible: true,
+              title: "Error",
+              text: "El usuario ya esta registrado",
+            });
+          }
         })
-        .catch((error) => alert("El usuario ya fue registrado"));
+        .catch((error) =>
+          setModal({ ...modal, visible: true, title: "Error", text: error })
+        );
 
-        return
+      return;
     }
-
-    alert("Please connect your wallet first")
-
+    setModal({
+      ...modal,
+      visible: true,
+      title: "Error",
+      text: "Please connect your wallet to proceed",
+    });
   };
 
   // Manejo de cambios en los campos del form
@@ -146,13 +161,28 @@ const Register: NextPage = () => {
 
   return (
     <>
-      <div className="py-10 px-8 sm:px-40">
-        <h2 className="text-center">
-          Create your {isCompany ? "company" : "user"} account
-        </h2>
+      <Head>
+        <title>Register</title>
+      </Head>
 
+      <CustomModal
+        visible={modal.visible}
+        title={modal.title}
+        text={modal.text}
+        close={() => setModal({ ...modal, visible: false })}
+      />
+
+      <Container className="p-3">
+        <div className="py-5 px-8 sm:px-40">
+          <h1 className="text-center px-4 sm:px-0 sm:text-5xl">
+            <span className="text-purple">
+              {isCompany ? "Company" : "Professional"}
+            </span>{" "}
+            acount
+          </h1>
+        </div>
         <p className="text-center mt-2 text-center text-sm text-gray-600">
-          Want to register as a {isCompany ? "company" : "user"}?{" "}
+          Want to register as a {isCompany ? "user" : "company"}?{" "}
           <button
             onClick={() => setIsCompany(!isCompany)}
             className="font-medium text-gray-600 hover:text-gray-500"
@@ -160,74 +190,102 @@ const Register: NextPage = () => {
             Click here
           </button>
         </p>
+        <div className="my-3">
+          <hr className="border-1 h-0.5 bg-black" />
 
-        <form onSubmit={handleFormSubmit} className="mt-5">
-          <div>
-            {isCompany
-              ? company_fields.map(
-                  ({ key, name, label, type, autoComplete, placeholder }) => (
-                    <div key={key} className="mt-5 col-span-6 sm:col-span-3">
+          <form onSubmit={handleFormSubmit} className="mt-5">
+            <div>
+              <div className="mt-5 col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="population_registry"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Population Registry
+                </label>
+                <input
+                  type="text"
+                  name="population_registry"
+                  id="population_registry"
+                  placeholder="Your country's population registry"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              {isCompany
+                ? company_fields.map((item) => (
+                    <div
+                      key={company_fields.indexOf(item)}
+                      className="mt-5 col-span-6 sm:col-span-3"
+                    >
                       <label
-                        htmlFor={name}
+                        htmlFor={item.name}
                         className="block text-sm font-medium text-gray-700"
                       >
-                        {label}
+                        {item.label}
                       </label>
                       <input
-                        type={type}
-                        name={name}
-                        id={name}
-                        placeholder={placeholder}
-                        autoComplete={autoComplete}
+                        type={item.type}
+                        name={item.name}
+                        id={item.name}
+                        placeholder={item.placeholder}
+                        autoComplete={item.autoComplete}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         onChange={handleInputChange}
                         required
                       />
                     </div>
-                  )
-                )
-              : user_fields.map(
-                  ({ key, name, label, type, autoComplete, placeholder }) => (
-                    <div key={key} className="mt-5 col-span-6 sm:col-span-3">
+                  ))
+                : user_fields.map((item) => (
+                    <div
+                      key={user_fields.indexOf(item)}
+                      className="mt-5 col-span-6 sm:col-span-3"
+                    >
                       <label
-                        htmlFor={name}
+                        htmlFor={item.name}
                         className="block text-sm font-medium text-gray-700"
                       >
-                        {label}
+                        {item.label}
                       </label>
                       <input
-                        type={type}
-                        name={name}
-                        id={name}
-                        placeholder={placeholder}
-                        autoComplete={autoComplete}
+                        type={item.type}
+                        name={item.name}
+                        id={item.name}
+                        placeholder={item.placeholder}
+                        autoComplete={item.autoComplete}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                         onChange={handleInputChange}
                         required
                       />
                     </div>
-                  )
-                )}
-          </div>
-          <div className="mt-5">
-            <label
-              htmlFor="about"
-              className="block text-sm font-medium text-gray-700"
-            >
-              About your company
-            </label>
-            <textarea
-              name="about"
-              id="about"
-              rows={3}
-              placeholder="Brief description for your company's profile."
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="px-4 py-3 text-center sm:px-6">
-            <button
-              className="
+                  ))}
+            </div>
+            <div className="mt-5">
+              <label
+                htmlFor="about"
+                className="block text-sm font-medium text-gray-700"
+              >
+                About {isCompany ? "your company" : "you"}
+              </label>
+              <textarea
+                name="about"
+                id="about"
+                rows={3}
+                placeholder={
+                  isCompany
+                    ? "Brief description for your company's profile"
+                    : "Brief description for your profile"
+                }
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="mt-5 flex justify-center">
+              <WalletComponent />
+            </div>
+            <div className="px-4 py-3 text-center sm:px-6">
+              <button
+                className="
               inline-flex
               items-center
               rounded-full
@@ -247,15 +305,16 @@ const Register: NextPage = () => {
               w-100
               flex justify-center
             "
-              type="submit"
-            >
-              <p>Register</p>
-            </button>{" "}
-          </div>
-        </form>
+                type="submit"
+              >
+                <p>Register</p>
+              </button>{" "}
+            </div>
+          </form>
 
-        {isCompany ? "" : ""}
-      </div>
+          {isCompany ? "" : ""}
+        </div>
+      </Container>
     </>
   );
 };

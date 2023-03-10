@@ -1,12 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
-
+import ModalLoader from "./ModalLoader"
+import { useState } from 'react'
 const buttons = [
-  { key: 1, name: "Get Started", href: "/login", backgroundColor: true },
-  { key: 2, name: "Demo", href: "", backgroundColor: false },
+  { name: "Get Started", href: "/login", backgroundColor: true },
+  { name: "Demo", href: "", backgroundColor: false },
 ];
 
 export const Landing = () => {
+  const [loading, setLoading] = useState(false)
+
   return (
     <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 h-[34rem] sm:h-[39rem]">
       <Image
@@ -72,8 +75,8 @@ export const Landing = () => {
           </h2>
         </div>
         <div className="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none flex justify-left">
-          <Link className="mr-3" href="/register">
-            <button
+          <Link className="mr-3" href="/register" onClick={()=>{ setLoading(true) }} >
+            <button 
               className="
                 inline-flex
                 items-center
@@ -100,7 +103,7 @@ export const Landing = () => {
             </button>
           </Link>
           {/* TODO: Poner link del video cuando lo acabemos */}
-          <Link className="mr-3" href="/register">
+          <Link className="mr-3" href="/login" onClick={()=>{ setLoading(true) }}>
             <button
               className="
                 inline-flex
@@ -127,11 +130,13 @@ export const Landing = () => {
                 "
               type="button"
             >
-              <p>Demo</p>
+              <p>Login</p>
             </button>
           </Link>
         </div>
       </div>
+      <ModalLoader loading={loading} />
     </div>
+    
   );
 };
