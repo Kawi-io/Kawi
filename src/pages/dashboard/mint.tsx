@@ -3,11 +3,10 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Connection, clusterApiUrl } from "@solana/web3.js";
-import { NftCard } from "../../components/index";
 import { Container, Grid } from "@nextui-org/react";
 import {Provider,AnchorProvider} from "@project-serum/anchor";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
-import { mint } from "../../components/Anchor"
+import { NftCard, mint } from "~/components/index";
 const nftsTest = [
   {
     name: "1 year with Kawi",

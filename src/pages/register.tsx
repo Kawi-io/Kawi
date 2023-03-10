@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Container } from "@nextui-org/react";
 
-import { CustomModal } from "../components/index";
+import { CustomModal } from "~/components/index";
 import Head from "next/head";
 
 const user_fields = [
