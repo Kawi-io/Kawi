@@ -1,6 +1,32 @@
-import { Card, Col, Row, Button, Text } from '@nextui-org/react';
+import { Card, Col, Row, Button, Text } from "@nextui-org/react";
 
-export const NftCard = ({ title, image, description, btnText, event }: any) => {
+interface NftCardProps {
+  title: string;
+  symbol?: string;
+  image: string;
+  description: string;
+  btnText?: string;
+  event?: () => void;
+}
+
+/**
+ *
+ * @title Titulo del NFT
+ * @ysmbol Simbolo del NFT
+ * @image url de la imagen del NFT
+ * @description Descripcion del NFT
+ * @btnText Texto del boton
+ * @event opcional, evento que dispara el boton
+ *
+ */
+export const NftCard : React.FC<NftCardProps> = ({
+  title,
+  symbol,
+  image,
+  description,
+  btnText,
+  event,
+}: NftCardProps) => {
   return (
     <Card css={{ w: "100%", h: "250px" }}>
       <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
@@ -34,26 +60,33 @@ export const NftCard = ({ title, image, description, btnText, event }: any) => {
             <Text color="#000" size={12}>
               {description}
             </Text>
+            <Text color="#000" size={12}>
+              {symbol}
+            </Text>
           </Col>
           <Col>
             <Row justify="flex-end">
-              <Button
-                bordered
-                ghost
-                auto
-                rounded
-                color="secondary"
-                onPress={event}
-              >
-                <Text
-                  css={{ color: "inherit" }}
-                  size={12}
-                  weight="bold"
-                  transform="uppercase"
+              {event ? (
+                <Button
+                  bordered
+                  ghost
+                  auto
+                  rounded
+                  color="secondary"
+                  onPress={event}
                 >
-                  {btnText}
-                </Text>
-              </Button>
+                  <Text
+                    css={{ color: "inherit" }}
+                    size={12}
+                    weight="bold"
+                    transform="uppercase"
+                  >
+                    {btnText}
+                  </Text>
+                </Button>
+              ) : (
+                ""
+              )}
             </Row>
           </Col>
         </Row>

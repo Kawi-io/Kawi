@@ -9,6 +9,7 @@ import {Provider,AnchorProvider} from "@project-serum/anchor";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { mint } from "../../components/Anchor"
 import ModalLoader from "./../../components/ModalLoader"
+import { useRouter } from "next/router";
 
 const nftsTest = [
   {
@@ -29,6 +30,19 @@ const nftsTest = [
 
 const Mint: NextPage = () => {
   const [loading, setLoading] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const publicKey = sessionStorage.getItem('publicKey');
+    //si no hay pubkey, o si la que hay no esta registrada como empresa
+    if (!publicKey) {
+      router.push('/');
+    }
+    else{
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const wallet = useAnchorWallet();
   
@@ -83,32 +97,35 @@ const Mint: NextPage = () => {
       <Head>
         <title>Mint a new certificate</title>
       </Head>
+      {isLoggedIn ? (
+        <Container className="p-3">
+          <div className="py-10 px-8 sm:px-40">
+            <h1 className="text-center px-4 sm:px-0 sm:text-5xl">
+              Mint a new <span className="text-purple">certificate</span>
+            </h1>
+          </div>
+          <div className="my-3">
+            <hr className="border-1 h-0.5 bg-black" />
+          </div>
 
-      <Container className="p-3">
-        <div className="py-10 px-8 sm:px-40">
-          <h1 className="text-center px-4 sm:px-0 sm:text-5xl">
-            Mint a new <span className="text-purple">certificate</span>
-          </h1>
-        </div>
-        <div className="my-3">
-          <hr className="border-1 h-0.5 bg-black" />
-        </div>
-
-        <Grid.Container gap={2} justify="center">
-          {nftsTest.map((nft) => (
-            <Grid lg={3} sm={4}>
-              <NftCard
-                title={nft.name}
-                image={nft.image}
-                description={nft.description}
-                event={doMint}
-                btnText="Mint"
-              />
-            </Grid>
-          ))}
-        </Grid.Container>
-      </Container>
-      <ModalLoader loading={loading} />
+          <Grid.Container gap={2} justify="center">
+            {nftsTest.map((nft) => (
+              <Grid lg={3} sm={4}>
+                <NftCard
+                  title={nft.name}
+                  image={nft.image}
+                  description={nft.description}
+                  event={doMint}
+                  btnText="Mint"
+                />
+              </Grid>
+            ))}
+          </Grid.Container>
+          <ModalLoader loading={loading} />
+        </Container>
+      ) : (
+        <ModalLoader loading={true}/>
+      )}
     </>
   );
 };

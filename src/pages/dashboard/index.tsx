@@ -1,17 +1,14 @@
 import { useState, useEffect } from "react";
-import { NextPage, GetServerSideProps, GetServerSidePropsResult, GetServerSidePropsContext } from "next";
+import { NextPage } from "next";
 import { Container, Button, Card, Row, Text } from "@nextui-org/react";
 import { useRouter } from "next/router";
+import ModalLoader from "../../components/ModalLoader"
 
 import { NftGrid, UserGrid } from "~/components/index";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
-
-// interface Props {
-//   isLoggedIn: boolean;
-// }
 
 const Index: NextPage = () => {
   const [isNftList, setIsNftList] = useState(true);
@@ -21,7 +18,6 @@ const Index: NextPage = () => {
   useEffect(() => {
     const publicKey = sessionStorage.getItem('publicKey');
     //si no hay pubkey, o si la que hay no esta registrada como empresa
-    setIsLoggedIn(true);
     if (!publicKey) {
       router.push('/');
     }
@@ -49,7 +45,7 @@ const Index: NextPage = () => {
                 className={classNames(
                   isNftList
                     ? "text-gray-900"
-                    : "text-gray-500 hover:text-gray-700",
+                    : "text-gray-400 hover:text-gray-700",
                   "rounded-l-lg",
                   "group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10"
                 )}
@@ -62,7 +58,7 @@ const Index: NextPage = () => {
                 className={classNames(
                   !isNftList
                     ? "text-gray-900"
-                    : "text-gray-500 hover:text-gray-700",
+                    : "text-gray-400 hover:text-gray-700",
                   "rounded-r-lg",
                   "group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10"
                 )}
@@ -82,34 +78,11 @@ const Index: NextPage = () => {
         <div className="">{isNftList ? <NftGrid /> : <UserGrid />}</div>
       </Container>
       ) : (
-        <p>Loading</p>
+        <ModalLoader loading={true}/>
       )}
       
     </>
   );
 };
-
-// export async function getServerSideProps(
-//   context: GetServerSidePropsContext
-// ): Promise<GetServerSidePropsResult<Props>>{
-
-//   const publicKey = sessionStorage.getItem('publicKey');
-
-//   let isLoggedIn = false;
-
-//   const router = useRouter();
-
-//   if(publicKey){
-//     isLoggedIn = true;
-//   }
-//   else{
-//     router.push('/');
-//   }
-
-//   // Pass the data to the page component as props
-//   return {
-//     props: { isLoggedIn },
-//   };
-// };
 
 export default Index;
