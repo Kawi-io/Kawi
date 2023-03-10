@@ -4,7 +4,25 @@ import React, { useState, useEffect } from "react";
 import { Metaplex } from "@metaplex-foundation/js";
 import { clusterApiUrl, Connection, type PublicKey } from "@solana/web3.js";
 import { useWallet } from "@solana/wallet-adapter-react";
-import Link from "next/link";
+import { Container, Button, Row, Col, Text, Dropdown } from "@nextui-org/react";
+
+import { NftCard } from "../../components/index";
+
+// TODO: Eliminar despues, esto es para pruebas
+const users = [
+  {
+    name: "John Doe",
+    wallet: "fys78d6fas211c341fd2s",
+  },
+  {
+    name: "John Doe",
+    wallet: "fys78d6fas211c341fd2s",
+  },
+  {
+    name: "John Doe",
+    wallet: "fys78d6fas211c341fd2s",
+  },
+];
 
 type Option = {
   key: string;
@@ -105,103 +123,89 @@ const Transfer: NextPage = () => {
 
   return (
     <>
-      <div className="py-10 px-8 sm:px-40">
-        <h2 className="text-center">Transfer a <span className="text-purple">certificate</span> </h2>
-        <p className="mt-4 text-center">
-          Let's get started! Send a certification to your employees in the shape
-          of an NFT.
-          <br />
-          No NFTs yet ?{" "}
-          <Link
-            className="font-medium text-gray-600 hover:text-gray-500"
-            href="/mint"
-          >
-            {" "}
-            Mint one here !{" "}
-          </Link>
-        </p>
+      <Container className="p-3">
+        <div className="py-10 px-8 sm:px-40">
+          <h1 className="text-center px-4 sm:px-0 text-3xl sm:text-5xl">
+            Certificate an <span className="text-purple">employee</span>
+          </h1>
+        </div>
+        <div className="my-3">
+          <hr className="border-1 h-0.5 bg-black" />
+        </div>
 
-        <form onSubmit={handleFormSubmit} className="mt-5">
-          <div className="col-span-6 sm:col-span-3">
-            <label
-              htmlFor="certificate"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Choose the certificate
-            </label>
-            <select
-              id="certificate"
-              name="certificate"
-              className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-              onChange={handleSelectChange}
-              value={formData.certificate}
-            >
-              {list.map(({ key, value }) => (
-                <option key={value} value={value}>
-                  {key}
-                </option>
-              ))}
-            </select>
+        <Row justify="center" className="my-5">
+          <Col span={6}>
+            <NftCard
+              title="TitleTest"
+              image="https://nextui.org/images/card-example-6.jpeg"
+              description="Description"
+              symbol="Symbol"
+            />
+          </Col>
+          <Col span={6}>
+            <div className="p-10">
+              <div>
+                <Text>You're about to send an "NFT name" </Text>
+                <Text>From: "Wallet" </Text>
+              </div>
 
-            <div className="mt-5 col-span-6 sm:col-span-3">
-              <label className="block text-sm font-medium text-gray-700">
-                Wallet ID
-              </label>
-              <input
-                name="wallet"
-                type="text"
-                placeholder="e.g. a6ffed9-4252-427e-af7d-3dcaaf2db2df"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                onChange={handleInputChange}
-                value={formData.wallet}
-              />
+              <form onSubmit={handleFormSubmit} className="mt-5 block">
+                <div className="col-span-6 sm:col-span-3">
+                  <div className="mt-5 col-span-6 sm:col-span-3">
+                    <div className="col-span-6 sm:col-span-3">
+                      <label
+                        htmlFor="employee"
+                        className="block text-sm font-medium leading-6 text-gray-900"
+                      >
+                        Employee ...
+                      </label>
+                      <select
+                        id="employee"
+                        name="employee"
+                        className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      >
+                        {users.map((user) => (
+                          <option key={users.indexOf(user)} value={user.wallet}>
+                            {user.name}: {user.wallet}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="px-4 py-3 text-center sm:px-6 mt-4">
+                  <button
+                    className="
+                      inline-flex
+                      items-center
+                      rounded-full
+                      px-10
+                      py-3
+                      text-sm
+                      font-medium
+                      shadow-sm
+                      focus:outline-none 
+                      focus:ring-2 
+                      focus:ring-offset-2
+                      bg-teal
+                      hover:bg-teal-900
+                      focus:ring-teal-500
+                      text-white
+                      border-transparent
+                      w-full
+                      flex justify-center
+                    "
+                    type="button"
+                  >
+                    <span>Transfer</span>
+                  </button>
+                </div>
+              </form>
             </div>
-          </div>
-          <div className="mt-5 col-span-6 sm:col-span-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Private Key
-              </label>
-              <input
-                name="privateKey"
-                type="text"
-                placeholder="e.g. a6ffed9-4252-427e-af7d-3dcaaf2db2df"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
-                onChange={handleInputChange}
-                value={formData.privateKey}
-              />
-            </div>
-          </div>
-
-          <div className="px-4 py-3 text-center sm:px-6 mt-4">
-            <button
-              type="submit"
-              className="
-              inline-flex
-              items-center
-              rounded-full
-              px-10
-              py-3
-              text-sm
-              font-medium
-              shadow-sm
-              focus:outline-none 
-              focus:ring-2 
-              focus:ring-offset-2
-              bg-teal
-              hover:bg-teal-900
-              focus:ring-teal-500
-              text-white
-              border-transparent
-              w-60
-              flex justify-center
-          "
-            >
-              Register
-            </button>
-          </div>
-        </form>
-      </div>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };

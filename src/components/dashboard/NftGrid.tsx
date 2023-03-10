@@ -55,7 +55,7 @@ export const NftGrid = () => {
           ghost
           auto
           css={{ w: "100%", h: "250px" }}
-          onPress={() => router.push("/")}
+          onPress={() => router.push("/dashboard/mint")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

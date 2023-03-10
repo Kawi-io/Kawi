@@ -3,15 +3,17 @@ import { type NextPage } from "next";
 import { useEffect, useState } from "react";
 import { PublicKey, Connection, clusterApiUrl } from "@solana/web3.js";
 import { Metaplex } from "@metaplex-foundation/js";
-import { useWallet } from "@solana/wallet-adapter-react";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { Container } from "@nextui-org/react";
 import {
   AtSymbolIcon,
   BriefcaseIcon,
+  BuildingOfficeIcon,
   MapPinIcon,
 } from "@heroicons/react/20/solid";
+
+import { NftCard } from "../../components/index";
 
 const VerNFTs: NextPage = () => {
   const [nfts, SetNfts] = useState<any>([]);
@@ -35,6 +37,7 @@ const VerNFTs: NextPage = () => {
         .then((response) => response.json())
         .then((data) => {
           data ? setProfileData(data) : alert("El usuario no existe");
+          console.log(data);
         })
         .catch((error) => console.error(error));
     }
@@ -70,93 +73,97 @@ const VerNFTs: NextPage = () => {
   return (
     <>
       {profileData ? (
-        <div className="p-6 lg:px-36">
-          <div className="lg:flex lg:items-center lg:justify-between">
-            <div className="min-w-0 flex-1">
-              <h1 className="font-bold text-center text-gray-900 text-5xl md:text-7xl sm:truncate sm:tracking-tight">
-                {profileData.name}
-              </h1>
-
-              <div className="mt-8 lg:mt-14 lg:flex">
-                <div className="flew-row basis-1/4 lg:inline-grid lg:grid-cols-1 gap-3 grid-rows-3 h-auto">
-                  <div className=" flex lg:justify-start justify-center align-middle">
-                    <BriefcaseIcon
-                      className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                      aria-hidden="true"
-                    />
-                    {profileData.profession}
-                  </div>
-                  <div className="flex lg:justify-start justify-center align-middle">
-                    <MapPinIcon
-                      className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                      aria-hidden="true"
-                    />
-                    {profileData.country_residence}
-                  </div>
-                  <div className="flex lg:justify-start justify-center align-middle">
-                    <AtSymbolIcon
-                      className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                      aria-hidden="true"
-                    />
-                    {profileData.email}
-                  </div>
-                </div>
+        <Container className="p-6">
+          <div className="py- px-8 sm:px-40 my-5">
+            <h1 className="text-center px-4 sm:px-0 text-3xl sm:text-5xl">
+              {profileData.name}
+            </h1>
+            {profileData.is_company ? (
+              <p className="text-center text-gray-500">Company</p>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="my-3">
+            <hr className="border-1 h-0.5 bg-black" />
+          </div>
+          <div className="flex flex-row">
+            <div className="lg:flex lg:items-start mt-2 lg:justify-between w-1/3">
+              <div className="min-w-0 flex-1">
                 <div className="flew-row lg:basis-3/4 h-auto block mt-5 lg:mt-0 ">
-                  <div className="flex justify-center align-middle text-left">
+                  <div className="flex justify-start align-start text-left">
                     <p>{profileData.about}</p>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          {nfts.length > 0 ? (
-            <div className=" mx-auto max-w-2xl py-4 sm:py-6 lg:max-w-7xl">
-              <h3 className="text-center">Experience</h3>
-              <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-6 xl:gap-x-8 ">
-                {nfts.map((item: any) => (
-                  <div key={nfts.indexOf(item)} className="group relative">
-                    <div className="min-h-30 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-30">
-                      <Image
-                        width={400}
-                        height={400}
-                        src={item.image}
-                        alt={item.name}
-                        className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                      />
-                    </div>
-                    <div className="mt-4 flex justify-between">
-                      <div>
-                        <h3 className="text-sm text-gray-700">
-                          <span
+                <div className="mt-8 lg:mt-14 lg:flex">
+                  <div className="lg:inline-grid lg:grid-cols-1 gap-3 grid-rows-3 h-auto">
+                    {!profileData.is_company ? (
+                      <>
+                        <div className=" flex  justify-start align-start">
+                          <BriefcaseIcon
+                            className="mr-1.5 justify-start h-5 w-5 flex-shrink-0 text-purple"
                             aria-hidden="true"
-                            className="absolute inset-0"
                           />
-                          {item.name}
-                        </h3>
-                        <p className="mt-1 text-sm text-gray-500">
-                          {item.description}
-                        </p>
+                          {profileData.profession}
+                        </div>
+                        <div className="flex justify-start align-middle">
+                          <MapPinIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-purple"
+                            aria-hidden="true"
+                          />
+                          {profileData.country_residence}
+                        </div>
+                        <div className="flex justify-start align-middle">
+                          <AtSymbolIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-purple"
+                            aria-hidden="true"
+                          />
+                          {profileData.email}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex justify-start align-middle">
+                        <BuildingOfficeIcon
+                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-purple"
+                          aria-hidden="true"
+                        />
+                        {profileData.business_field}
                       </div>
-                    </div>
+                    )}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
-          ) : (
-            <div className="text-center py-20">
-              <p className="mt-6 text-base leading-7 text-gray-600">
-                This user doesn't seem to have any experience yet.
-                <Link
-                  href="/transfer"
-                  className="font-medium text-gray-600 hover:text-gray-500"
-                >
-                  {" "}
-                  Want to certificate them?
-                </Link>
-              </p>
-            </div>
-          )}
-        </div>
+            {nfts.length > 0 ? (
+              <div className=" mx-auto max-w-2xl lg:max-w-7xl w-1/2">
+                <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                  {nfts.map((item: any) => (
+                    <NftCard
+                      key={nfts.indexOf(item)}
+                      title={item.name}
+                      image={item.image}
+                      description={item.description}
+                      symbol={item.symbol}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-20">
+                <p className="mt-6 text-base leading-7 text-gray-600">
+                  This user doesn't seem to have any experience yet.
+                  <Link
+                    href="/transfer"
+                    className="font-medium text-gray-600 hover:text-gray-500"
+                  >
+                    {" "}
+                    Want to certificate them?
+                  </Link>
+                </p>
+              </div>
+            )}
+          </div>
+        </Container>
       ) : (
         <div className="mt-3 text-center py-48">
           <div className="mt-10 flex items-center justify-center gap-x-6">
