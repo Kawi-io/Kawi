@@ -1,14 +1,29 @@
 import { Container, Text } from "@nextui-org/react";
 import { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CustomModal } from "../../components/index";
 import { useRouter } from 'next/router';
+import ModalLoader from "./../../components/ModalLoader"
 
 const Mint: NextPage = () => {
   const [wallet, setWallet] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const publicKey = sessionStorage.getItem('publicKey');
+    //si no hay pubkey, o si la que hay no esta registrada como empresa
+    if (!publicKey) {
+      router.push('/');
+    }
+    else{
+      setIsLoggedIn(true);
+    }
+  }, []);
+
 
   const handleFormSubmit = async (event: any) => {
     event.preventDefault();
@@ -52,7 +67,7 @@ const Mint: NextPage = () => {
         text={errorMessage}
         close={() => setModalVisible(false)}
       />
-
+      {isLoggedIn ? (
       <Container className="p-3">
         <div className="py-10 px-8 sm:px-40">
           <h1 className="text-center px-4 sm:px-0 sm:text-5xl">
@@ -118,6 +133,9 @@ const Mint: NextPage = () => {
           </form>
         </div>
       </Container>
+      ) : (
+        <ModalLoader loading={true}/>
+      )}
     </>
   );
 };
