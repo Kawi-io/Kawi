@@ -10,8 +10,7 @@ const Mint: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
-  const companyID = sessionStorage.getItem("publicKey");
-
+  
   useEffect(() => {
     const publicKey = sessionStorage.getItem('publicKey');
     //si no hay pubkey, o si la que hay no esta registrada como empresa
@@ -19,6 +18,10 @@ const Mint: NextPage = () => {
       router.push('/');
     }
     else{
+      setFormData((prevData) => ({
+        ...prevData,
+        companyID: publicKey,
+      }));
       setIsLoggedIn(true);
     }
   }, []);
@@ -27,7 +30,7 @@ const Mint: NextPage = () => {
     nftDesc: "",
     nftSymbol: "",
     nftImage: "",
-    companyID: companyID
+    companyID: ""
   });
 
   const handleInputChange = ({ target }: any) => {
