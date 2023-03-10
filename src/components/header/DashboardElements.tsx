@@ -1,6 +1,15 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+/**
+ * TODO:
+ *
+ * - Obtener iconos segun si es company o no
+ * - Links para mobile
+ * - Redirección a perfil propio
+ * - Cerrar sesión
+ */
+
 // ya c que esta feo pero tenia sueño
 const tabs = [
   {
@@ -109,68 +118,56 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const DashboardElements = ({ mobile = false }) => {
+export const DashboardElements = ({ mobile = false, isCompany }: any) => {
   const router = useRouter();
 
-  return (
-    <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-      <div>
-        <div className="hidden sm:block">
-          <nav className="isolate flex divide-x rounded-lg" aria-label="Tabs">
-            {tabs.map((tab, tabIdx) => (
-              <Link
-                key={tab.name}
-                href={tab.href}
-                className={classNames(
-                  router.pathname === tab.href
-                    ? "text-teal-900"
-                    : "text-gray-500 hover:text-gray-700",
-                  tabIdx === 0 ? "rounded-l-lg" : "",
-                  tabIdx === tabs.length - 1 ? "rounded-r-lg" : "",
-                  "group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10"
-                )}
-                aria-current={router.pathname === tab.href}
-              >
-                {tab.icon}
-                <span
-                  aria-hidden="true"
+  if (!mobile) {
+    return (
+      <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <div>
+          <div className="hidden sm:block">
+            <nav className="isolate flex divide-x rounded-lg" aria-label="Tabs">
+              {tabs.map((tab, tabIdx) => (
+                <Link
+                  key={tab.name}
+                  href={tab.href}
                   className={classNames(
                     router.pathname === tab.href
-                      ? "bg-teal-500"
-                      : "bg-transparent",
-                    "absolute inset-x-0 bottom-0 h-0.5"
+                      ? "text-teal-900"
+                      : "text-gray-500 hover:text-gray-700",
+                    tabIdx === 0 ? "rounded-l-lg" : "",
+                    tabIdx === tabs.length - 1 ? "rounded-r-lg" : "",
+                    "group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10"
                   )}
-                />
-              </Link>
-            ))}
-          </nav>
+                  aria-current={router.pathname === tab.href}
+                >
+                  {tab.icon}
+                  <span
+                    aria-hidden="true"
+                    className={classNames(
+                      router.pathname === tab.href
+                        ? "bg-teal-500"
+                        : "bg-transparent",
+                      "absolute inset-x-0 bottom-0 h-0.5"
+                    )}
+                  />
+                </Link>
+              ))}
+            </nav>
+          </div>
         </div>
       </div>
+    );
+  }
 
-      {/* {icons.map((icon) => {
-        if (!mobile) {
-          return (
-            <CustomButton
-              key={icons.indexOf(icon)}
-              bordered={!(router.pathname === icon.pathname)}
-              color="primary"
-              icon={icon.icon}
-              event={() => event(icon.pathname)}
-            />
-          );
-        } else {
-          return (
-            <Link
-              key={icons.indexOf(icon)}
-              scroll={false}
-              href={icon.pathname}
-              className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-            >
-              {icon.name}
-            </Link>
-          );
-        }
-      })} */}
-    </div>
-  );
+  return tabs.map((tab) => (
+    <Link
+      key={tab.name}
+      scroll={false}
+      href={tab.href}
+      className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+    >
+      {tab.name}
+    </Link>
+  ));
 };
