@@ -37,7 +37,7 @@ const Mint: NextPage = () => {
       body: JSON.stringify({
         employeeID: wallet,
         // TODO: Añadir de public
-        companyID: "",
+        companyID: sessionStorage.getItem('publicKey'),
       }),
     })
       .then((response) => response.json())
