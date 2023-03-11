@@ -23,7 +23,7 @@ export const Header = () => {
   // TODO: Este state es para ver si hay una sesion o no
   const [session, setSession] = useState({
     isSession: false,
-    isCompany: "",
+    isCompany: false,
     PublicKey: "",
   });
   const router = useRouter();
@@ -35,9 +35,11 @@ export const Header = () => {
     ) {
       setSession({
         isSession: true,
-        isCompany: sessionStorage.getItem("isCompany"),
         publicKey: sessionStorage.getItem("publicKey"),
+        isCompany: sessionStorage.getItem("isCompany"),
       });
+
+      console.log(session)
     }
   }, []);
 
@@ -79,18 +81,36 @@ export const Header = () => {
         </Popover.Group>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          {session ? (
-            <Button color="primary" size="lg" auto>
-              Access
-            </Button>
-          ) : (
-            ""
-          )}
-          {/* TODO:  Agregar aqui check si esta en perfil propio */}
           {session.isSession ? (
-            <DashboardElements isCompany={session.isCompany} />
+            <DashboardElements
+              isCompany={session.isCompany}
+            />
           ) : (
-            ""
+            <Link
+              className="
+              inline-flex
+              items-center
+              rounded-full
+              px-10
+              py-3
+              text-sm
+              font-medium
+              shadow-sm
+              focus:outline-none 
+              focus:ring-2 
+              focus:ring-offset-2
+              bg-teal
+              hover:bg-teal-900
+              focus:ring-teal-500
+              text-white
+              border-transparent
+              w-50
+              flex justify-center
+              "
+              href="/register"
+            >
+              <p>Access</p>
+            </Link>
           )}
         </div>
       </nav>
