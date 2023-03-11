@@ -4,6 +4,28 @@ import { NextUIProvider, createTheme } from "@nextui-org/react";
 import "~/styles/globals.css";
 import { ContextProvider, Header, Footer } from "~/components/index";
 
+
+// required for charts --------------------------------------------
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+// required for charts --------------------------------------------
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+// required for charts --------------------------------------------
+
 // Use require instead of import since order matters
 // require('antd/dist/antd.dark.less');
 require("@solana/wallet-adapter-ant-design/styles.css");
