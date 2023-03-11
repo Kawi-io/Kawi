@@ -14,6 +14,7 @@ export const NftGrid = () => {
   const [nftList, setNftList] = useState<any>([]);
   
   const getTemplates:any = async () => {
+    setLoading(true)
     if(wallet == null) return
     console.log(wallet)
     await fetch("api/getJsonMetadata", {
@@ -39,6 +40,7 @@ export const NftGrid = () => {
     }).catch((e)=>{
       console.log(e)
     })
+    setLoading(false)
   }
 
   useEffect(() => {
