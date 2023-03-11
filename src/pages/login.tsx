@@ -5,6 +5,7 @@ import WalletComponent from "~/components/WalletComponent";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 import { CustomModal } from "../components/index";
+import Head from "next/head";
 
 const Home: NextPage = () => {
   const router = useRouter();
