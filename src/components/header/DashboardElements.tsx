@@ -133,7 +133,7 @@ export const DashboardElements = ({ mobile = false, isCompany }: DashboardElemen
 
   useEffect(() => {
     if (sessionStorage.getItem("publicKey")) {
-      setWallet(sessionStorage.getItem("publicKey"));
+      setWallet(sessionStorage.getItem("publicKey")!);
     }
   }, [sessionStorage]);
 
