@@ -76,7 +76,7 @@ const Transfer: NextPage<Props> = ({ host })  => {
     //La URL del JSON con la metadata de nuestro NFT. Este debería estar en nuestros servidores, y de ser modificado modificaria
     //la metadata de nuestro NFT, propiedades como la imagen, el fondo, u otras que quieran ser agregadas
     //testNftUri tiene que ser un arhivo previamente generado para cada plantilla de NFT
-    const testNftUri = host+nft.uri;
+    const testNftUri = nft.uri;
     
     //esta será la wallet a la cual será transferido el NFT una vez minteado. Si no se desea transferir se puede dejar en blanco
     //o no mandarla directamente

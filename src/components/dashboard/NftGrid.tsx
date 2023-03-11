@@ -26,8 +26,10 @@ export const NftGrid = () => {
         'Content-Type': 'application/json'
       }
     }).then(res => res.json()).then(async (res) => {
-      for (const path of res) {
+      for (let path of res) {
         try {
+          console.log("path:"+path)
+          path= "https://gateway.pinata.cloud/ipfs/" + path
           const response = await fetch(path)
           let data = await response.json()
           data.uri = path
