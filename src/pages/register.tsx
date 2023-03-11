@@ -9,6 +9,7 @@ import { Container } from "@nextui-org/react";
 import { CustomModal } from "~/components/index";
 import Head from "next/head";
 import WalletComponent from "~/components/WalletComponent";
+import ModalLoader from "../components/ModalLoader"
 
 const user_fields = [
   {
@@ -72,6 +73,7 @@ const company_fields = [
 ];
 
 const Register: NextPage = () => {
+  const [loading, setLoading] = useState(false)
   const [isCompany, setIsCompany] = useState(false);
   const router = useRouter();
   const [modal, setModal] = useState({
@@ -110,6 +112,7 @@ const Register: NextPage = () => {
   }, [isCompany]);
 
   const handleFormSubmit = async (event: any) => {
+    setLoading(true)
     event.preventDefault();
 
     if (formData._id) {
@@ -122,9 +125,11 @@ const Register: NextPage = () => {
       })
         .then((response) => response.json())
         .then((data) => {
+          setLoading(false)
           if (data.acknowledged && publicKey) {
             event.target.reset();
             sessionStorage.setItem("publicKey", publicKey?.toBase58());
+            setLoading(true)
             router.push(`/profile/${publicKey}`);
           } else {
             setModal({
@@ -173,7 +178,7 @@ const Register: NextPage = () => {
       />
 
       <Container className="p-3">
-        <div className="py-5 px-8 sm:px-40">
+        <div className="">
           <h1 className="text-center px-4 sm:px-0 sm:text-5xl">
             <span className="text-purple">
               {isCompany ? "Company" : "Professional"}
@@ -314,6 +319,8 @@ const Register: NextPage = () => {
 
           {isCompany ? "" : ""}
         </div>
+
+        <ModalLoader loading={loading}/>
       </Container>
     </>
   );

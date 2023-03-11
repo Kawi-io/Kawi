@@ -23,6 +23,7 @@ const VerNFTs: NextPage = () => {
   const publicKey: any = router.query.id;
 
   useEffect(() => {
+    const { id } = router.query
     if (publicKey) {
       fetch("/api/getDocument", {
         method: "POST",
@@ -31,7 +32,7 @@ const VerNFTs: NextPage = () => {
         },
         body: JSON.stringify({
           coll: "users",
-          id: publicKey,
+          id: id,
         }),
       })
         .then((response) => response.json())
@@ -50,7 +51,7 @@ const VerNFTs: NextPage = () => {
   useEffect(() => {
     if (publicKey == null) return;
 
-    fetchNFTs(publicKey);
+    
   }, [publicKey]);
 
   const fetchNFTs = async (owner: PublicKey) => {

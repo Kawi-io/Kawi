@@ -6,12 +6,13 @@ import WalletComponent from "~/components/WalletComponent";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 import { CustomModal } from "../components/index";
-
+import ModalLoader from "../components/ModalLoader"
 
 const Home: NextPage = () => {
   const router = useRouter();
   const { wallet, publicKey } = useWallet();
   const [profileData, setProfileData] = useState<any>();
+  const [loading, setLoading] = useState(false)
   const [modal, setModal] = useState({
     visible: false,
     title: "",
@@ -20,18 +21,15 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (
-      sessionStorage.getItem("publicKey") &&
-      sessionStorage.getItem("isCompany")
+      sessionStorage.getItem("publicKey")
     ) {
-      router.push("/dashboard");
+      setLoading(true)
+      sessionStorage.getItem("isCompany")=="true" ? router.push("/dashboard") : router.push("/profile/"+sessionStorage.getItem("publicKey"));
     }
   }, []);
 
   useEffect(() => {
     async function fetchData() {
-      console.log("useEfect");
-      // if(wallet == null || publicKey == null) return
-
       if (
         sessionStorage.getItem("publicKey") &&
         sessionStorage.getItem("isCompany")
@@ -103,8 +101,8 @@ const Home: NextPage = () => {
         <Row className="py-24" justify="center">
           <WalletComponent />
         </Row>
-      <WalletComponent />
       </Container>
+      <ModalLoader loading={loading}/>
     </>
     );
 };
