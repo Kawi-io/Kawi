@@ -81,14 +81,14 @@ const Transfer: NextPage<Props> = ({ host })  => {
     //esta será la wallet a la cual será transferido el NFT una vez minteado. Si no se desea transferir se puede dejar en blanco
     //o no mandarla directamente
     const to = "8nMCsEURuBzwqGXHPt46BoeFR4LugLesPy6sLjKkMEN6"
-    console.log(getProvider()!,testNftTitle, testNftSymbol, testNftUri, to)
+    let _mint =mint(getProvider()!,testNftTitle, testNftSymbol, testNftUri, to)
     //le mandamos a hablar a la funcion mint, que se comunica con nuestro contrato y crea el nft.
     // let _mint:any = mint(getProvider()!,testNftTitle, testNftSymbol, testNftUri, to);
 
-    // if(_mint != null){
-      
-    // }
-      setLoading(false)
+    if(_mint != null){
+      alert("minteo correocto")
+    }
+    setLoading(false)
     
   }
 
