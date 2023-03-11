@@ -7,6 +7,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 import { CustomModal } from "../components/index";
 
+
 const Home: NextPage = () => {
   const router = useRouter();
   const { wallet, publicKey } = useWallet();
@@ -102,9 +103,10 @@ const Home: NextPage = () => {
         <Row className="py-24" justify="center">
           <WalletComponent />
         </Row>
+      <WalletComponent />
       </Container>
     </>
-  );
+    );
 };
 
 export default Home;
