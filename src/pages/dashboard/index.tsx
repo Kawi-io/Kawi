@@ -26,10 +26,11 @@ const Index: NextPage<Props> = ({ host }) => {
   useEffect(() => {
     setLoading(true);
     const publicKey = sessionStorage.getItem("publicKey");
-    console.log(publicKey);
+    const isCompany = sessionStorage.getItem("isCompany")
+    console.log(isCompany);
     //si no hay pubkey, o si la que hay no esta registrada como empresa
     // setIsLoggedIn(true);
-    if (!publicKey) {
+    if (!publicKey || isCompany == "false") {
       router.push("/");
     } else {
       setIsLoggedIn(true);

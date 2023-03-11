@@ -17,8 +17,10 @@ const Mint: NextPage = () => {
   
   useEffect(() => {
     const publicKey = sessionStorage.getItem('publicKey');
+    const isCompany = sessionStorage.getItem("isCompany")
+
     //si no hay pubkey, o si la que hay no esta registrada como empresa
-    if (!publicKey) {
+    if (!publicKey || isCompany == "false") {
       router.push('/');
     }
     else{
