@@ -74,34 +74,37 @@ const Mint: NextPage = () => {
         <div className="my-3">
           <hr className="border-1 h-0.5 bg-black" />
         </div>
+        
+        
         <form onSubmit={(e) => {handleFormSubmit(e) }}>
-          
+        <div className="mb-4">
         <input
             placeholder={"Titulo"}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+            className="mb-4 w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
             onChange={handleInputChange}
             required
             name="nftName"/>
 
         <input
             placeholder={"Descripcion"}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+            className="mb-4 w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
             onChange={handleInputChange}
             required
             name="nftDesc"/>
           
         <input
           placeholder={"Simbolo"}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+          className="mb-4 w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
           onChange={handleInputChange}
           required
           name="nftSymbol"/>
         <input
           placeholder={"Imagen"}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+          className="mb-4 w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
           onChange={handleInputChange}
           required
           name="nftImage"/>
+            <div className="px-4 py-3 text-center sm:px-6">
             <button
               className="
               inline-flex
@@ -124,8 +127,13 @@ const Mint: NextPage = () => {
               flex justify-center
             "
               type="submit"
-            />
+            >
+              <p>Create</p>
+            </button>
+            </div>
+          </div>
           </form>
+         
         <Grid.Container gap={2} justify="center">
         </Grid.Container>
         <ModalLoader loading={loading} />
