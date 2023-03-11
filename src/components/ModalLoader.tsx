@@ -4,7 +4,7 @@ interface Props {
   loading: boolean
 }
 
-const ModalLoader: React.FC<Props> = ({
+export const ModalLoader: React.FC<Props> = ({
   loading,
 }) => {
   const backgroundColor = 'rgba(0, 0, 0, 0.6)'

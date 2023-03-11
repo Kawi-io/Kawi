@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { type NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import React, { useState, useEffect } from "react";
 import { Metaplex } from "@metaplex-foundation/js";
 import { clusterApiUrl, Connection, type PublicKey } from "@solana/web3.js";
@@ -7,9 +7,13 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { Container, Button, Row, Col, Text, Dropdown } from "@nextui-org/react";
 import ModalLoader from "./../../components/ModalLoader"
 import { useRouter } from 'next/router';
-
 import { NftCard } from "../../components/index";
-
+import { Provider,AnchorProvider } from "@project-serum/anchor";
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { mint } from "../../components/Anchor"
+type Props = { host: string | null };;
+export const getServerSideProps: GetServerSideProps<any> =
+  async context => ({ props: { host: context.req.headers.host || null } });
 // TODO: Eliminar despues, esto es para pruebas
 const users = [
   {
@@ -33,11 +37,60 @@ type Option = {
 
 const _connection = new Connection(clusterApiUrl("devnet"));
 const mx = Metaplex.make(_connection);
-
-const Transfer: NextPage = () => {
+const Transfer: NextPage<Props> = ({ host })  => {
+  const [loading, setLoading] = useState(false);
   const { publicKey } = useWallet();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const { nft_uri } = router.query
+  const wallet = useAnchorWallet()
+  const [ nft, setNft ]= useState<any>({})
+  useEffect(()=>{
+    getNftInfo(nft_uri)
+  },[])
+  const getNftInfo =async (path:any) => {
+    const response = await fetch(path)
+    let data = await response.json()
+    data.uri = path;
+    setNft(data);
+  }
+  //esta funcion agarre el provider del front, es decir, conecta con phantom wallet para pedir confirmacion de transacciones
+  const getProvider = () => {
+    //verificamos que la wallet este connectada, si no, no lo dejamos continuar
+    if (!wallet) return null
+    //creamos una connection con la red, en este caso la red de desarollo, devnet, pero podria ser testnet, o mainnet
+    const _connection = new Connection(clusterApiUrl("devnet"),"processed")
+    // el provider es como una connecion con la wallet, es el que pide firmas y asi
+    const provider = new AnchorProvider(_connection, wallet, {"preflightCommitment":"processed"} ) as Provider
+    //y devolvemos el provider
+    return provider;
+  }
+  const doMint = async () => {
+    setLoading(true)
+    console.log("minting...");
+    
+    //El nombre del NFT, este será guardado ON-CHAIN, lo que significa que no podra ser cambiado facilmente
+    const testNftTitle = nft.name;
+    //El simbolo de nuestro NFT, igualmente guardado ON-CHAIN
+    const testNftSymbol = nft.symbol;
+    //La URL del JSON con la metadata de nuestro NFT. Este debería estar en nuestros servidores, y de ser modificado modificaria
+    //la metadata de nuestro NFT, propiedades como la imagen, el fondo, u otras que quieran ser agregadas
+    //testNftUri tiene que ser un arhivo previamente generado para cada plantilla de NFT
+    const testNftUri = host+nft.uri;
+    
+    //esta será la wallet a la cual será transferido el NFT una vez minteado. Si no se desea transferir se puede dejar en blanco
+    //o no mandarla directamente
+    const to = "8nMCsEURuBzwqGXHPt46BoeFR4LugLesPy6sLjKkMEN6"
+    let _mint =mint(getProvider()!,testNftTitle, testNftSymbol, testNftUri, to)
+    //le mandamos a hablar a la funcion mint, que se comunica con nuestro contrato y crea el nft.
+    // let _mint:any = mint(getProvider()!,testNftTitle, testNftSymbol, testNftUri, to);
+
+    if(_mint != null){
+      alert("minteo correocto")
+    }
+    setLoading(false)
+    
+  }
 
   useEffect(() => {
     const publicKey = sessionStorage.getItem('publicKey');
@@ -52,28 +105,11 @@ const Transfer: NextPage = () => {
 
   const [list, setList] = useState<any[]>([]);
 
-  const fetchNFTs = async (length: number, _publicKey: PublicKey) => {
-    if (length === 0) {
-      try {
-        const aux = await mx.nfts().findAllByOwner({ owner: _publicKey });
-        console.log(aux);
-        aux.forEach((item) => {
-          if (item.model == "metadata")
-            addElementsToList(item.name, item.mintAddress.toString());
-        });
-        addElementsToList("", "");
-        // return aux;
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  };
-
   useEffect(() => {
     if (publicKey == null) {
       return;
     }
-    fetchNFTs(list.length, publicKey);
+    // fetchNFTs(list.length, publicKey);
   }, [publicKey]);
 
   const [formData, setFormData] = useState({
@@ -84,33 +120,9 @@ const Transfer: NextPage = () => {
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    console.log("queso")
     // await PrepareTransaction();
-    if (
-      formData.privateKey === "" ||
-      formData.wallet === "" ||
-      formData.certificate === ""
-    ) {
-      alert("missing data");
-    }
-    console.log(formData.certificate);
-    const response = await fetch("/api/transact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        OwnerSecretKey: formData.privateKey,
-        reciberWaller: formData.wallet,
-        tokenHash: formData.certificate,
-      }),
-    });
-    console.log(response);
-    if (response.status === 200) {
-      alert("transfer made");
-    } else {
-      alert("transfer error");
-    }
+    doMint();
   };
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -152,10 +164,10 @@ const Transfer: NextPage = () => {
         <Row justify="center" className="my-5">
           <Col span={6}>
             <NftCard
-              title="TitleTest"
-              image="https://nextui.org/images/card-example-6.jpeg"
-              description="Description"
-              symbol="Symbol"
+              title={nft.name + " para " }
+              image={nft.image}
+              description={nft.desc}
+              symbol={nft.symbol}
             />
           </Col>
           <Col span={6}>
@@ -212,7 +224,7 @@ const Transfer: NextPage = () => {
                       w-full
                       flex justify-center
                     "
-                    type="button"
+                    type="submit"
                   >
                     <span>Transfer</span>
                   </button>
