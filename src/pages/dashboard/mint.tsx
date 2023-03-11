@@ -75,6 +75,7 @@ const Mint: NextPage = () => {
       </Head>
       {isLoggedIn ? (
       <Container className="p-3">
+        
         <div className="py-10 px-8 sm:px-40">
           <h1 className="text-center px-4 sm:px-0 sm:text-5xl">
             Create a new <span className="text-purple">template</span>
@@ -86,8 +87,8 @@ const Mint: NextPage = () => {
         
         
         <form onSubmit={(e) => {handleFormSubmit(e) }}>
-        <div className="mb-4 grid grid-cols-2 gap-4">
-        <div className="col-span-1">
+        <div className="mb-4 flex flex-col md:flex-row">
+        <div className="md:w-1/2 mr-4">
         <label
                   htmlFor="population_registry"
                   className="block text-sm font-medium text-gray-700"
@@ -141,7 +142,7 @@ const Mint: NextPage = () => {
           name="nftImage"/>
             
           </div>
-          <div className="flex justify-center align-center col-span-1"> 
+          <div className="md:w-1/2"> 
           <NftCard
                 title={formData.nftName}
                 image={formData.nftImage}
@@ -150,7 +151,7 @@ const Mint: NextPage = () => {
               />
           </div>
           </div>
-          <div className="px-4 py-3 text-center sm:px-6">
+          <div className="px-4 py-3 text-center sm:px-6" >
             <button
               className="
               inline-flex
