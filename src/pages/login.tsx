@@ -20,13 +20,17 @@ const Home: NextPage = () => {
   });
 
   useEffect(() => {
+    if(publicKey == null) return
+
     if (
-      sessionStorage.getItem("publicKey")
+      sessionStorage.getItem("publicKey") &&
+      sessionStorage.getItem("isCompany") &&
+      sessionStorage.getItem("publicKey") == publicKey.toBase58()
     ) {
       setLoading(true)
       sessionStorage.getItem("isCompany")=="true" ? router.push("/dashboard") : router.push("/profile/"+sessionStorage.getItem("publicKey"));
     }
-  }, []);
+  }, [publicKey]);
 
   useEffect(() => {
     async function fetchData() {
@@ -68,7 +72,6 @@ const Home: NextPage = () => {
 
       //guardamos la pbkey
       if (publicKey) sessionStorage.setItem("publicKey", publicKey.toBase58());
-      console.log(profileData);
       if (profileData) {
         sessionStorage.setItem("isCompany", profileData.is_company);
       }

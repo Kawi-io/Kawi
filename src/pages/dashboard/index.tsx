@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { GetServerSideProps, NextPage } from "next";
 import { Container } from "@nextui-org/react";
-import { NftGrid } from "~/components/index";
+import { NftGrid, UserGrid } from "~/components/index";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 import ModalLoader from "./../../components/ModalLoader";
@@ -40,14 +40,10 @@ const Index: NextPage<Props> = ({ host }) => {
   return (
     <>
       <Head>
-        <title>Ypur dashboard</title>
+        <title>Your dashboard</title>
       </Head>
 
       <Container className="p-3">
-        {/* <div className="py-4">
-          <h3 className="text-center">{isNftList ? "Your NFTs" : "Your employees"}</h3>
-        </div> */}
-
         <div className="py-2">
           <div className="hidden sm:block">
             <div
@@ -87,7 +83,7 @@ const Index: NextPage<Props> = ({ host }) => {
             <hr className="border-1 h-0.5 bg-black" />
           </div>
         </div>
-        <NftGrid />
+        {isNftList ? <NftGrid /> : <UserGrid /> }
       </Container>
       <ModalLoader loading={loading} />
     </>
