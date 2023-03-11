@@ -1,11 +1,12 @@
 import { Container, Row } from "@nextui-org/react";
 import { type NextPage } from "next";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 import WalletComponent from "~/components/WalletComponent";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 import { CustomModal } from "../components/index";
-import Head from "next/head";
+
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -54,7 +55,13 @@ const Home: NextPage = () => {
             }),
           });
           const data = await response.json();
-          data ? setProfileData(data) : setModal({...modal, title:"Error", text: "You are not registered, register to Kawi to continue"});
+          data
+            ? setProfileData(data)
+            : setModal({
+                ...modal,
+                title: "Error",
+                text: "You are not registered, register to Kawi to continue",
+              });
           console.log(data);
         } catch (error) {
           console.error(error);
@@ -80,7 +87,7 @@ const Home: NextPage = () => {
         text={modal.text}
         close={() => setModal({ ...modal, visible: false })}
       />
-        <Head>
+      <Head>
         <title>Login to your account</title>
       </Head>
 

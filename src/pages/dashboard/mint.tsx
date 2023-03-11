@@ -7,7 +7,7 @@ import { Container, Grid } from "@nextui-org/react";
 import {Provider,AnchorProvider} from "@project-serum/anchor";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { NftCard, mint, ModalLoader } from "~/components/index";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
 
 const Mint: NextPage = () => {
