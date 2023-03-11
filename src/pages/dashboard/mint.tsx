@@ -62,13 +62,13 @@ const Mint: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Mint a new certificate</title>
+        <title>Create a new template</title>
       </Head>
       {isLoggedIn ? (
       <Container className="p-3">
         <div className="py-10 px-8 sm:px-40">
           <h1 className="text-center px-4 sm:px-0 sm:text-5xl">
-            Mint a new <span className="text-purple">certificate</span>
+            Create a new <span className="text-purple">template</span>
           </h1>
         </div>
         <div className="my-3">

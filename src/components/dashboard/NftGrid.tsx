@@ -62,7 +62,8 @@ export const NftGrid = () => {
   return (
     <Grid.Container gap={2} justify="center">
       
-      {nftList.map((item:any) => (
+      { (nftList.length > 0) ? 
+      nftList.map((item:any) => (
         <Grid lg={3} sm={4} key={nftList.indexOf(item)}>
           <NftCard
             title={item.name}
@@ -72,7 +73,9 @@ export const NftGrid = () => {
             event={()=>transfer(item.uri)}
           />
         </Grid>
-      ))}
+      ))
+      : <h1>Nada por aquí, trata creando una nueva plantilla {'-->'}</h1>
+    }
       <Grid lg={3} sm={4}>
         <Button
           bordered
