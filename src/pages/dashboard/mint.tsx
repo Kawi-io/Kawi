@@ -84,34 +84,71 @@ const Mint: NextPage = () => {
         
         
         <form onSubmit={(e) => {handleFormSubmit(e) }}>
-        <div className="mb-4">
+        <div className="mb-4 grid grid-cols-2 gap-4">
+        <div className="col-span-1">
+        <label
+                  htmlFor="population_registry"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Title
+                </label>
         <input
-            placeholder={"Titulo"}
+            placeholder={"Give your template a title"}
             className="mb-4 w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
             onChange={handleInputChange}
             required
             name="nftName"/>
+            <label
+                  htmlFor="population_registry"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Description
+                </label>
 
         <input
-            placeholder={"Descripcion"}
+            placeholder={"Put a little description"}
             className="mb-4 w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
             onChange={handleInputChange}
             required
             name="nftDesc"/>
           
+          <label
+                  htmlFor="population_registry"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Symbol
+                </label>
         <input
-          placeholder={"Simbolo"}
+          placeholder={"Put a symbol for your template"}
           className="mb-4 w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
           onChange={handleInputChange}
           required
           name="nftSymbol"/>
+
+          <label
+                  htmlFor="population_registry"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Image
+                </label>
         <input
-          placeholder={"Imagen"}
+          placeholder={"Put the link of your image"}
           className="mb-4 w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
           onChange={handleInputChange}
           required
           name="nftImage"/>
-            <div className="px-4 py-3 text-center sm:px-6">
+            
+          </div>
+          <div className="flex justify-center align-center col-span-1"> 
+          <NftCard
+                title={formData.nftName}
+                image={formData.nftImage}
+                description={formData.nftDesc}
+                symbol={formData.nftSymbol}
+              />
+          </div>
+          </div>
+          <div className="px-4 py-3 text-center sm:px-6">
             <button
               className="
               inline-flex
@@ -138,7 +175,6 @@ const Mint: NextPage = () => {
               <p>Create</p>
             </button>
             </div>
-          </div>
           </form>
          
         <Grid.Container gap={2} justify="center">

@@ -56,6 +56,7 @@ export const NftCard: React.FC<NftCardProps> = ({
             <Text small size={12}>
               {description}
             </Text>
+            <br></br>
             <Text small  size={12}>
               {symbol}
             </Text>
