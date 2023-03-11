@@ -5,14 +5,16 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import { useState, useEffect } from "react";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import ModalLoader from "./../../components/ModalLoader"
-
+const PINATA_API_KEY = '81accb400029bfb41255';
+const PINATA_SECRET_API_KEY = '4206b68a2aefa718e44430cd96d4be4625ad48546c61b1144af54ad91e760a33';
+import axios from "axios"
 // TODO: Optimizar NFTGrid y UserGrid
 export const NftGrid = () => {
   const [loading, setLoading] = useState(false);
   const wallet = useAnchorWallet();
   const router = useRouter();
   const [nftList, setNftList] = useState<any>([]);
-  
+
   const getTemplates:any = async () => {
     setLoading(true)
     if(wallet == null) return
@@ -28,6 +30,7 @@ export const NftGrid = () => {
     }).then(res => res.json()).then(async (res) => {
       for (let path of res) {
         try {
+          
           console.log("path:"+path)
           path= "https://gateway.pinata.cloud/ipfs/" + path
           const response = await fetch(path)

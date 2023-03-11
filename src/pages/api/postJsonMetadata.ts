@@ -50,6 +50,9 @@ async function create_json_metadata(name:String,symbol:String,description:String
         "name": name,
         "symbol": symbol,
         "description": description,
+        "seller_fee_basis_points": 1,
+        "external_url": "",
+        "edition": "",
         "background_color": "000000",
         "image": image
     }
@@ -61,7 +64,7 @@ async function create_json_metadata(name:String,symbol:String,description:String
     const options = {};
 
     const res = await pinata.pinJSONToIPFS(data, options).then((result) => {
-        relativePath = result["IpfsHash"]
+        relativePath = result.IpfsHash
         console.log("demo"+relativePath)
     }).catch((err) => {
         console.log(err)
