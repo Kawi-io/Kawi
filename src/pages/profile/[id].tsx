@@ -73,7 +73,7 @@ const VerNFTs: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{profileData.name} profile</title>
+        {profileData ? <title>{profileData.name} profile</title> : null}
       </Head>
 
       {profileData ? (
