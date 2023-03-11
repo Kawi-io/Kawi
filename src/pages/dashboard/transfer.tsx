@@ -37,9 +37,6 @@ type Option = {
 
 const _connection = new Connection(clusterApiUrl("devnet"));
 const mx = Metaplex.make(_connection);
-
-
-
 const Transfer: NextPage<Props> = ({ host })  => {
   const [loading, setLoading] = useState(false);
   const { publicKey } = useWallet();
@@ -79,19 +76,19 @@ const Transfer: NextPage<Props> = ({ host })  => {
     //La URL del JSON con la metadata de nuestro NFT. Este debería estar en nuestros servidores, y de ser modificado modificaria
     //la metadata de nuestro NFT, propiedades como la imagen, el fondo, u otras que quieran ser agregadas
     //testNftUri tiene que ser un arhivo previamente generado para cada plantilla de NFT
-    const testNftUri = nft.uri;
+    const testNftUri = host+nft.uri;
     
     //esta será la wallet a la cual será transferido el NFT una vez minteado. Si no se desea transferir se puede dejar en blanco
     //o no mandarla directamente
-    const to = "C8vg99mrXk9CNLKT69RyUoBgqyhhPpQFPHPQA8uVHy5u"
-  
+    const to = "8nMCsEURuBzwqGXHPt46BoeFR4LugLesPy6sLjKkMEN6"
+    let _mint =mint(getProvider()!,testNftTitle, testNftSymbol, testNftUri, to)
     //le mandamos a hablar a la funcion mint, que se comunica con nuestro contrato y crea el nft.
-    let _mint:any = mint(getProvider()!,testNftTitle, testNftSymbol, testNftUri, to);
+    // let _mint:any = mint(getProvider()!,testNftTitle, testNftSymbol, testNftUri, to);
 
     if(_mint != null){
-      
+      alert("minteo correocto")
     }
-      setLoading(false)
+    setLoading(false)
     
   }
 
@@ -123,7 +120,7 @@ const Transfer: NextPage<Props> = ({ host })  => {
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    console.log("queso")
     // await PrepareTransaction();
     doMint();
   };
@@ -227,7 +224,7 @@ const Transfer: NextPage<Props> = ({ host })  => {
                       w-full
                       flex justify-center
                     "
-                    type="button"
+                    type="submit"
                   >
                     <span>Transfer</span>
                   </button>

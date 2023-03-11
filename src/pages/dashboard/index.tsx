@@ -33,6 +33,7 @@ const Index: NextPage<Props> =  ({ host }) => {
     else{
       setIsLoggedIn(true);
     }
+    setLoading(false)
   }, []);
 
 
