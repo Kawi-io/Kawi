@@ -132,6 +132,34 @@ const Transfer: NextPage<Props> = ({ host }) => {
       });
     }
   };
+
+  useEffect(() => {
+    const publicKey = sessionStorage.getItem("publicKey");
+    const isCompany = sessionStorage.getItem("isCompany")
+
+    //si no hay pubkey, o si la que hay no esta registrada como empresa
+    if (!publicKey || isCompany == "false") {
+      router.push("/");
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const [list, setList] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (publicKey == null) {
+      return;
+    }
+    // fetchNFTs(list.length, publicKey);
+  }, [publicKey]);
+
+  const [formData, setFormData] = useState({
+    wallet: "",
+    certificate: "",
+    privateKey: "",
+  });
+
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // await PrepareTransaction();

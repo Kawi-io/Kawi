@@ -15,8 +15,10 @@ const Mint: NextPage = () => {
 
   useEffect(() => {
     const publicKey = sessionStorage.getItem('publicKey');
+    const isCompany = sessionStorage.getItem("isCompany")
+
     //si no hay pubkey, o si la que hay no esta registrada como empresa
-    if (!publicKey) {
+    if (!publicKey || isCompany == "false") {
       router.push('/');
     }
     else{
@@ -37,7 +39,7 @@ const Mint: NextPage = () => {
       body: JSON.stringify({
         employeeID: wallet,
         // TODO: Añadir de public
-        companyID: "",
+        companyID: sessionStorage.getItem('publicKey'),
       }),
     })
       .then((response) => response.json())

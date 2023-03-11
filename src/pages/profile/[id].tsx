@@ -73,7 +73,7 @@ const VerNFTs: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{profileData.name} profile</title>
+        {profileData ? <title>{profileData.name} profile</title> : null}
       </Head>
 
       {profileData ? (
@@ -156,13 +156,6 @@ const VerNFTs: NextPage = () => {
               <div className="text-center py-20">
                 <p className="mt-6 text-base leading-7 text-gray-600">
                   This user doesn't seem to have any experience yet.
-                  <Link
-                    href="/transfer"
-                    className="font-medium text-gray-600 hover:text-gray-500"
-                  >
-                    {" "}
-                    Want to certificate them?
-                  </Link>
                 </p>
               </div>
             )}
