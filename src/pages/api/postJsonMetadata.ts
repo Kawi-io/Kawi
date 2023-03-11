@@ -1,8 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-const fs = require('fs');
 import { MongoClient, UpdateResult } from 'mongodb';
+import pinataSDK from '@pinata/sdk';
+const PINATA_API_KEY = '81accb400029bfb41255';
+const PINATA_SECRET_API_KEY = '4206b68a2aefa718e44430cd96d4be4625ad48546c61b1144af54ad91e760a33';
+const pinata = new pinataSDK(PINATA_API_KEY, PINATA_SECRET_API_KEY);
+
 /**
  * This API endpoint receives a POST request with a document to be inserted in a MongoDB collection.
  * 
@@ -25,11 +28,12 @@ export default async function getDocument(
 
     const { nftName, nftSymbol, nftDesc, background_color, nftImage, companyID } = req.body
     console.log(req.body)
-    let aux = create_json_metadata(nftName, nftSymbol, nftDesc, background_color, nftImage, uuidv4())
-
+    let aux:any = await create_json_metadata(nftName, nftSymbol, nftDesc, background_color, nftImage, uuidv4())
+    
     try {
         await client.connect();
         const filterCompany: any = { _id: companyID };
+        console.log(aux[1])
         const updateCompany = { $push: { Metadata_Paths: aux[1] } };
         const options = { upsert: false };
         const resultCompany: UpdateResult = await collection.updateOne(filterCompany, updateCompany, options);
@@ -41,22 +45,32 @@ export default async function getDocument(
     }
 }
 
-function create_json_metadata(name:String,symbol:String,description:String,bg_color:String, image:String, filename:String) {
+async function create_json_metadata(name:String,symbol:String,description:String,bg_color:String, image:String, filename:String) {
     const data = {
         "name": name,
         "symbol": symbol,
         "description": description,
+        "seller_fee_basis_points": 1,
+        "external_url": "",
+        "edition": "",
         "background_color": "000000",
         "image": image
     }
 
+    // const filePath = path.join(process.cwd(), 'public/metadata', filename+'.json');
 
-  const jsonString = JSON.stringify(data);
-  const filePath = path.join(process.cwd(), 'public/metadata', filename+'.json');
+    let relativePath
 
-  const relativePath = '/metadata/'+filename+'.json';
+    const options = {};
 
-  fs.writeFileSync(filePath, jsonString);
+    const res = await pinata.pinJSONToIPFS(data, options).then((result) => {
+        relativePath = result.IpfsHash
+        console.log("demo"+relativePath)
+    }).catch((err) => {
+        console.log(err)
+    }); 
 
-  return [data, relativePath];
+    // fs.writeFileSync(filePath, jsonString);
+
+    return [data, relativePath];
 }

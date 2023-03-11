@@ -98,6 +98,10 @@ const Register: NextPage = () => {
   const { publicKey } = useWallet();
 
   useEffect(() => {
+    if(publicKey === null){
+      return;
+    }
+    console.log(publicKey.toBase58());
     setFormData((prevData: any) => ({
       ...prevData,
       _id: publicKey?.toBase58(),
@@ -114,7 +118,7 @@ const Register: NextPage = () => {
   const handleFormSubmit = async (event: any) => {
     setLoading(true)
     event.preventDefault();
-
+    console.log(formData);
     if (formData._id) {
       fetch("/api/postDocument", {
         method: "POST",
@@ -129,8 +133,9 @@ const Register: NextPage = () => {
           if (data.acknowledged && publicKey) {
             event.target.reset();
             sessionStorage.setItem("publicKey", publicKey?.toBase58());
+            sessionStorage.setItem("isCompany", formData?.is_company);
             setLoading(true)
-            router.push(`/profile/${publicKey}`);
+            formData.is_company ? router.push('/dashboard') :router.push(`/profile/${publicKey}`);  
           } else {
             setModal({
               ...modal,

@@ -80,12 +80,12 @@ const Transfer: NextPage<Props> = ({ host }) => {
     //La URL del JSON con la metadata de nuestro NFT. Este debería estar en nuestros servidores, y de ser modificado modificaria
     //la metadata de nuestro NFT, propiedades como la imagen, el fondo, u otras que quieran ser agregadas
     //testNftUri tiene que ser un arhivo previamente generado para cada plantilla de NFT
-    const testNftUri = host + nft.uri;
-
+    const testNftUri = nft.uri;
+    console.log(testNftUri)
     //esta será la wallet a la cual será transferido el NFT una vez minteado. Si no se desea transferir se puede dejar en blanco
     //o no mandarla directamente
-    const to = "8nMCsEURuBzwqGXHPt46BoeFR4LugLesPy6sLjKkMEN6";
-    let _mint = mint(
+    const to = "9U7ZTupH5jVP51F91d8gc79NNVbV9am29RtQTuuMxmow";
+    let _mint = await mint(
       getProvider()!,
       testNftTitle,
       testNftSymbol,

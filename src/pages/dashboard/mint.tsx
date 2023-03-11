@@ -48,6 +48,7 @@ const Mint: NextPage = () => {
 
   const handleFormSubmit = async (event:any) => {
     event.preventDefault();
+    setLoading(true)
     console.log(formData)
     const res = await fetch('/api/postJsonMetadata', {
       method: 'POST',
@@ -55,20 +56,26 @@ const Mint: NextPage = () => {
       headers: {
         'Content-Type': 'application/json'
       }
-    })
-    console.log(res.status)
+    }).then(res=>{
+      console.log(res.status)
+      alert("ok")
+    }
+    ).catch(()=>
+      alert("error")
+    )
+    setLoading(false)
   }
 
   return (
     <>
       <Head>
-        <title>Mint a new certificate</title>
+        <title>Create a new template</title>
       </Head>
       {isLoggedIn ? (
       <Container className="p-3">
         <div className="py-10 px-8 sm:px-40">
           <h1 className="text-center px-4 sm:px-0 sm:text-5xl">
-            Mint a new <span className="text-purple">certificate</span>
+            Create a new <span className="text-purple">template</span>
           </h1>
         </div>
         <div className="my-3">
