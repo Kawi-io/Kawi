@@ -1,9 +1,12 @@
 /* eslint-disable */
 import { type NextPage } from "next";
 import Head from "next/head";
-import {  useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { Container, Grid } from "@nextui-org/react";
-import ModalLoader from "./../../components/ModalLoader"
+import {Provider,AnchorProvider} from "@project-serum/anchor";
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { NftCard, mint, ModalLoader } from "~/components/index";
 import { useRouter } from "next/router";
 
 
