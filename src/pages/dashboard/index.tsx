@@ -4,16 +4,18 @@ import { Container } from "@nextui-org/react";
 import { NftGrid } from "~/components/index";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
-import ModalLoader from "./../../components/ModalLoader"
+import ModalLoader from "./../../components/ModalLoader";
+import Head from 'next/head';
 type Props = { host: string | null };
-export const getServerSideProps: GetServerSideProps<any> =
-  async context => ({ props: { host: context.req.headers.host || null } });
+export const getServerSideProps: GetServerSideProps<any> = async (context) => ({
+  props: { host: context.req.headers.host || null },
+});
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Index: NextPage<Props> =  ({ host }) => {
+const Index: NextPage<Props> = ({ host }) => {
   const [loading, setLoading] = useState(false);
   const [isNftList, setIsNftList] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,24 +24,26 @@ const Index: NextPage<Props> =  ({ host }) => {
   const wallet = useAnchorWallet();
 
   useEffect(() => {
-    setLoading(true)
-    const publicKey = sessionStorage.getItem('publicKey');
+    setLoading(true);
+    const publicKey = sessionStorage.getItem("publicKey");
     console.log(publicKey);
     //si no hay pubkey, o si la que hay no esta registrada como empresa
     // setIsLoggedIn(true);
     if (!publicKey) {
-      router.push('/');
-    }
-    else{
+      router.push("/");
+    } else {
       setIsLoggedIn(true);
     }
-    setLoading(false)
+    setLoading(false);
   }, []);
-
 
   return (
     <>
-        <Container className="p-3">
+      <Head>
+        <title>Ypur dashboard</title>
+      </Head>
+
+      <Container className="p-3">
         {/* <div className="py-4">
           <h3 className="text-center">{isNftList ? "Your NFTs" : "Your employees"}</h3>
         </div> */}
@@ -79,14 +83,13 @@ const Index: NextPage<Props> =  ({ host }) => {
             </div>
           </div>
 
-
           <div className="m-2">
             <hr className="border-1 h-0.5 bg-black" />
           </div>
         </div>
-        <NftGrid/>
+        <NftGrid />
       </Container>
-      <ModalLoader loading={loading}/>
+      <ModalLoader loading={loading} />
     </>
   );
 };
