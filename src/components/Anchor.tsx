@@ -15,50 +15,52 @@ let senderTokenAddress:PublicKey
 
 export async function mint(provider:Provider, nftTitle:string, nftSymbol:string, nftUri:string, to:string = "") {
 
-    mintKeypair = anchor.web3.Keypair.generate();
-    
-    if(provider == null) return
-    senderTokenAddress = await anchor.utils.token.associatedAddress({
-        mint: mintKeypair.publicKey,
-        owner: provider.publicKey!
-    });
-
-    let owner = await anchor.utils.token.associatedAddress({
-        mint: mintKeypair.publicKey,
-        owner: new PublicKey(to)
-    });
-
-    const a = JSON.stringify(idl);
-    const b = JSON.parse(a);
-    const program = new Program<MintNft>(b, idl.metadata.address, provider)
-    console.log(`New token: ${mintKeypair.publicKey}`);
-
-    // Derive the metadata and master edition addresses
-
-    const metadataAddress = (await anchor.web3.PublicKey.findProgramAddress(
-        [
-            Buffer.from("metadata"),
-            TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-            mintKeypair.publicKey.toBuffer(),
-        ],
-        TOKEN_METADATA_PROGRAM_ID
-    ))[0];
-
-    const masterEditionAddress = (await anchor.web3.PublicKey.findProgramAddress(
-        [
-            Buffer.from("metadata"),
-            TOKEN_METADATA_PROGRAM_ID.toBuffer(),
-            mintKeypair.publicKey.toBuffer(),
-            Buffer.from("edition"),
-        ],
-        TOKEN_METADATA_PROGRAM_ID
-    ))[0];
-    // Transact with the "mint" function in our on-chain program
     try{
+
+        mintKeypair = anchor.web3.Keypair.generate();
+        
+        if(provider == null) return
+        senderTokenAddress = await anchor.utils.token.associatedAddress({
+            mint: mintKeypair.publicKey,
+            owner: provider.publicKey!
+        });
+    
+        
+        let owner = await anchor.utils.token.associatedAddress({
+            mint: mintKeypair.publicKey,
+            owner: new PublicKey(to)
+        });
+
+        const a = JSON.stringify(idl);
+        const b = JSON.parse(a);
+        const program = new Program<MintNft>(b, idl.metadata.address, provider)
+        console.log(`New token: ${mintKeypair.publicKey}`);
+    
+        // Derive the metadata and master edition addresses
+
+        const metadataAddress = (await anchor.web3.PublicKey.findProgramAddress(
+            [
+                Buffer.from("metadata"),
+                TOKEN_METADATA_PROGRAM_ID.toBuffer(),
+                mintKeypair.publicKey.toBuffer(),
+            ],
+            TOKEN_METADATA_PROGRAM_ID
+        ))[0];
+
+        const masterEditionAddress = (await anchor.web3.PublicKey.findProgramAddress(
+            [
+                Buffer.from("metadata"),
+                TOKEN_METADATA_PROGRAM_ID.toBuffer(),
+                mintKeypair.publicKey.toBuffer(),
+                Buffer.from("edition"),
+            ],
+            TOKEN_METADATA_PROGRAM_ID
+        ))[0];
+    // Transact with the "mint" function in our on-chain program
+    
         let mint = await program.methods.mint(
             nftTitle, nftSymbol, nftUri
-        )
-            .accounts({
+        ).accounts({
                 masterEdition: masterEditionAddress,
                 metadata: metadataAddress,
                 mint: mintKeypair.publicKey,
@@ -72,7 +74,6 @@ export async function mint(provider:Provider, nftTitle:string, nftSymbol:string,
             .signers([mintKeypair])
             .rpc();
         if(mint){
-            console.log("mint: " + mintKeypair.publicKey + " successfull. Signature:  " +mint)
             return mint
         }
         return null

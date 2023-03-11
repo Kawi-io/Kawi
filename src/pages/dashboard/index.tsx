@@ -40,7 +40,7 @@ const Index: NextPage<Props> = ({ host }) => {
   return (
     <>
       <Head>
-        <title>Ypur dashboard</title>
+        <title>Your dashboard</title>
       </Head>
 
       <Container className="p-3">

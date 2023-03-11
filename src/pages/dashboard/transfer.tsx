@@ -12,6 +12,7 @@ import { Provider, AnchorProvider } from "@project-serum/anchor";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { mint } from "../../components/Anchor";
 import Head from 'next/head';
+import { CustomModal } from "../../components/index";
 type Props = { host: string | null };
 export const getServerSideProps: GetServerSideProps<any> = async (context) => ({
   props: { host: context.req.headers.host || null },
@@ -40,6 +41,12 @@ type Option = {
 const _connection = new Connection(clusterApiUrl("devnet"));
 const mx = Metaplex.make(_connection);
 const Transfer: NextPage<Props> = ({ host }) => {
+  const [modal, setModal] = useState({
+    "title":"",
+    "text":"",
+    "color":"",
+    "visible":false
+  });
   const [loading, setLoading] = useState(false);
   const { publicKey } = useWallet();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -47,9 +54,23 @@ const Transfer: NextPage<Props> = ({ host }) => {
   const { nft_uri } = router.query;
   const wallet = useAnchorWallet();
   const [nft, setNft] = useState<any>({});
+
   useEffect(() => {
-    getNftInfo(nft_uri);
+    const publicKey = sessionStorage.getItem("publicKey");
+    //si no hay pubkey, o si la que hay no esta registrada como empresa
+    if (!publicKey) {
+      router.push("/");
+    } else {
+      setIsLoggedIn(true);
+      getNftInfo(nft_uri);
+    }
   }, []);
+  useEffect(() => {
+    if (publicKey == null) {
+      return;
+    }
+    // fetchNFTs(list.length, publicKey);
+  }, [publicKey]);
   const getNftInfo = async (path: any) => {
     const response = await fetch(path);
     let data = await response.json();
@@ -94,66 +115,27 @@ const Transfer: NextPage<Props> = ({ host }) => {
     );
     //le mandamos a hablar a la funcion mint, que se comunica con nuestro contrato y crea el nft.
     // let _mint:any = mint(getProvider()!,testNftTitle, testNftSymbol, testNftUri, to);
-
+    setLoading(false)
     if (_mint != null) {
-      alert("minteo correocto");
+      setModal({
+        ...modal,
+        visible: true,
+        title: "Success",
+        text: "El certificado fue creado de manera exitosa",
+      });
+    }else{
+      setModal({
+        ...modal,
+        visible: true,
+        title: "Error",
+        text: "There was an error signing the transacrion",
+      });
     }
-    setLoading(false);
   };
-
-  useEffect(() => {
-    const publicKey = sessionStorage.getItem("publicKey");
-    //si no hay pubkey, o si la que hay no esta registrada como empresa
-    if (!publicKey) {
-      router.push("/");
-    } else {
-      setIsLoggedIn(true);
-    }
-  }, []);
-
-  const [list, setList] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (publicKey == null) {
-      return;
-    }
-    // fetchNFTs(list.length, publicKey);
-  }, [publicKey]);
-
-  const [formData, setFormData] = useState({
-    wallet: "",
-    certificate: "",
-    privateKey: "",
-  });
-
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("queso");
     // await PrepareTransaction();
     doMint();
-  };
-
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleInputChange = ({
-    target,
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const addElementsToList = (text: string, value: string) => {
-    const newOption: Option = { key: text, value: value };
-    setList((prevList) => [...prevList, newOption]);
   };
 
   return (
@@ -248,6 +230,13 @@ const Transfer: NextPage<Props> = ({ host }) => {
               </div>
             </Col>
           </Row>
+          <ModalLoader loading={loading} />
+          <CustomModal
+            visible={modal.visible}
+            title={modal.title}
+            text={modal.text}
+            close={() => setModal({ ...modal, visible: false })}
+      />
         </Container>
       ) : (
         <ModalLoader loading={true} />

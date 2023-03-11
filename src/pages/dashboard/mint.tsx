@@ -8,9 +8,15 @@ import {Provider,AnchorProvider} from "@project-serum/anchor";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { NftCard, mint, ModalLoader } from "~/components/index";
 import { useRouter } from 'next/router';
-
+import { CustomModal } from "~/components/index";
 
 const Mint: NextPage = () => {
+  const [modal, setModal] = useState({
+    "title":"",
+    "text":"",
+    "color":"",
+    "visible":false
+  });
   const [loading, setLoading] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
@@ -58,10 +64,20 @@ const Mint: NextPage = () => {
       }
     }).then(res=>{
       console.log(res.status)
-      alert("ok")
+      setModal({
+        ...modal,
+        visible: true,
+        title: "Success",
+        text: "Template created successfully",
+      });
     }
     ).catch(()=>
-      alert("error")
+      setModal({
+        ...modal,
+        visible: true,
+        title: "Error",
+        text: "Error creating the template",
+      })
     )
     setLoading(false)
   }
@@ -135,6 +151,11 @@ const Mint: NextPage = () => {
           </form>
         <Grid.Container gap={2} justify="center">
         </Grid.Container>
+        <CustomModal
+            visible={modal.visible}
+            title={modal.title}
+            text={modal.text}
+            close={() => setModal({ ...modal, visible: false })}/>
         <ModalLoader loading={loading} />
       </Container>
       ) : (
