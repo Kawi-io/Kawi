@@ -14,6 +14,7 @@ import {
 } from "@heroicons/react/20/solid";
 
 import { NftCard } from "../../components/index";
+import Head from 'next/head';
 
 const VerNFTs: NextPage = () => {
   const [nfts, SetNfts] = useState<any>([]);
@@ -23,7 +24,7 @@ const VerNFTs: NextPage = () => {
   const publicKey: any = router.query.id;
 
   useEffect(() => {
-    const { id } = router.query
+    const { id } = router.query;
     if (publicKey) {
       fetch("/api/getDocument", {
         method: "POST",
@@ -50,8 +51,6 @@ const VerNFTs: NextPage = () => {
 
   useEffect(() => {
     if (publicKey == null) return;
-
-    
   }, [publicKey]);
 
   const fetchNFTs = async (owner: PublicKey) => {
@@ -73,6 +72,10 @@ const VerNFTs: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>{profileData.name} profile</title>
+      </Head>
+
       {profileData ? (
         <Container className="p-6">
           <div className="py- px-8 sm:px-40 my-5">
