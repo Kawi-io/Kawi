@@ -35,8 +35,8 @@ export const Header = () => {
     ) {
       setSession({
         isSession: true,
-        publicKey: sessionStorage.getItem("publicKey"),
-        isCompany: sessionStorage.getItem("isCompany"),
+        PublicKey: sessionStorage.getItem("publicKey")!,
+        isCompany:(sessionStorage.getItem("isCompany")!=="true"),
       });
 
       console.log(session)
