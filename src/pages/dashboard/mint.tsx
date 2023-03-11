@@ -6,6 +6,7 @@ import { Container, Grid } from "@nextui-org/react";
 import ModalLoader from "./../../components/ModalLoader"
 import { useRouter } from "next/router";
 
+
 const Mint: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false);

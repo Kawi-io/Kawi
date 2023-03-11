@@ -54,7 +54,7 @@ function create_json_metadata(name:String,symbol:String,description:String,bg_co
   const jsonString = JSON.stringify(data);
   const filePath = path.join(process.cwd(), 'public/metadata', filename+'.json');
 
-  const relativePath = '/public/metadata/'+filename+'/.json';
+  const relativePath = '/metadata/'+filename+'.json';
 
   fs.writeFileSync(filePath, jsonString);
 
