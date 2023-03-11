@@ -3,7 +3,7 @@ import { Card, Col, Row, Button, Text } from "@nextui-org/react";
 interface NftCardProps {
   title: string;
   symbol?: string;
-  image: string;
+  image?: string;
   description: string;
   btnText?: string;
   event?: () => void;
@@ -22,7 +22,7 @@ interface NftCardProps {
 export const NftCard: React.FC<NftCardProps> = ({
   title,
   symbol,
-  image,
+  image = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_188493.png&f=1&nofb=1&ipt=95aa70dd7016d7c37751b46707812810af6d7c07cc74ed562523858d98dc25b8&ipo=images",
   description,
   btnText,
   event,
