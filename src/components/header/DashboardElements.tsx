@@ -47,8 +47,11 @@ export const DashboardElements = ({
       title: "Success",
       text: "You have been logged out",
       close: () => {
-        router.push("/");
-        window.location.reload();
+        if(router.pathname="/"){
+          window.location.reload();
+        }else{
+          router.push("/");
+        }
       },
     });
   };

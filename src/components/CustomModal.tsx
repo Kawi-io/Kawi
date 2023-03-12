@@ -6,6 +6,8 @@ interface CustomModalProps {
   title: string;
   text: string;
   titleColor?: string;
+  onAcept?:() => void,
+  onCancel?:() => void
 }
 
 /**
@@ -22,7 +24,11 @@ export const CustomModal: React.FC<CustomModalProps> = ({
   title,
   text,
   titleColor = "primary",
-}: any) => {
+  onAcept=null,
+  onCancel=null,
+}: any,
+
+) => {
   return (
     <Modal
       closeButton
@@ -39,6 +45,16 @@ export const CustomModal: React.FC<CustomModalProps> = ({
         <Row justify="center">
           <Text size={14}>{text}</Text>
         </Row>
+        {
+          (onAcept!=null || onCancel!=null)
+          ?
+          <Row >
+            <button onClick={onAcept}>Aceptar</button><button onClick={onCancel}>Rechazar</button>
+          </Row>
+          :
+          null
+        }
+        
       </Modal.Body>
     </Modal>
   );
