@@ -90,7 +90,25 @@ export const NftGrid = () => {
                     event={() => transfer(item.uri)}
                   />
                 </Grid>
-                <Grid lg={3} sm={4}>
+              </>
+            ))
+          ) : (
+            <div className="text-center py-20">
+              <p className="mt-6 text-base leading-7 text-gray-600 text-lg md:text-xl">
+                Nothing here...{" "}
+                <Link
+                  className="hover:underline font-bold"
+                  href="/dashboard/mint"
+                >
+                  {" "}
+                  Try creating a new certificate template{" "}
+                </Link>
+              </p>
+            </div>
+          )}
+          {
+            nftList.length>0 ? (
+              <Grid lg={3} sm={4}>
                   <Button
                     bordered
                     ghost
@@ -117,24 +135,12 @@ export const NftGrid = () => {
                     </svg>
                   </Button>
 
-                  <ModalLoader loading={loading} />
                 </Grid>
-              </>
-            ))
-          ) : (
-            <div className="text-center py-20">
-              <p className="mt-6 text-base leading-7 text-gray-600 text-lg md:text-xl">
-                Nothing here...{" "}
-                <Link
-                  className="hover:underline font-bold"
-                  href="/dashboard/mint"
-                >
-                  {" "}
-                  Try creating a new certificate template{" "}
-                </Link>
-              </p>
-            </div>
-          )}
+            ) :
+            null
+          }
+          
+        <ModalLoader loading={loading} />
         </Grid.Container>
       )}
     </>

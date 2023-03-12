@@ -4,7 +4,7 @@ import { Container } from "@nextui-org/react";
 import { NftGrid, UserGrid } from "~/components/index";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
-import ModalLoader from "./../../components/ModalLoader";
+import { ModalLoader, CustomModal } from "~/components/index";
 import Head from 'next/head';
 type Props = { host: string | null };
 export const getServerSideProps: GetServerSideProps<any> = async (context) => ({
@@ -15,21 +15,43 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
+
 const Index: NextPage<Props> = ({ host }) => {
   const [loading, setLoading] = useState(false);
   const [isNftList, setIsNftList] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  const [isValidProfile, setIsValidProfile]= useState(false);
+  
   const router = useRouter();
-
+  const [modal, setModal] = useState({
+    visible: false,
+    title: "",
+    text: "",
+    close:()=>{},
+  });
   const wallet = useAnchorWallet();
 
   useEffect(() => {
-    setLoading(true);
+    if (wallet == null) return
     const publicKey = sessionStorage.getItem("publicKey");
     const isCompany = sessionStorage.getItem("isCompany")
-    console.log(isCompany);
-    //si no hay pubkey, o si la que hay no esta registrada como empresa
-    // setIsLoggedIn(true);
+
+    if (wallet.publicKey.toBase58() != publicKey){
+      setModal({
+        visible: true,
+        title: "Error",
+        text: "The wallet has been changed, plase use the owner's wallet to continue",
+        close: () => setModal({ ...modal, visible: false }),
+      })
+      setIsValidProfile(false)
+      return
+    }
+    setIsValidProfile(true)
+    setLoading(true);
+    
+
+
     if (!publicKey || isCompany == "false") {
       router.push("/");
     } else {
@@ -40,6 +62,13 @@ const Index: NextPage<Props> = ({ host }) => {
 
   return (
     <>
+    <CustomModal
+        visible={modal.visible}
+        title={modal.title}
+        text={modal.text}
+        close={modal.close}
+      />
+
       <Head>
         <title>Your dashboard</title>
       </Head>
@@ -84,7 +113,7 @@ const Index: NextPage<Props> = ({ host }) => {
             <hr className="border-1 h-0.5 bg-black" />
           </div>
         </div>
-        {isNftList ? <NftGrid /> : <UserGrid /> }
+        {(isNftList && isValidProfile) ? <NftGrid /> : <UserGrid /> }
       </Container>
       <ModalLoader loading={loading} />
     </>

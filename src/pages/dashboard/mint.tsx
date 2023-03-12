@@ -16,10 +16,12 @@ const Mint: NextPage = () => {
     visible: false,
     title: "",
     text: "",
-    close,
+    close:()=>{},
   });
   const router = useRouter();
-
+  const created = () => {
+    setModal({ ...modal, visible: false });router.push("/dashboard"); setLoading(true)
+  }
   useEffect(() => {
     const publicKey = sessionStorage.getItem("publicKey");
     const isCompany = sessionStorage.getItem("isCompany");
@@ -69,7 +71,7 @@ const Mint: NextPage = () => {
           visible: true,
           title: "Success",
           text: "Template created successfully",
-          close: () => setModal({ ...modal, visible: false }),
+          close: () => created(),
         })
       })
       .catch(() => {

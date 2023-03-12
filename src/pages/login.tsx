@@ -36,6 +36,7 @@ const Home: NextPage = () => {
   }
   async function fetchData() {
     if( publicKey == null || checkUserSession()) return
+    setLoading(true)
     //aqui tenemos que revisar si la wallet esta registrada
     try {
       const response = await fetch("/api/getDocument", {
@@ -49,30 +50,45 @@ const Home: NextPage = () => {
         }),
       });
       const data = await response.json();
-      console.log(data)
-      data
-        ? setProfileData(data)
-        : setModal({
+      
+      if(data != null){
+        console.log(1)
+        setProfileData(data)
+      }
+      else{
+        console.log(2) 
+        setModal({
             ...modal,
             title: "Error",
+            visible:true,
             text: "You are not registered, register to Kawi to continue",
+            onAcept:()=>{onModalCancel(); setLoading(true); router.push("/register"); },
+            onCancel:() => {onModalCancel()}
           });
+        }
     } catch (error) {
       console.error(error);
-    }   
+    }
+
+    setLoading(false)
   }
 
   useEffect(() => {
+    if(!publicKey) return
+    checkUserSession()
     setModal({
       ...modal,
       title: "Wallet detected",
-      text: "Hemos detectado una wallet: " + publicKey?.toBase58(),
-      onAcept:onModalAcept(),
-      onCancel:()=>{setModal({
-        ...modal,
-        onAcept:null,
-        onCancel:null,
-        visible: false
+      text: "You wish to use this wallet? " + publicKey?.toBase58(),
+      visible:true,
+      onAcept:()=>{onModalAcept()},
+      onCancel:()=>{
+        onModalCancel();
+        setModal({
+          ...modal,
+          title: "Cambie su wallet",
+          text: "Cambie de wallet para poder continuar",
+          visible:true,
         })}
     });
 
@@ -80,8 +96,19 @@ const Home: NextPage = () => {
 
   const onModalAcept = () => {
     fetchData();
+    setModal({
+      ...modal,
+      visible:false
+    });
   }
-
+  const onModalCancel = () => {
+    setModal({
+      ...modal,
+      visible:false,
+      onAcept:null,
+      onCancel:null,
+    });
+  }
   useEffect(() =>{
     if(!profileData) return
      //guardamos la pbkey
