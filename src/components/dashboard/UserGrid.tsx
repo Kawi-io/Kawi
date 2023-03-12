@@ -58,8 +58,8 @@ export const UserGrid = () => {
       ) : (
         <Grid.Container gap={2} justify="center">
           {employees.length > 0 ? (
-            employees.map((item) => (
-              <>
+            <>
+              {employees.map((item) => (
                 <Grid lg={3} sm={4} key={users.indexOf(item)}>
                   <UserCard
                     name={item.name}
@@ -67,32 +67,32 @@ export const UserGrid = () => {
                     wallet={item.wallet}
                   />
                 </Grid>
-                <Grid lg={3} sm={4}>
-                  <Button
-                    bordered
-                    ghost
-                    auto
-                    css={{ w: "100%", h: "180px" }}
-                    onPress={() => router.push("/dashboard/new")}
+              ))}
+              <Grid lg={3} sm={4}>
+                <Button
+                  bordered
+                  ghost
+                  auto
+                  css={{ w: "100%", h: "180px" }}
+                  onPress={() => router.push("/dashboard/new")}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 4.5v15m7.5-7.5h-15"
-                      />
-                    </svg>
-                  </Button>
-                </Grid>
-              </>
-            ))
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                </Button>
+              </Grid>
+            </>
           ) : (
             <div className="text-center py-20">
               <p className="mt-6 text-base leading-7 text-gray-600 text-lg md:text-xl">
