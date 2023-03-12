@@ -1,17 +1,20 @@
 /* eslint-disable */
-import { type NextPage } from "next";
+import  { type NextPage } from "next";
+import Link from "next/link"
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { Container, Grid } from "@nextui-org/react";
 import { Provider, AnchorProvider } from "@project-serum/anchor";
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { NftCard, mint, ModalLoader, CustomModal } from "~/components/index";
 import { useRouter } from "next/router";
 
 const Mint: NextPage = () => {
+  const { publicKey} = useWallet();
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isValidProfile, setIsValidProfile]= useState(false);
   const [modal, setModal] = useState({
     visible: false,
     title: "",
@@ -23,20 +26,24 @@ const Mint: NextPage = () => {
     setModal({ ...modal, visible: false });router.push("/dashboard"); setLoading(true)
   }
   useEffect(() => {
-    const publicKey = sessionStorage.getItem("publicKey");
-    const isCompany = sessionStorage.getItem("isCompany");
-
-    //si no hay pubkey, o si la que hay no esta registrada como empresa
-    if (!publicKey || isCompany == "false") {
-      router.push("/");
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        companyID: publicKey,
-      }));
-      setIsLoggedIn(true);
+    if (publicKey == null) return
+    const _publicKey = sessionStorage.getItem("publicKey");
+    const isCompany = sessionStorage.getItem("isCompany")
+    if(isCompany!="true"){ router.push("/") }
+    if (publicKey.toBase58() != _publicKey){
+      setModal({
+        visible: true,
+        title: "Error",
+        text: "The wallet has been changed, plase use the owner's wallet to continue",
+        close: () => setModal({ ...modal, visible: false }),
+      })
+      setIsValidProfile(false)
+    }else{
+      setIsValidProfile(true)
     }
-  }, []);
+    setLoading(false);
+    
+  }, [publicKey]);
   const [formData, setFormData] = useState({
     nftName: "",
     nftDesc: "",
@@ -86,6 +93,7 @@ const Mint: NextPage = () => {
   };
 
   return (
+    
     <>
       <CustomModal
         visible={modal.visible}
@@ -95,9 +103,10 @@ const Mint: NextPage = () => {
       />
 
       <Head>
+       
         <title>Create a new template</title>
       </Head>
-      {isLoggedIn ? (
+      {isValidProfile ? (
         <Container className="p-3">
           <div className="py-10 px-8 sm:px-40">
             <h1 className="text-center px-4 sm:px-0 text-3xl sm:text-5xl">
@@ -213,7 +222,7 @@ const Mint: NextPage = () => {
           <ModalLoader loading={loading} />
         </Container>
       ) : (
-        <ModalLoader loading={true} />
+        null
       )}
     </>
   );

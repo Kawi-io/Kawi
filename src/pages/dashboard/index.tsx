@@ -1,25 +1,19 @@
 import { useState, useEffect } from "react";
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import { Container } from "@nextui-org/react";
 import { NftGrid, UserGrid } from "~/components/index";
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 import { ModalLoader, CustomModal } from "~/components/index";
 import Head from 'next/head';
-type Props = { host: string | null };
-export const getServerSideProps: GetServerSideProps<any> = async (context) => ({
-  props: { host: context.req.headers.host || null },
-});
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-
-const Index: NextPage<Props> = ({ host }) => {
+const Index: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [isNftList, setIsNftList] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   const [isValidProfile, setIsValidProfile]= useState(false);
   
@@ -30,14 +24,14 @@ const Index: NextPage<Props> = ({ host }) => {
     text: "",
     close:()=>{},
   });
-  const wallet = useAnchorWallet();
+  const { publicKey} = useWallet();
 
   useEffect(() => {
-    if (wallet == null) return
-    const publicKey = sessionStorage.getItem("publicKey");
+    if (publicKey == null) return
+    const _publicKey = sessionStorage.getItem("publicKey");
     const isCompany = sessionStorage.getItem("isCompany")
-
-    if (wallet.publicKey.toBase58() != publicKey){
+    if(isCompany!="true"){ router.push("/") }
+    if (publicKey.toBase58() != _publicKey){
       setModal({
         visible: true,
         title: "Error",
@@ -48,17 +42,9 @@ const Index: NextPage<Props> = ({ host }) => {
       return
     }
     setIsValidProfile(true)
-    setLoading(true);
-    
-
-
-    if (!publicKey || isCompany == "false") {
-      router.push("/");
-    } else {
-      setIsLoggedIn(true);
-    }
     setLoading(false);
-  }, []);
+    
+  }, [publicKey]);
 
   return (
     <>
@@ -113,7 +99,7 @@ const Index: NextPage<Props> = ({ host }) => {
             <hr className="border-1 h-0.5 bg-black" />
           </div>
         </div>
-        {(isNftList && isValidProfile) ? <NftGrid /> : <UserGrid /> }
+        { isValidProfile ? isNftList ? <NftGrid /> : <UserGrid /> : null }
       </Container>
       <ModalLoader loading={loading} />
     </>
