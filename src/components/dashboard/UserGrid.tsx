@@ -6,25 +6,6 @@ import Link from "next/link";
 
 import { Loading, UserCard } from "../index";
 
-// TODO: Eliminar, for testing
-const users = [
-  {
-    name: "John Smith",
-    email: "john@smith.com",
-    wallet: "DqUXJ7vP3poUJ46MnfxwNetKQQ64S8GowTbKRVNnhPJV",
-  },
-  {
-    name: "John Smith",
-    email: "john@smith.com",
-    wallet: "9U7ZTupH5jVP51F91d8gc79NNVbV9am29RtQTuuMxmow",
-  },
-  {
-    name: "John Smith",
-    email: "john@smith.com",
-    wallet: "6vAAaogpRsZM3ZoLGFtJqLdPTsGVtT1h7S7qg9CMCvds",
-  },
-];
-
 // TODO: Redireccionar a pagina linkear usuario
 export const UserGrid = () => {
   const router = useRouter();
@@ -60,11 +41,11 @@ export const UserGrid = () => {
           {employees.length > 0 ? (
             <>
               {employees.map((item) => (
-                <Grid lg={3} sm={4} key={users.indexOf(item)}>
+                <Grid lg={3} sm={4} key={employees.indexOf(item)}>
                   <UserCard
                     name={item.name}
                     email={item.email}
-                    wallet={item.wallet}
+                    wallet={item._id}
                   />
                 </Grid>
               ))}
