@@ -22,7 +22,7 @@ interface NftCardProps {
 export const NftCard: React.FC<NftCardProps> = ({
   title,
   symbol,
-  image = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_188493.png&f=1&nofb=1&ipt=95aa70dd7016d7c37751b46707812810af6d7c07cc74ed562523858d98dc25b8&ipo=images",
+  image = "https://camarasal.com/wp-content/uploads/2020/08/default-image-5-1.jpg",
   description,
   btnText,
   event,
