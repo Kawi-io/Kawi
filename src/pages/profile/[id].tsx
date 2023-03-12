@@ -92,83 +92,73 @@ const VerNFTs: NextPage = () => {
       />
 
       {profileData ? (
-        <Container className="p-6">
-          <div className="py- px-8 sm:px-40 my-5">
-            <h1 className="text-center px-4 sm:px-0 text-3xl sm:text-5xl">
-              {profileData.name}
-            </h1>
-            {profileData.is_company ? (
-              <p className="text-center text-gray-500">Company</p>
-            ) : (
-              ""
-            )}
-          </div>
-          <div className="my-3">
-            <hr className="border-1 h-0.5 bg-black" />
-          </div>
-          <div className="mb-4 flex flex-col md:flex-row">
-            <div className="lg:justify-between md:w-1/3 mr-4 ">
-              <div className="min-w-0 flex-1">
-                <div className="flew-row lg:basis-3/4 h-auto block mt-5 lg:mt-0 ">
-                  <div className="flex justify-start align-start text-left">
-                    <p>{profileData.about}</p>
-                  </div>
-                </div>
-                <div className="mt-8 lg:mt-14 lg:flex">
-                  <div className="lg:inline-grid lg:grid-cols-1 gap-3 grid-rows-3 h-auto">
-                    {!profileData.is_company ? (
-                      <>
-                        <div className=" flex  justify-start align-start">
-                          <BriefcaseIcon
-                            className="mr-1.5 justify-start h-5 w-5 flex-shrink-0 text-purple"
-                            aria-hidden="true"
-                          />
-                          {profileData.profession}
-                        </div>
-                        <div className="flex justify-start align-middle">
-                          <MapPinIcon
-                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-purple"
-                            aria-hidden="true"
-                          />
-                          {profileData.country_residence}
-                        </div>
-                        <div className="flex justify-start align-middle">
-                          <AtSymbolIcon
-                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-purple"
-                            aria-hidden="true"
-                          />
-                          {profileData.email}
-                        </div>
-                      </>
-                    ) : (
-                      <div className="flex justify-start align-middle">
-                        <BuildingOfficeIcon
-                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-purple"
-                          aria-hidden="true"
-                        />
-                        {profileData.business_field}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
+        <>
+          <Head>
+            <title>{profileData.name}</title>
+          </Head>
+          <Container className="p-6">
+            <div className="py- px-8 sm:px-40 my-5">
+              <h1 className="text-center px-4 sm:px-0 text-3xl sm:text-5xl">
+                {profileData.name}
+              </h1>
+              {profileData.is_company ? (
+                <p className="text-center text-gray-500">Company</p>
+              ) : (
+                ""
+              )}
             </div>
-            {nfts.length > 0 ? (
-              <div className=" md:w-1/2">
-                <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-                  {nfts.map((item: any) => (
-                    <NftCard
-                      key={nfts.indexOf(item)}
-                      title={item.name}
-                      image={item.image}
-                      description={item.description}
-                      symbol={item.symbol}
-                    />
-                  ))}
+            <div className="my-3">
+              <hr className="border-1 h-0.5 bg-black" />
+            </div>
+            <div className="mb-4 flex flex-col md:flex-row">
+              <div className="llg:justify-between md:w-1/3 mr-4">
+                <div className="min-w-0 flex-1">
+                  <div className="flew-row lg:basis-3/4 h-auto block mt-5 lg:mt-0 ">
+                    <div className="flex justify-start align-start text-left">
+                      <p>{profileData.about}</p>
+                    </div>
+                  </div>
+                  <div className="mt-8 lg:mt-14 lg:flex">
+                    <div className="lg:inline-grid lg:grid-cols-1 gap-3 grid-rows-3 h-auto">
+                      {!profileData.is_company ? (
+                        <>
+                          <div className=" flex  justify-start align-start">
+                            <BriefcaseIcon
+                              className="mr-1.5 justify-start h-5 w-5 flex-shrink-0 text-purple"
+                              aria-hidden="true"
+                            />
+                            {profileData.profession}
+                          </div>
+                          <div className="flex justify-start align-middle">
+                            <MapPinIcon
+                              className="mr-1.5 h-5 w-5 flex-shrink-0 text-purple"
+                              aria-hidden="true"
+                            />
+                            {profileData.country_residence}
+                          </div>
+                          <div className="flex justify-start align-middle">
+                            <AtSymbolIcon
+                              className="mr-1.5 h-5 w-5 flex-shrink-0 text-purple"
+                              aria-hidden="true"
+                            />
+                            {profileData.email}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="flex justify-start align-middle">
+                          <BuildingOfficeIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-purple"
+                            aria-hidden="true"
+                          />
+                          {profileData.business_field}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
               {nfts.length > 0 ? (
-                <div className=" mx-auto max-w-2xl lg:max-w-7xl w-1/2">
+                <div className="md:w-1/2">
                   <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                     {nfts.map((item: any) => (
                       <NftCard
