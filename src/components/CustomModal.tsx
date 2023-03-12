@@ -9,6 +9,8 @@ interface CustomModalProps {
 }
 
 /**
+ * @visible Muestra si el modal es visible o no
+ * @close Funcion de metodo a realizar al cerrar el modal
  * @title Titulo que aparece en el modal
  * @text Texto a mostrar en el modal
  * @titleColor Color del titulo

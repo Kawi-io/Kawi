@@ -6,12 +6,18 @@ import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { Container, Grid } from "@nextui-org/react";
 import { Provider, AnchorProvider } from "@project-serum/anchor";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
-import { NftCard, mint, ModalLoader } from "~/components/index";
+import { NftCard, mint, ModalLoader, CustomModal } from "~/components/index";
 import { useRouter } from "next/router";
 
 const Mint: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [modal, setModal] = useState({
+    visible: false,
+    title: "",
+    text: "",
+    close,
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -59,15 +65,33 @@ const Mint: NextPage = () => {
       },
     })
       .then((res) => {
-        console.log(res.status);
-        alert("ok");
+        setModal({
+          visible: true,
+          title: "Success",
+          text: "Template created successfully",
+          close: () => setModal({ ...modal, visible: false }),
+        })
       })
-      .catch(() => alert("error"));
+      .catch(() => {
+        setModal({
+          visible: true,
+          title: "Error",
+          text: "An error occurred while creating the template",
+          close: () => setModal({ ...modal, visible: false }),
+        })
+      });
     setLoading(false);
   };
 
   return (
     <>
+      <CustomModal
+        visible={modal.visible}
+        title={modal.title}
+        text={modal.text}
+        close={modal.close}
+      />
+
       <Head>
         <title>Create a new template</title>
       </Head>
