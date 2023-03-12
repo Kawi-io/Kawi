@@ -59,7 +59,7 @@ export const UserGrid = () => {
         <Grid.Container gap={2} justify="center">
           {employees.length > 0 ? (
             <>
-              {employees.map((item) => (
+              {employees.map((item:any) => (
                 <Grid lg={3} sm={4} key={users.indexOf(item)}>
                   <UserCard
                     name={item.name}
