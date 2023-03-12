@@ -16,7 +16,7 @@ const Mint: NextPage = () => {
     visible: false,
     title: "",
     text: "",
-    close,
+    close: () => setModal({...modal, visible: false}),
   });
   const router = useRouter();
 
