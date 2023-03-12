@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { CustomModal } from "../index";
 
 interface DashboardElementsProps {
   mobile?: boolean;
@@ -22,9 +23,35 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const DashboardElements = ({ mobile = false, isCompany }: DashboardElementsProps) => {
+export const DashboardElements = ({
+  mobile = false,
+  isCompany,
+}: DashboardElementsProps) => {
   const router = useRouter();
   const [wallet, setWallet] = useState<string>();
+  const [modal, setModal] = useState({
+    visible: false,
+    title: "",
+    text: "",
+    close,
+  });
+
+  const logout = (event: any) => {
+    event.preventDefault();
+
+    sessionStorage.removeItem("publicKey");
+    sessionStorage.removeItem("isCompany");
+
+    setModal({
+      visible: true,
+      title: "Success",
+      text: "You have been logged out",
+      close: () => {
+        router.push("/");
+        window.location.reload();
+      },
+    });
+  };
 
   const tabs = [
     {
@@ -108,27 +135,6 @@ export const DashboardElements = ({ mobile = false, isCompany }: DashboardElemen
         </svg>
       ),
     },
-    {
-      name: "Logout",
-      href: "/logout",
-      user: true,
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-          />
-        </svg>
-      ),
-    },
   ];
 
   useEffect(() => {
@@ -142,6 +148,12 @@ export const DashboardElements = ({ mobile = false, isCompany }: DashboardElemen
   if (!mobile) {
     return (
       <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <CustomModal
+          visible={modal.visible}
+          title={modal.title}
+          text={modal.text}
+          close={modal.close}
+        />
         <div>
           <div className="hidden sm:block">
             <nav className="isolate flex divide-x rounded-lg" aria-label="Tabs">
@@ -171,6 +183,29 @@ export const DashboardElements = ({ mobile = false, isCompany }: DashboardElemen
                   />
                 </Link>
               ))}
+              <button
+                onClick={logout}
+                className="text-gray-500 hover:text-gray-700 rounded-r-lg group relative min-w-0 flex-1 overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                  />
+                </svg>
+                <span
+                  aria-hidden="true"
+                  className="bg-transparent absolute inset-x-0 bottom-0 h-0.5"
+                />
+              </button>
             </nav>
           </div>
         </div>
@@ -180,16 +215,31 @@ export const DashboardElements = ({ mobile = false, isCompany }: DashboardElemen
 
   return (
     <>
+      <CustomModal
+        visible={modal.visible}
+        title={modal.title}
+        text={modal.text}
+        close={modal.close}
+      />
       {tabs.map((tab: any) => (
         <Link
           key={tab.name}
           scroll={false}
           href={tab.href}
+          onClick={tab.event}
           className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
         >
           {tab.name}
         </Link>
       ))}
+
+      <button
+        onClick={logout}
+        className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+      >
+        {" "}
+        Logout
+      </button>
     </>
   );
 };

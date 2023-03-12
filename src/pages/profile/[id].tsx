@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { PublicKey, Connection, clusterApiUrl } from "@solana/web3.js";
 import { Metaplex } from "@metaplex-foundation/js";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import Head from "next/head";
 import { Container } from "@nextui-org/react";
 import {
   AtSymbolIcon,
@@ -13,12 +13,16 @@ import {
   MapPinIcon,
 } from "@heroicons/react/20/solid";
 
-import { NftCard } from "../../components/index";
-import Head from 'next/head';
+import { CustomModal, NftCard } from "../../components/index";
 
 const VerNFTs: NextPage = () => {
   const [nfts, SetNfts] = useState<any>([]);
   const [profileData, setProfileData] = useState<any>();
+  const [modal, setModal] = useState({
+    visible: false,
+    title: "",
+    text: "",
+  });
 
   const router = useRouter();
   const publicKey: any = router.query.id;
@@ -38,7 +42,15 @@ const VerNFTs: NextPage = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          data ? setProfileData(data) : alert("El usuario no existe");
+          data
+            ? setProfileData(data)
+            : setModal({
+                ...modal,
+                visible: true,
+                title: "Error",
+                text: "User doesn't exist",
+              });
+              
           console.log(data);
         })
         .catch((error) => console.error(error));
@@ -72,9 +84,12 @@ const VerNFTs: NextPage = () => {
 
   return (
     <>
-      <Head>
-        {profileData ? <title>{profileData.name} profile</title> : null}
-      </Head>
+      <CustomModal
+        visible={modal.visible}
+        title={modal.title}
+        text={modal.text}
+        close={() => setModal({ ...modal, visible: false })}
+      />
 
       {profileData ? (
         <Container className="p-6">
@@ -152,15 +167,30 @@ const VerNFTs: NextPage = () => {
                   ))}
                 </div>
               </div>
-            ) : (
-              <div className="text-center py-20">
-                <p className="mt-6 text-base leading-7 text-gray-600">
-                  This user doesn't seem to have any experience yet.
-                </p>
-              </div>
-            )}
-          </div>
-        </Container>
+              {nfts.length > 0 ? (
+                <div className=" mx-auto max-w-2xl lg:max-w-7xl w-1/2">
+                  <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                    {nfts.map((item: any) => (
+                      <NftCard
+                        key={nfts.indexOf(item)}
+                        title={item.name}
+                        image={item.image}
+                        description={item.description}
+                        symbol={item.symbol}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-20">
+                  <p className="mt-6 text-base leading-7 text-gray-600">
+                    This user doesn't seem to have any experience yet.
+                  </p>
+                </div>
+              )}
+            </div>
+          </Container>
+        </>
       ) : (
         <div className="mt-3 text-center py-48">
           <div className="mt-10 flex items-center justify-center gap-x-6">
