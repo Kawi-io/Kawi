@@ -13,6 +13,7 @@ import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { mint } from "../../components/Anchor";
 import Head from "next/head";
 import { CustomModal } from "../../components/index";
+import { Employee } from "~/interfaces/Employee";
 type Props = { host: string | null };
 export const getServerSideProps: GetServerSideProps<any> = async (context) => ({
   props: { host: context.req.headers.host || null },
@@ -54,7 +55,7 @@ const Transfer: NextPage<Props> = ({ host }) => {
   const { nft_uri } = router.query;
   const wallet = useAnchorWallet();
   const [nft, setNft] = useState<any>({});
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
 
   useEffect(() => {
     setLoading(true);
@@ -237,8 +238,8 @@ const Transfer: NextPage<Props> = ({ host }) => {
                         >
                           {employees.map((user) => (
                             <option
-                              key={users.indexOf(user)}
-                              value={user.wallet}
+                              key={employees.indexOf(user)}
+                              value={user._id}
                             >
                               {user.name}: {user._id}
                             </option>

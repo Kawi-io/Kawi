@@ -5,12 +5,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import { Loading, UserCard } from "../index";
-
-interface Employee {
-  name: string,
-  email: string,
-  _id: string
-}
+import { Employee } from "~/interfaces/Employee";
 
 export const UserGrid = () => {
   const router = useRouter();
