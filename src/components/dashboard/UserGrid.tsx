@@ -6,10 +6,15 @@ import Link from "next/link";
 
 import { Loading, UserCard } from "../index";
 
-// TODO: Redireccionar a pagina linkear usuario
+interface Employee {
+  name: string,
+  email: string,
+  _id: string
+}
+
 export const UserGrid = () => {
   const router = useRouter();
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
