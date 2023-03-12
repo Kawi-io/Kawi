@@ -1,24 +1,19 @@
-import PropTypes from 'prop-types';
 import Avatar from "boring-avatars";
 
-export const BoringAvatar = ({ size , wallet, variant }: any) => {
+interface Props {
+  size?: number;
+  wallet: string;
+  variant?: "marble" | "pixel" | "sunset" | "ring" | "bauhaus" | "beam";
+}
+
+export const BoringAvatar = ({ size = 100, wallet, variant = "beam" }: Props) => {
   return (
     <Avatar
       size={size}
       name={wallet}
       variant={variant}
       colors={["#6B7280", "#2A7886", "#512B58", "#B2BDC3", "#000"]}
+      aria-label={`Avatar for ${wallet}`}
     />
   );
 };
-
-BoringAvatar.propTypes = {
-    size: PropTypes.number,
-    wallet: PropTypes.string.isRequired,
-    variant: PropTypes.string
-}
-
-BoringAvatar.defaultProps = {
-    size: 100,
-    variant: "beam"
-}
