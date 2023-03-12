@@ -11,7 +11,7 @@ import { NftCard } from "../../components/index";
 import { Provider, AnchorProvider } from "@project-serum/anchor";
 import { useAnchorWallet } from "@solana/wallet-adapter-react";
 import { mint } from "../../components/Anchor";
-import Head from 'next/head';
+import Head from "next/head";
 import { CustomModal } from "../../components/index";
 type Props = { host: string | null };
 export const getServerSideProps: GetServerSideProps<any> = async (context) => ({
@@ -42,10 +42,10 @@ const _connection = new Connection(clusterApiUrl("devnet"));
 const mx = Metaplex.make(_connection);
 const Transfer: NextPage<Props> = ({ host }) => {
   const [modal, setModal] = useState({
-    "title":"",
-    "text":"",
-    "color":"",
-    "visible":false
+    title: "",
+    text: "",
+    color: "",
+    visible: false,
   });
   const [loading, setLoading] = useState(false);
   const { publicKey } = useWallet();
@@ -54,6 +54,27 @@ const Transfer: NextPage<Props> = ({ host }) => {
   const { nft_uri } = router.query;
   const wallet = useAnchorWallet();
   const [nft, setNft] = useState<any>({});
+  const [employees, setEmployees] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch("/api/getEmployees", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        id: sessionStorage.getItem("publicKey"),
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setEmployees(data);
+        console.log(data);
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
     const publicKey = sessionStorage.getItem("publicKey");
@@ -102,7 +123,7 @@ const Transfer: NextPage<Props> = ({ host }) => {
     //la metadata de nuestro NFT, propiedades como la imagen, el fondo, u otras que quieran ser agregadas
     //testNftUri tiene que ser un arhivo previamente generado para cada plantilla de NFT
     const testNftUri = nft.uri;
-    console.log(testNftUri)
+    console.log(testNftUri);
     //esta será la wallet a la cual será transferido el NFT una vez minteado. Si no se desea transferir se puede dejar en blanco
     //o no mandarla directamente
     const to = "9U7ZTupH5jVP51F91d8gc79NNVbV9am29RtQTuuMxmow";
@@ -115,7 +136,7 @@ const Transfer: NextPage<Props> = ({ host }) => {
     );
     //le mandamos a hablar a la funcion mint, que se comunica con nuestro contrato y crea el nft.
     // let _mint:any = mint(getProvider()!,testNftTitle, testNftSymbol, testNftUri, to);
-    setLoading(false)
+    setLoading(false);
     if (_mint != null) {
       setModal({
         ...modal,
@@ -123,7 +144,7 @@ const Transfer: NextPage<Props> = ({ host }) => {
         title: "Success",
         text: "El certificado fue creado de manera exitosa",
       });
-    }else{
+    } else {
       setModal({
         ...modal,
         visible: true,
@@ -135,7 +156,7 @@ const Transfer: NextPage<Props> = ({ host }) => {
 
   useEffect(() => {
     const publicKey = sessionStorage.getItem("publicKey");
-    const isCompany = sessionStorage.getItem("isCompany")
+    const isCompany = sessionStorage.getItem("isCompany");
 
     //si no hay pubkey, o si la que hay no esta registrada como empresa
     if (!publicKey || isCompany == "false") {
@@ -214,12 +235,12 @@ const Transfer: NextPage<Props> = ({ host }) => {
                           name="employee"
                           className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         >
-                          {users.map((user) => (
+                          {employees.map((user) => (
                             <option
                               key={users.indexOf(user)}
                               value={user.wallet}
                             >
-                              {user.name}: {user.wallet}
+                              {user.name}: {user._id}
                             </option>
                           ))}
                         </select>
@@ -264,7 +285,7 @@ const Transfer: NextPage<Props> = ({ host }) => {
             title={modal.title}
             text={modal.text}
             close={() => setModal({ ...modal, visible: false })}
-      />
+          />
         </Container>
       ) : (
         <ModalLoader loading={true} />
