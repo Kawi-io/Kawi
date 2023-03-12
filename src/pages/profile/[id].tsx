@@ -91,8 +91,8 @@ const VerNFTs: NextPage = () => {
           <div className="my-3">
             <hr className="border-1 h-0.5 bg-black" />
           </div>
-          <div className="flex flex-row">
-            <div className="lg:flex lg:items-start mt-2 lg:justify-between w-1/3">
+          <div className="mb-4 flex flex-col md:flex-row">
+            <div className="lg:justify-between md:w-1/3 mr-4 ">
               <div className="min-w-0 flex-1">
                 <div className="flew-row lg:basis-3/4 h-auto block mt-5 lg:mt-0 ">
                   <div className="flex justify-start align-start text-left">
@@ -139,7 +139,7 @@ const VerNFTs: NextPage = () => {
               </div>
             </div>
             {nfts.length > 0 ? (
-              <div className=" mx-auto max-w-2xl lg:max-w-7xl w-1/2">
+              <div className=" md:w-1/2">
                 <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                   {nfts.map((item: any) => (
                     <NftCard
