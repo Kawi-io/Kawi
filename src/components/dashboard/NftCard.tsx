@@ -3,7 +3,7 @@ import { Card, Col, Row, Button, Text } from "@nextui-org/react";
 interface NftCardProps {
   title: string;
   symbol?: string;
-  image: string;
+  image?: string;
   description: string;
   btnText?: string;
   event?: () => void;
@@ -19,23 +19,16 @@ interface NftCardProps {
  * @event opcional, evento que dispara el boton
  *
  */
-export const NftCard : React.FC<NftCardProps> = ({
+export const NftCard: React.FC<NftCardProps> = ({
   title,
   symbol,
-  image,
+  image = "https://camarasal.com/wp-content/uploads/2020/08/default-image-5-1.jpg",
   description,
   btnText,
   event,
 }: NftCardProps) => {
   return (
     <Card css={{ w: "100%", h: "250px" }}>
-      <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
-        <Col>
-          <Text h3 color="black">
-            {title}
-          </Text>
-        </Col>
-      </Card.Header>
       <Card.Body css={{ p: 0 }}>
         <Card.Image
           src={image}
@@ -57,10 +50,14 @@ export const NftCard : React.FC<NftCardProps> = ({
       >
         <Row>
           <Col>
-            <Text color="#000" size={12}>
+            <Text h3 b size={14}>
+              {title}
+            </Text>
+            <Text small size={12}>
               {description}
             </Text>
-            <Text color="#000" size={12}>
+            <br></br>
+            <Text small  size={12}>
               {symbol}
             </Text>
           </Col>

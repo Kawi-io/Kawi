@@ -1,49 +1,65 @@
 import { useState, useEffect } from "react";
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import { Container } from "@nextui-org/react";
-import { NftGrid } from "~/components/index";
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { NftGrid, UserGrid } from "~/components/index";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
-import ModalLoader from "./../../components/ModalLoader"
-type Props = { host: string | null };
-export const getServerSideProps: GetServerSideProps<any> =
-  async context => ({ props: { host: context.req.headers.host || null } });
+import { ModalLoader, CustomModal } from "~/components/index";
+import Head from 'next/head';
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Index: NextPage<Props> =  ({ host }) => {
+const Index: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [isNftList, setIsNftList] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  const [isValidProfile, setIsValidProfile]= useState(false);
+  
   const router = useRouter();
-
-  const wallet = useAnchorWallet();
+  const [modal, setModal] = useState({
+    visible: false,
+    title: "",
+    text: "",
+    close:()=>{},
+  });
+  const { publicKey} = useWallet();
 
   useEffect(() => {
-    setLoading(true)
-    const publicKey = sessionStorage.getItem('publicKey');
-    console.log(publicKey);
-    //si no hay pubkey, o si la que hay no esta registrada como empresa
-    // setIsLoggedIn(true);
-    if (!publicKey) {
-      router.push('/');
+    if (publicKey == null) return
+    const _publicKey = sessionStorage.getItem("publicKey");
+    const isCompany = sessionStorage.getItem("isCompany")
+    if(isCompany!="true"){ router.push("/") }
+    if (publicKey.toBase58() != _publicKey){
+      setModal({
+        visible: true,
+        title: "Error",
+        text: "The wallet has been changed, plase use the owner's wallet to continue",
+        close: () => setModal({ ...modal, visible: false }),
+      })
+      setIsValidProfile(false)
+      return
     }
-    else{
-      setIsLoggedIn(true);
-    }
-    setLoading(false)
-  }, []);
-
+    setIsValidProfile(true)
+    setLoading(false);
+    
+  }, [publicKey]);
 
   return (
     <>
-        <Container className="p-3">
-        {/* <div className="py-4">
-          <h3 className="text-center">{isNftList ? "Your NFTs" : "Your employees"}</h3>
-        </div> */}
+    <CustomModal
+        visible={modal.visible}
+        title={modal.title}
+        text={modal.text}
+        close={modal.close}
+      />
 
+      <Head>
+        <title>Your dashboard</title>
+      </Head>
+
+      <Container className="p-3">
         <div className="py-2">
           <div className="hidden sm:block">
             <div
@@ -79,14 +95,13 @@ const Index: NextPage<Props> =  ({ host }) => {
             </div>
           </div>
 
-
           <div className="m-2">
             <hr className="border-1 h-0.5 bg-black" />
           </div>
         </div>
-        <NftGrid/>
+        { isValidProfile ? isNftList ? <NftGrid /> : <UserGrid /> : null }
       </Container>
-      <ModalLoader loading={loading}/>
+      <ModalLoader loading={loading} />
     </>
   );
 };

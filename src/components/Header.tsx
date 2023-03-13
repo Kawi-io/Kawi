@@ -2,12 +2,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, Popover } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Button } from "@nextui-org/react";
 
 import { LandingElements, DashboardElements } from "../components/index";
+import { PublicKey } from "@solana/web3.js";
 
 const logo = {
   name: "Kawi",
@@ -20,8 +21,27 @@ const logo = {
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // TODO: Este state es para ver si hay una sesion o no
-  const [session, setSession] = useState(false);
+  const [session, setSession] = useState({
+    isSession: false,
+    isCompany: false,
+    PublicKey: "",
+  });
   const router = useRouter();
+
+  useEffect(() => {
+    if (
+      sessionStorage.getItem("publicKey") &&
+      sessionStorage.getItem("isCompany")
+    ) {
+      setSession({
+        isSession: true,
+        PublicKey: sessionStorage.getItem("publicKey")!,
+        isCompany:(sessionStorage.getItem("isCompany")!=="true"),
+      });
+
+      console.log(session)
+    }
+  }, []);
 
   return (
     <header className="bg-white">
@@ -61,15 +81,37 @@ export const Header = () => {
         </Popover.Group>
 
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          {session ? (
-            <Button color="primary" size="lg" auto>
-              Access
-            </Button>
+          {session.isSession ? (
+            <DashboardElements
+              isCompany={session.isCompany}
+            />
           ) : (
-            ""
+            <Link
+              className="
+              inline-flex
+              items-center
+              rounded-full
+              px-10
+              py-3
+              text-sm
+              font-medium
+              shadow-sm
+              focus:outline-none 
+              focus:ring-2 
+              focus:ring-offset-2
+              bg-teal
+              hover:bg-teal-900
+              focus:ring-teal-500
+              text-white
+              border-transparent
+              w-50
+              flex justify-center
+              "
+              href="/register"
+            >
+              <p>Access</p>
+            </Link>
           )}
-          {/* TODO:  Agregar aqui check si esta en perfil propio */}
-          {router.pathname.includes("/dashboard") || router.pathname.includes("/profile")  ? <DashboardElements /> : ""}
         </div>
       </nav>
 
@@ -108,8 +150,11 @@ export const Header = () => {
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
                 {router.pathname === "/" ? <LandingElements /> : ""}
-                {router.pathname.includes("/dashboard") ? (
-                  <DashboardElements />
+                {session.isSession ? (
+                  <DashboardElements
+                    mobile={true}
+                    isCompany={session.isCompany}
+                  />
                 ) : (
                   ""
                 )}

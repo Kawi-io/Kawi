@@ -25,3 +25,5 @@ export { WalletComponent } from './WalletComponent'
 
 export { What } from './What'
 export { Who } from './Who'
+
+export { Loading } from './Loading'
