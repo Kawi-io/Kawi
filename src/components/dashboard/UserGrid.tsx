@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import { Loading, UserCard } from "../index";
+import { Employee } from "~/interfaces/Employee";
 
-// TODO: Redireccionar a pagina linkear usuario
 export const UserGrid = () => {
   const router = useRouter();
   const [employees, setEmployees] = useState([{
