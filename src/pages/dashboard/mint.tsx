@@ -40,6 +40,10 @@ const Mint: NextPage = () => {
       setIsValidProfile(false)
     }else{
       setIsValidProfile(true)
+      setFormData((prevData) => ({
+        ...prevData,
+        "companyID": publicKey.toBase58(),
+      }));
     }
     setLoading(false);
     
@@ -66,6 +70,7 @@ const Mint: NextPage = () => {
     event.preventDefault();
     setLoading(true);
     console.log(formData);
+    if(formData.companyID == "") return;
     const res = await fetch("/api/postJsonMetadata", {
       method: "POST",
       body: JSON.stringify(formData),
