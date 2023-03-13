@@ -94,7 +94,7 @@ const Transfer: NextPage<Props> = ({ host }) => {
     // fetchNFTs(list.length, publicKey);
   }, [publicKey]);
   const getNftInfo = async (path: any) => {
-    const response = await fetch(path);
+    const response = await fetch(path, {mode: "no-cors"});
     let data = await response.json();
     data.uri = path;
     setNft(data);

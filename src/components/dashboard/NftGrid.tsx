@@ -38,7 +38,7 @@ export const NftGrid = () => {
           try {
             console.log("path:" + path);
             path = "https://gateway.pinata.cloud/ipfs/" + path;
-            const response = await fetch(path);
+            const response = await fetch(path,{mode: "no-cors"});
             let data = await response.json();
             data.uri = path;
             setNftList((prevList: any) => [...prevList, data]);
