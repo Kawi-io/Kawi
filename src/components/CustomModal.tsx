@@ -1,4 +1,5 @@
-import { Modal, Row, Text } from "@nextui-org/react";
+import { Col, Modal, Row, Text } from "@nextui-org/react";
+import { Footer } from "./Footer";
 
 interface CustomModalProps {
   visible?: boolean;
@@ -6,8 +7,8 @@ interface CustomModalProps {
   title: string;
   text: string;
   titleColor?: string;
-  onAcept?:() => void,
-  onCancel?:() => void
+  onAcept?: () => void;
+  onCancel?: () => void;
 }
 
 /**
@@ -24,11 +25,9 @@ export const CustomModal: React.FC<CustomModalProps> = ({
   title,
   text,
   titleColor = "primary",
-  onAcept=null,
-  onCancel=null,
-}: any,
-
-) => {
+  onAcept = null,
+  onCancel = null,
+}: any) => {
   return (
     <Modal
       closeButton
@@ -45,17 +44,72 @@ export const CustomModal: React.FC<CustomModalProps> = ({
         <Row justify="center">
           <Text size={14}>{text}</Text>
         </Row>
-        {
-          (onAcept!=null || onCancel!=null)
-          ?
-          <Row >
-            <button onClick={onAcept}>Aceptar</button><button onClick={onCancel}>Rechazar</button>
-          </Row>
-          :
-          null
-        }
-        
       </Modal.Body>
+      <Modal.Footer>
+        {onAcept != null || onCancel != null ? (
+          <Row justify="center" align="center">
+            <Col>
+              <button
+                className="
+                inline-flex
+                items-center
+                rounded-full
+                px-10
+                py-3
+                text-sm
+                font-medium
+                shadow-sm
+                focus:outline-none 
+                focus:ring-2 
+                focus:ring-offset-2
+                bg-teal
+                hover:bg-teal-900
+                focus:ring-teal-500
+                text-white
+                border-transparent
+                w-50
+                flex justify-center
+                "
+                type="button"
+                onClick={onAcept}
+              >
+                Accept
+              </button>
+            </Col>
+            <Col>
+              <button
+                className="
+                inline-flex
+                items-center
+                rounded-full
+                px-10
+                py-3
+                text-sm
+                font-medium
+                shadow-sm
+                focus:outline-none 
+                focus:ring-2 
+                focus:ring-offset-2
+                border-transparent
+                w-50
+                flex justify-center
+                border
+                bg-white
+                hover:bg-teal
+                focus:ring=teal-900
+                hover:text-white
+                text-gray-700
+                border-teal
+                "
+                type="button"
+                onClick={onCancel}
+              >
+                Decline
+              </button>
+            </Col>
+          </Row>
+        ) : null}
+      </Modal.Footer>
     </Modal>
   );
 };
