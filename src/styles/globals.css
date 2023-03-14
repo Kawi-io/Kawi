@@ -7,11 +7,12 @@
   font-style: normal;
 }
 
+html {
+  scroll-behavior: smooth;
+  background-color: #F1F3F4;
+}
+
 @base layer {
-  html {
-    scroll-behavior: smooth;
-    background-color: #F1F3F4;
-  }
 
   h1,
   h2,
