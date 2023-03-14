@@ -94,7 +94,7 @@ export const NftGrid = () => {
                   href="/dashboard/mint"
                 >
                   {" "}
-                  Try creating a new certificate template{" "}
+                  Create a new certificate template{" "}
                 </Link>
               </p>
             </div>

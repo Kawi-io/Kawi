@@ -85,7 +85,7 @@ export const UserGrid = () => {
                   href="/dashboard/new"
                 >
                   {" "}
-                  Try adding a new employee to your company{" "}
+                  Add a new employee to your company{" "}
                 </Link>
               </p>
             </div>
