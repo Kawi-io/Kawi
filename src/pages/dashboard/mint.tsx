@@ -1,19 +1,15 @@
 /* eslint-disable */
 import  { type NextPage } from "next";
-import Link from "next/link"
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { Container, Grid } from "@nextui-org/react";
-import { Provider, AnchorProvider } from "@project-serum/anchor";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { NftCard, mint, ModalLoader, CustomModal } from "~/components/index";
+import { NftCard, ModalLoader, CustomModal } from "~/components/index";
 import { useRouter } from "next/router";
 
 const Mint: NextPage = () => {
   const { publicKey} = useWallet();
   const [loading, setLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isValidProfile, setIsValidProfile]= useState(false);
   const [modal, setModal] = useState({
     visible: false,
@@ -40,6 +36,10 @@ const Mint: NextPage = () => {
       setIsValidProfile(false)
     }else{
       setIsValidProfile(true)
+      setFormData((prevData) => ({
+        ...prevData,
+        "companyID": publicKey.toBase58(),
+      }));
     }
     setLoading(false);
     
@@ -66,6 +66,7 @@ const Mint: NextPage = () => {
     event.preventDefault();
     setLoading(true);
     console.log(formData);
+    if(formData.companyID == "") return;
     const res = await fetch("/api/postJsonMetadata", {
       method: "POST",
       body: JSON.stringify(formData),
@@ -103,7 +104,6 @@ const Mint: NextPage = () => {
       />
 
       <Head>
-       
         <title>Create a new template</title>
       </Head>
       {isValidProfile ? (

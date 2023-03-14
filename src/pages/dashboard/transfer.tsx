@@ -14,25 +14,6 @@ import { mint } from "../../components/Anchor";
 import Head from "next/head";
 import { CustomModal } from "../../components/index";
 import { Employee } from "~/interfaces/Employee";
-type Props = { host: string | null };
-export const getServerSideProps: GetServerSideProps<any> = async (context) => ({
-  props: { host: context.req.headers.host || null },
-});
-// TODO: Eliminar despues, esto es para pruebas
-const users = [
-  {
-    name: "John Doe",
-    wallet: "fys78d6fas211c341fd2s",
-  },
-  {
-    name: "John Doe",
-    wallet: "fys78d6fas211c341fd2s",
-  },
-  {
-    name: "John Doe",
-    wallet: "fys78d6fas211c341fd2s",
-  },
-];
 
 type Option = {
   key: string;
@@ -41,7 +22,7 @@ type Option = {
 
 const _connection = new Connection(clusterApiUrl("devnet"));
 const mx = Metaplex.make(_connection);
-const Transfer: NextPage<Props> = ({ host }) => {
+const Transfer: NextPage = () => {
   const [modal, setModal] = useState({
     title: "",
     text: "",
@@ -76,6 +57,13 @@ const Transfer: NextPage<Props> = ({ host }) => {
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(()=>{
+    if(employees.length>0){
+      formData.target = employees[0]
+      
+    }
+  },[employees])
 
   useEffect(() => {
     const publicKey = sessionStorage.getItem("publicKey");
@@ -112,8 +100,9 @@ const Transfer: NextPage<Props> = ({ host }) => {
     //y devolvemos el provider
     return provider;
   };
-  const doMint = async () => {
+  const doMint = async (to:string) => {
     setLoading(true);
+    console.log(to)
     console.log("minting...");
 
     //El nombre del NFT, este será guardado ON-CHAIN, lo que significa que no podra ser cambiado facilmente
@@ -127,7 +116,7 @@ const Transfer: NextPage<Props> = ({ host }) => {
     console.log(testNftUri);
     //esta será la wallet a la cual será transferido el NFT una vez minteado. Si no se desea transferir se puede dejar en blanco
     //o no mandarla directamente
-    const to = "9U7ZTupH5jVP51F91d8gc79NNVbV9am29RtQTuuMxmow";
+    // const to = "9U7ZTupH5jVP51F91d8gc79NNVbV9am29RtQTuuMxmow";
     let _mint = await mint(
       getProvider()!,
       testNftTitle,
@@ -176,18 +165,26 @@ const Transfer: NextPage<Props> = ({ host }) => {
     // fetchNFTs(list.length, publicKey);
   }, [publicKey]);
 
-  const [formData, setFormData] = useState({
-    wallet: "",
-    certificate: "",
-    privateKey: "",
+  const [formData, setFormData] = useState<any>({
+    target: "",
   });
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // await PrepareTransaction();
-    doMint();
+    // console.log(formData)
+    doMint(formData.target._id);
   };
 
+  const handleInputChange = ({ target }: any) => {
+    const { name, value } = target;
+
+    setFormData((prevData:any) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  
   return (
     <>
       <Head>
@@ -232,6 +229,7 @@ const Transfer: NextPage<Props> = ({ host }) => {
                           Employee ...
                         </label>
                         <select
+                          onChange={(event)=>{handleInputChange(event)}}
                           id="employee"
                           name="employee"
                           className="mt-2 block w-full rounded-md border-0 bg-white py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

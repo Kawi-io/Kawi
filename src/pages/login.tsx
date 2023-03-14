@@ -7,12 +7,10 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/router";
 import { CustomModal } from "../components/index";
 import ModalLoader from "../components/ModalLoader"
-import { useAutoConnect } from "~/components/AutoConnectProvider";
-import { FormControlLabel, Switch, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@mui/material';
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const { wallet, publicKey } = useWallet();
+  const { publicKey } = useWallet();
   const [profileData, setProfileData] = useState<any>();
   const [loading, setLoading] = useState(false)
   const [modal, setModal] = useState<any>({
@@ -52,11 +50,9 @@ const Home: NextPage = () => {
       const data = await response.json();
       
       if(data != null){
-        console.log(1)
         setProfileData(data)
       }
       else{
-        console.log(2) 
         setModal({
             ...modal,
             title: "Error",
@@ -67,7 +63,7 @@ const Home: NextPage = () => {
           });
         }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
 
     setLoading(false)
@@ -115,9 +111,8 @@ const Home: NextPage = () => {
     console.log(profileData);
     sessionStorage.setItem("isCompany", profileData.is_company);
     sessionStorage.setItem("publicKey", profileData._id);
-    console.log("Session set, sent to revision")
-    checkUserSession()
-    
+    console.log("Session setted, sendid to revision")
+    window.location.reload();
   },[profileData])
 
   return (

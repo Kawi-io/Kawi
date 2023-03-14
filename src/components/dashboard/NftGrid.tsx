@@ -8,10 +8,6 @@ import Link from "next/link";
 
 import { Loading, ModalLoader, NftCard } from "../index";
 
-const PINATA_API_KEY = "81accb400029bfb41255";
-const PINATA_SECRET_API_KEY =
-  "4206b68a2aefa718e44430cd96d4be4625ad48546c61b1144af54ad91e760a33";
-
 // TODO: Optimizar NFTGrid y UserGrid
 export const NftGrid = () => {
   const [loading, setLoading] = useState(false);
@@ -42,7 +38,6 @@ export const NftGrid = () => {
             let data = await response.json();
             data.uri = path;
             setNftList((prevList: any) => [...prevList, data]);
-            console.log(nftList);
           } catch (error) {
             console.error(error);
           }
@@ -74,9 +69,7 @@ export const NftGrid = () => {
 
   return (
     <>
-      {loading ? (
-        <Loading />
-      ) : (
+      { (
         <Grid.Container gap={2} justify="center">
           {nftList.length > 0 ? (
             nftList.map((item: any) => (
