@@ -214,8 +214,8 @@ const Transfer: NextPage = () => {
             <Col span={6}>
               <div className="p-10">
                 <div>
-                  <Text>You're about to send an "NFT name" </Text>
-                  <Text>From: "Wallet" </Text>
+                  <Text>You're about to send the nft: "{nft.name}" </Text>
+                  <Text>From: {publicKey?.toBase58()} </Text>
                 </div>
 
                 <form onSubmit={handleFormSubmit} className="mt-5 block">
@@ -226,7 +226,7 @@ const Transfer: NextPage = () => {
                           htmlFor="employee"
                           className="block text-sm font-medium leading-6 text-gray-900"
                         >
-                          Employee ...
+                          To the employee ...
                         </label>
                         <select
                           onChange={(event)=>{handleInputChange(event)}}
