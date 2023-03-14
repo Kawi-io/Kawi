@@ -74,20 +74,20 @@ const Home: NextPage = () => {
   }
 
   useEffect(() => {
-    if(!publicKey) return
-    checkUserSession()
+    if(!publicKey || checkUserSession()) return
+
     setModal({
       ...modal,
       title: "Wallet detected",
-      text: "You wish to use this wallet? " + publicKey?.toBase58(),
+      text: "Do you wish to use this wallet? " + publicKey?.toBase58(),
       visible:true,
       onAcept:()=>{onModalAcept()},
       onCancel:()=>{
         onModalCancel();
         setModal({
           ...modal,
-          title: "Cambie su wallet",
-          text: "Cambie de wallet para poder continuar",
+          title: "Change your wallet",
+          text: "Please change your wallet to continue.",
           visible:true,
         })}
     });
@@ -115,7 +115,7 @@ const Home: NextPage = () => {
     console.log(profileData);
     sessionStorage.setItem("isCompany", profileData.is_company);
     sessionStorage.setItem("publicKey", profileData._id);
-    console.log("Session setted, sendid to revision")
+    console.log("Session set, sent to revision")
     checkUserSession()
     
   },[profileData])
