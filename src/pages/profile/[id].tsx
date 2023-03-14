@@ -28,6 +28,7 @@ const VerNFTs: NextPage = () => {
   const publicKey: any = router.query.id;
 
   useEffect(() => {
+    if (publicKey == null) return;
     const { id } = router.query;
     if (publicKey) {
       fetch("/api/getDocument", {
@@ -52,19 +53,13 @@ const VerNFTs: NextPage = () => {
               });
               
           console.log(data);
-        })
+        }).then(() => {
+          fetchNFTs(new PublicKey(publicKey))})
         .catch((error) => console.error(error));
     }
   }, [publicKey]);
 
   const mx = new Metaplex(new Connection(clusterApiUrl("devnet")));
-
-  var images_charged: Boolean = false;
-
-  useEffect(() => {
-    if (publicKey == null) return;
-  }, [publicKey]);
-
   const fetchNFTs = async (owner: PublicKey) => {
     try {
       const list: any = await mx.nfts().findAllByOwner({ owner: owner });
